@@ -696,6 +696,35 @@ A dedicated Linux user and Docker sandbox address different risks.
 
 Neither should be treated as a complete security solution by itself.
 
+### Reference Deployment — OpenClaw Ansible
+
+The architectural approach proposed for the next laboratory deployment is aligned with the official `openclaw-ansible` reference implementation.
+
+This implementation provides an established starting point for deploying OpenClaw on Linux servers using dedicated service identities, system services, and Docker-based tool isolation.
+
+The next installation will evaluate the Ansible project rather than rebuilding the entire deployment process manually.
+
+**Target architecture:**
+
+- A dedicated Linux service account without general administrative privileges.
+- OpenClaw Gateway running under the dedicated account.
+- Docker-based sandboxing for agent tool execution.
+- Private Gateway access through loopback and SSH tunneling.
+- Restricted workspace mounts and tool permissions.
+- Independent verification of effective privileges and sandbox isolation.
+
+**Important considerations:**
+
+- Installing Docker does not automatically enable agent sandboxing.
+- Docker daemon access and socket permissions require explicit review.
+- The reference implementation must be inspected before execution.
+- Rootless Docker remains an option to evaluate, not an established requirement.
+- The final configuration must be validated through controlled security tests.
+
+**Reference:** https://github.com/openclaw/openclaw-ansible
+
+**Status:** Architecture research completed. Ansible implementation and security validation pending.
+
 ---
 
 ## 13. Potential Business Architecture
@@ -742,20 +771,21 @@ Future customer deployments should use appropriately isolated environments and c
 
 ## 14. Architecture Decisions
 
-| ID     | Decision                                                      | Status               |
-| ------ | ------------------------------------------------------------- | -------------------- |
-| AD-001 | Use AWS EC2 for the initial laboratory                        | Implemented          |
-| AD-002 | Use Ubuntu 24.04 LTS                                          | Implemented          |
-| AD-003 | Keep Gateway bound to loopback                                | Implemented          |
-| AD-004 | Access Dashboard through SSH tunneling                        | Implemented          |
-| AD-005 | Use external AI APIs for reasoning                            | Implemented          |
-| AD-006 | Begin with a single primary agent                             | Implemented          |
-| AD-007 | Retain direct execution for initial learning                  | Accepted temporarily |
-| AD-008 | Defer Docker sandboxing                                       | Deferred             |
-| AD-009 | Evaluate dedicated Linux user                                 | Planned              |
-| AD-010 | Evaluate local memory embeddings                              | Planned              |
-| AD-011 | Disable automatic background tasks during initial exploration | Implemented          |
-| AD-012 | Keep production infrastructure outside the laboratory         | Implemented          |
+| ID     | Decision                                                         | Status                                      |
+| ------ | ---------------------------------------------------------------- | ------------------------------------------- |
+| AD-001 | Use AWS EC2 for the initial laboratory                           | Implemented                                 |
+| AD-002 | Use Ubuntu 24.04 LTS                                             | Implemented                                 |
+| AD-003 | Keep Gateway bound to loopback                                   | Implemented                                 |
+| AD-004 | Access Dashboard through SSH tunneling                           | Implemented                                 |
+| AD-005 | Use external AI APIs for reasoning                               | Implemented                                 |
+| AD-006 | Begin with a single primary agent                                | Implemented                                 |
+| AD-007 | Retain direct execution for initial learning                     | Accepted temporarily                        |
+| AD-008 | Defer Docker sandboxing                                          | Research completed — implementation pending |
+| AD-009 | Evaluate dedicated Linux user                                    | Research completed — implementation pending |
+| AD-010 | Evaluate local memory embeddings                                 | Planned                                     |
+| AD-011 | Disable automatic background tasks during initial exploration    | Implemented                                 |
+| AD-012 | Keep production infrastructure outside the laboratory            | Implemented                                 |
+| AD-013 | Evaluate official openclaw-ansible as the next deployment method | Planned                                     |
 
 These decisions may be revisited as experiments provide new evidence.
 

@@ -48,7 +48,7 @@ Completion applies to the stated learning objective, not necessarily to producti
 | 007   | Multi-Agent Architecture & Delegation        | Pending     |
 | 008   | Automation, Scheduling & Background Tasks    | Pending     |
 | 009   | Interfaces, Channels & Remote Access         | In Progress |
-| 010   | Reproducible & Hardened Deployment           | Future      |
+| 010   | Reproducible & Hardened Deployment           | In Progress |
 | 011   | Affiliate Research & Content Automation      | Future      |
 | 012   | Replication & Productization                 | Future      |
 
@@ -674,33 +674,128 @@ Explore different ways to interact with and administer OpenClaw.
 
 # Phase 010 — Reproducible & Hardened Deployment
 
-**Status:** Future
+**Status:** In Progress — Research
 
 ## Objective
 
-Create a more secure and reproducible OpenClaw deployment based on findings from the laboratory.
+Design, implement, and validate a reproducible OpenClaw deployment with reduced privileges and sandboxed agent execution.
 
-## Potential Improvements
+The next installation will evaluate the official `openclaw-ansible` project as its primary deployment reference.
 
-- Dedicated Linux user.
-- Reduced privileges.
-- Docker tool sandbox.
-- Systemd service hardening.
-- Controlled tool permissions.
-- Secure credential storage.
-- Reproducible installation scripts.
-- Backup and recovery.
-- Infrastructure documentation.
-- Monitoring and alerts.
+The goal is to understand and adapt the reference implementation rather than develop a custom installation process from scratch.
+
+## Research Completed
+
+- Identified the security limitations of the initial deployment.
+- Evaluated the benefits of a dedicated Linux service account.
+- Investigated Docker-based tool sandboxing.
+- Distinguished Gateway execution from sandboxed tool execution.
+- Reviewed the relationship between tool policies, execution approvals, and operating-system permissions.
+- Identified the official `openclaw-ansible` deployment project.
+- Confirmed conceptual alignment between our proposed architecture and documented OpenClaw deployment patterns.
+
+These findings validate the architectural direction, not the security of a deployed implementation.
+
+## Target Architecture
+
+- AWS EC2 running Ubuntu Server 24.04 LTS.
+- Dedicated Linux service account without general administrative privileges.
+- Human administration through a separate account.
+- OpenClaw Gateway running under the dedicated account.
+- Docker-based sandboxing for agent tool execution.
+- Sandbox enabled for the primary agent.
+- Controlled workspace mounts and filesystem access.
+- Restricted tool permissions and elevated execution.
+- Gateway bound to loopback with authentication.
+- Dashboard accessible through SSH tunneling.
+- External AI providers configured with protected credentials.
+- Reproducible infrastructure configuration using Ansible.
+
+## Planned Activities
+
+### 010.1 — Ansible Reference Implementation Review
+
+**Status:** Pending
+
+- Inspect the official `openclaw-ansible` repository.
+- Understand its playbooks, roles, inventory, and variables.
+- Review how it creates and manages Linux users.
+- Examine Docker installation and sandbox integration.
+- Understand its systemd configuration.
+- Review its firewall, access, and credential-management approach.
+- Identify differences between the reference architecture and our requirements.
+
+### 010.2 — Deployment Design
+
+**Status:** Pending
+
+- Select the applicable Ansible components.
+- Define the target EC2 configuration.
+- Confirm the dedicated service-account permissions.
+- Define the Docker daemon access model.
+- Configure sandbox mode and workspace access.
+- Establish tool execution and approval policies.
+- Document any intentional differences from the reference implementation.
+
+### 010.3 — Reproducible Installation
+
+**Status:** Pending
+
+- Provision a clean EC2 instance.
+- Execute the reviewed Ansible installation process.
+- Configure OpenClaw under the dedicated service account.
+- Apply the reviewed agent identity templates.
+- Establish secure Dashboard access.
+- Verify service persistence and basic functionality.
+
+### 010.4 — Security Validation
+
+**Status:** Pending
+
+- Verify the effective Linux identity of the Gateway.
+- Confirm the service account has no unnecessary administrative privileges.
+- Verify tool execution occurs within the sandbox.
+- Test authorized workspace access using synthetic files.
+- Verify unauthorized host filesystem access is denied.
+- Inspect Docker permissions and sandbox mounts.
+- Confirm elevated execution cannot bypass intended restrictions.
+- Review tool policies and execution approvals.
+- Execute the OpenClaw security audit.
+- Confirm Gateway network isolation.
+
+### 010.5 — Documentation & Recovery
+
+**Status:** Pending
+
+- Document the validated installation procedure.
+- Record architectural decisions and deviations.
+- Document troubleshooting findings.
+- Define backup and recovery procedures.
+- Verify reproducibility from a clean environment.
 
 ## Acceptance Criteria
 
-- [ ] Clean installation reproducible.
-- [ ] Security decisions documented.
-- [ ] Privilege boundaries verified.
+- [x] Initial security limitations identified.
+- [x] Target architecture conceptually validated.
+- [x] Official Ansible reference implementation identified.
+- [ ] Ansible implementation reviewed.
+- [ ] Dedicated Linux user configured and verified.
+- [ ] OpenClaw Gateway operational under the dedicated account.
+- [ ] Docker tool sandbox operational.
 - [ ] Workspace isolation tested.
+- [ ] Tool execution restrictions verified.
+- [ ] Secure Dashboard access confirmed.
+- [ ] Clean installation reproducible.
 - [ ] Recovery procedure validated.
-- [ ] Deployment guide reviewed.
+- [ ] Deployment documentation reviewed.
+
+## References
+
+- [OpenClaw Ansible](https://github.com/openclaw/openclaw-ansible)
+- [OpenClaw Sandbox Documentation](https://docs.openclaw.ai/gateway/sandboxing)
+- [OpenClaw Docker Backend](https://docs.openclaw.ai/gateway/sandboxing/docker-backend)
+
+**Current conclusion:** The target architecture is conceptually supported by documented OpenClaw deployment practices. Implementation and effective security validation remain pending.
 
 ---
 
@@ -814,15 +909,16 @@ The project does not currently plan a multi-tenant SaaS.
 
 As of November 8, 2026, the laboratory should focus on the following learning activities:
 
-| Priority | Experiment                               | Reason                                          |
-| -------- | ---------------------------------------- | ----------------------------------------------- |
-| 1        | Tool permissions and execution approvals | Understand actual agent capabilities and risks  |
-| 2        | Tools and skills                         | Learn how agents interact with external systems |
-| 3        | Model comparison and cost monitoring     | Control API consumption                         |
-| 4        | Memory and local embeddings              | Explore hybrid AI architecture                  |
-| 5        | Docker sandbox                           | Evaluate execution isolation                    |
-| 6        | Multi-agent delegation                   | Learn specialized agent coordination            |
-| 7        | Scheduled automation                     | Explore autonomous execution                    |
+| Priority | Experiment                            | Reason                                      |
+| -------- | ------------------------------------- | ------------------------------------------- |
+| 1        | OpenClaw Ansible reference review     | Understand the official deployment approach |
+| 2        | Dedicated user and sandbox deployment | Implement the target architecture           |
+| 3        | Security validation                   | Verify actual permissions and isolation     |
+| 4        | Tools and skills                      | Explore agent capabilities                  |
+| 5        | Model comparison and cost monitoring  | Control API consumption                     |
+| 6        | Memory and local embeddings           | Explore hybrid AI architecture              |
+| 7        | Multi-agent delegation                | Learn specialized agent coordination        |
+| 8        | Scheduled automation                  | Explore autonomous execution                |
 
 These priorities may change as new capabilities or technical findings are discovered.
 
