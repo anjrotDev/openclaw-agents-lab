@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>System Architecture · OpenClaw Agents Lab</title>
+<style>
+:root{--paper:#f7f5ee;--card:#fffdf7;--ink:#162d2a;--muted:#486059;--line:#cbd8cc;--green:#143b33;--accent:#196453}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.6 system-ui,sans-serif}
+.shell{width:min(70rem,calc(100% - 2rem));margin:auto}
+header{background:var(--green);color:white;padding:2rem 0 3rem}
+header a{color:#def0b9}
+a{color:var(--accent);text-underline-offset:.2em}
+a:focus-visible,summary:focus-visible{outline:3px solid #ba722e;outline-offset:4px}
+h1,h2{font:500 clamp(2.15rem,5vw,3.6rem)/1.05 Georgia,serif;margin:.4em 0}
+h1{font-size:clamp(2.8rem,7vw,5rem)}
+h3{margin:.1em 0}
+p{margin:.55em 0;max-width:78ch}
+nav{display:flex;flex-wrap:wrap;gap:.55rem 1.3rem;padding:1rem 0}
+section{padding:1.8rem 0;border-top:1px solid var(--line)}
+figure{margin:1rem 0}
+.flow,.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+.flow{list-style:none;padding:0;gap:1.5rem}
+.card,.node,details{background:var(--card);border:1px solid var(--line);border-radius:.8rem;padding:1rem;min-width:0;overflow-wrap:anywhere}
+.node{position:relative}
+.node:not(:last-child)::after{content:"→";position:absolute;left:calc(100% + .2rem);top:40%;font-weight:bold;color:var(--accent)}
+.host{background:#e8f0e5;border-color:#aabfac}
+small,figcaption{color:var(--muted)}
+summary{cursor:pointer;font-weight:750}
+details{margin:.7rem 0}
+.table{overflow:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;min-width:38rem}
+td,th{text-align:left;vertical-align:top;padding:.6rem;border-bottom:1px solid var(--line)}
+th{background:#e8f0e5}
+code{overflow-wrap:anywhere}
+footer{padding:1rem 0 3rem}
+@media(max-width:44rem){.flow,.grid{grid-template-columns:1fr}.node:not(:last-child)::after{content:"↓";left:50%;top:100%}}
+</style>
+</head>
+<body>
+<header><div class="shell">
+<a href="../../index.html">← OpenClaw Agents Lab</a>
+<h1>System architecture</h1>
+<p>How Nexus receives requests, uses models and tools, and stores its state on the lab host.</p>
+</div></header>
+<main class="shell">
+<nav aria-label="On this page"><a href="#system">System map</a><a href="#evolution">Deployment history</a><a href="#runtime">Runtime and data</a><a href="#validation">Validation</a><a href="#direction">Research directions</a><a href="#sources">Sources</a></nav>
+
+<section id="system">
+<h2>System map</h2>
+<p>Experiment 003 used a dedicated Nexus account on EC2. Telegram was added in a later trial on the same lab environment.</p>
+<figure>
+<ol class="flow" aria-label="Request path from interfaces through OpenClaw to the model provider">
+<li class="node"><h3>Interfaces</h3><p>Mac → SSH → loopback Dashboard. The CLI and TUI run on the host.</p><p>Telegram messages enter through the configured bot channel. The trial added no public inbound AWS port.</p></li>
+<li class="node host"><h3>AWS EC2 · Ubuntu</h3><p>The OpenClaw Gateway coordinates Nexus, sessions, tools, and integrations under the <code>nexus</code> systemd user service.</p><p>The workspace and runtime state live on the host. Docker is installed. Tool containment remains pending.</p></li>
+<li class="node"><h3>External model API</h3><p>Nexus sends inference requests to OpenAI and receives model responses. OpenClaw and its tools run on EC2.</p></li>
+</ol>
+<figcaption>Request flow. Responses return through the originating interface. The Dashboard also displayed Telegram exchanges during the cross-channel observation.</figcaption>
+</figure>
+</section>
+
+<section id="evolution">
+<h2>Deployment history</h2>
+<details open><summary>Initial deployment · Direct installation as ubuntu</summary>
+<p>The official installer placed OpenClaw under <code>/home/ubuntu/.npm-global/</code>. Its binary directory was added to <code>PATH</code>. The Gateway and tools ran on the host under <code>ubuntu</code>, whose broad administrative privileges were an accepted laboratory limitation. Nexus used <code>/home/ubuntu/.openclaw/workspace/</code>.</p>
+<p>The initial deployment verified SSH, private Dashboard access, a responding agent, and OpenAI connectivity. It also documented disabling the 30-minute heartbeat and the daily memory dreaming job. Those settings describe the original deployment.</p>
+</details>
+<details open><summary>Experiment 003 · Ansible installation under nexus</summary>
+<p>The lab ran the local Ansible playbook from recorded revision <code>238f100</code>. SSH administration remained with <code>ubuntu</code>. Ansible created <code>nexus</code> with its own home, scoped sudo grants, and no Docker group membership. The host ran rootful Docker. The Gateway ran as a systemd user service under Nexus.</p>
+<p>The experiment resolved two startup failures involving unsafe permissions on <code>/home/nexus/.config</code> and an earlier onboarding process holding Gateway state. Loopback listening and the deep connectivity check were verified after recovery. The operator opened the Dashboard through SSH and demonstrated conversational bootstrap. Some workspace actions were agent-reported.</p>
+<p><a href="../../experiments/003-docker-sandbox/index.html">Read the Experiment 003 evidence</a></p>
+</details>
+<details><summary>November 9 · Telegram channel and Dashboard observation</summary>
+<p>The Telegram bot used an allowlisted maintainer account and skipped chat-based administrative privileges. Nexus received and answered messages in Spanish. The Dashboard displayed incoming messages, replies, and agent operations while it was open. Nexus reported using GPT-5.6 Sol with medium reasoning. Effective model selection, internal session IDs, and channel operation with the SSH tunnel closed remain to be checked.</p>
+<p><a href="../roadmap.md">Read the channel observations in the roadmap</a></p>
+</details>
+<details><summary>Experiment 004 · Reinstallation guide</summary>
+<p>The HTML guide records the EC2 and Ansible procedure and the two Gateway recoveries. A clean reinstallation following that guide is pending.</p>
+<p><a href="../../experiments/004-reproducible-openclaw-installation/index.html">Open the reinstallation guide</a></p>
+</details>
+</section>
+
+<section id="runtime">
+<h2>Runtime and data</h2>
+<div class="grid">
+<article class="card"><h3>Host and storage</h3><p>Ubuntu 24.04 LTS on a t3.medium (2 vCPU, 4 GiB), with a 30 GiB gp3 root volume and 2 GiB swap. The documented design uses encrypted EBS, IMDSv2, and no instance IAM role. Workspace and runtime state are stored on EC2.</p></article>
+<article class="card"><h3>Network boundary</h3><p>The security group allows SSH from the maintainer’s current public IPv4. The Gateway binds to loopback on port 18789. The Dashboard uses an SSH tunnel. Public addresses can change after stop/start.</p></article>
+<article class="card"><h3>Tools and permissions</h3><p>Routine workspace work is guided by agent instructions. Linux identities, sudo, filesystem permissions, and effective tool policies determine technical access. Container installation and active container execution are separate checks.</p></article>
+<article class="card"><h3>Agent workspace</h3><p>Nexus uses <code>IDENTITY.md</code> for presentation, <code>SOUL.md</code> for behavior, <code>USER.md</code> for preferences, and <code>AGENTS.md</code> for operating instructions. Long-term memory may use <code>MEMORY.md</code> and <code>memory/</code>. The Experiment 003 workspace is under <code>/home/nexus/.openclaw/</code>.</p></article>
+<article class="card"><h3>Models and memory</h3><p>OpenAI inference was exercised. Initial API usage showed embedding calls. Experiment 003 skipped embeddings during onboarding. Controlled retrieval comparisons and local embeddings are pending. Gemini is planned.</p></article>
+<article class="card"><h3>Background activity</h3><p>The initial experiment disabled heartbeat and dreaming. The architecture records those actions for the initial installation. Effective scheduling on later installs requires its own check. Compute, storage, inference, and embeddings contribute separate costs.</p></article>
+</div>
+</section>
+
+<section id="validation">
+<h2>Validation</h2>
+<p>Implemented describes configuration in the lab record. Verified describes an observed check. Pending identifies evidence still needed.</p>
+<div class="table" tabindex="0" role="region" aria-label="Architecture validation table">
+<table>
+<thead><tr><th scope="col">Capability</th><th scope="col">Implemented</th><th scope="col">Verified or observed</th><th scope="col">Pending</th></tr></thead>
+<tbody>
+<tr><th scope="row">Service identity</th><td>Dedicated <code>nexus</code> account with scoped sudo</td><td>Identity, sudo listing, group membership, and linger setting inspected</td><td>Remove unnecessary grants and validate effective runtime privileges</td></tr>
+<tr><th scope="row">Gateway and Dashboard</th><td>User service, loopback, private SSH tunnel</td><td>Listener, deep status, Dashboard access, and a model response</td><td>Independent SSH logout and EC2 reboot persistence checks</td></tr>
+<tr><th scope="row">Docker and tools</th><td>Rootful Docker daemon installed</td><td>Daemon active and Nexus outside the Docker group</td><td>Socket permissions, backend choice, tool policies, approvals, mounts, and actual isolation</td></tr>
+<tr><th scope="row">State and recovery</th><td>Local workspace, configuration, and sessions</td><td>Conversational bootstrap demonstrated. Some writes were agent-reported.</td><td>Credential-file permissions, backup and recovery, and clean preconfigured bootstrap</td></tr>
+<tr><th scope="row">Telegram</th><td>Bot channel with a DM allowlist</td><td>Message and reply, plus Dashboard visibility while open</td><td>Standalone connectivity, session identity, and effective model comparison</td></tr>
+<tr><th scope="row">Repeatable deployment</th><td>Ansible baseline and Experiment 004 guide</td><td>Experiment 003 runtime checks. Full Ansible recap and resolved collection versions were unavailable.</td><td>Clean replay of the guide with recorded inputs and results</td></tr>
+</tbody></table>
+</div>
+</section>
+
+<section id="direction">
+<h2>Research directions</h2>
+<details><summary>Tool isolation and service hardening</summary><p>Evaluate a sandbox backend, including rootless Docker as an option. Validate restricted commands, workspace mounts, filesystem boundaries, network access, and approvals independently. Inspect browser execution, service configuration, and backup and recovery. Production systems and credentials stay outside the lab.</p></details>
+<details><summary>Hybrid memory and model selection</summary><p>The proposed flow keeps conversational reasoning on a cloud API and tests a local embedding model feeding a local memory index. Compare retrieval quality, privacy, resource usage, operational complexity, and costs. Evaluate model latency, reliability, and tool use separately.</p></details>
+<details><summary>Specialized agents and potential applications</summary><p>Later experiments can test delegated agents, scheduled work, and human review. The original architecture proposes affiliate research and WordPress drafting as a future application after lab validation.</p></details>
+</section>
+
+<section id="sources">
+<h2>Sources</h2>
+<ul>
+<li><a href="../architecture.md">Original architecture Markdown</a></li>
+<li><a href="../installation/aws-ec2-openclaw.md">Initial EC2 installation record</a></li>
+<li><a href="../../experiments/001-agent-fundamentals/README.md">Experiment 001 · Agent fundamentals</a></li>
+<li><a href="../../experiments/003-docker-sandbox/index.html">Experiment 003 · Ansible and sandbox findings</a></li>
+<li><a href="../roadmap.md">Roadmap · Telegram evidence and planned validation</a></li>
+<li><a href="../../experiments/004-reproducible-openclaw-installation/index.html">Experiment 004 · Reinstallation guide</a></li>
+</ul>
+</section>
+</main>
+<footer class="shell"><a href="../../index.html">← OpenClaw Agents Lab</a></footer>
+</body>
+</html>

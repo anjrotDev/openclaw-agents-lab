@@ -102,6 +102,8 @@ openclaw-agents-lab/
 │   ├── project-overview.md
 │   ├── roadmap.md
 │   ├── architecture.md
+│   ├── architecture/
+│   │   └── index.html
 │   └── installation/
 │       └── aws-ec2-openclaw.md
 └── experiments/
@@ -122,7 +124,7 @@ Some directories and documents represent planned work and may not exist yet.
 | --------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | [Project Overview](docs/project-overview.md)                    | Vision, objectives, scope, principles, and potential business direction  |
 | [Project Roadmap](docs/roadmap.md)                              | Learning phases, experiments, progress, and acceptance criteria          |
-| [Architecture](docs/architecture.md)                            | Current architecture, components, security boundaries, and future design |
+| [Architecture](docs/architecture/index.html)                            | Current architecture, components, security boundaries, and future design |
 | [AWS Installation Guide](docs/installation/aws-ec2-openclaw.md) | Reproducible EC2 and OpenClaw installation process                       |
 
 ## Learning Areas
