@@ -1,0 +1,2614 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reproducible OpenClaw Installation Guide | Experiment 004</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --paper: #fff;
+      --panel: #edf5f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: #142b36;
+      color: #eff8fa;
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <p class="eyebrow">OpenClaw Agents Lab · Experiment 004</p>
+      <h1>Reproducible OpenClaw Installation Guide</h1>
+      <p>Start from a fresh AWS EC2 instance, install OpenClaw with Ansible under a dedicated Nexus account, and verify
+        the Gateway and a model response through a private SSH tunnel.</p>
+      <p><strong>Experiment status.</strong> Ready for a clean-install trial. The procedure is based on the recorded
+        Experiment 003 run. A fresh execution of this HTML guide is pending.</p>
+    </div>
+  </header>
+  <div class="wrap layout">
+    <nav class="toc" aria-label="Guide contents">
+      <p>Installation steps</p>
+      <ol>
+        <li><a href="#step-1">Provision a fresh EC2 instance</a></li>
+        <li><a href="#step-4">Prepare and run the local Ansible playbook</a></li>
+        <li><a href="#step-5">Onboard OpenClaw as Nexus</a></li>
+        <li><a href="#step-6">Resolve the two observed Gateway failures</a></li>
+        <li><a href="#step-9">Open the Dashboard and test a model response</a></li>
+        <li><a href="#step-10">Record the clean-install result</a></li>
+      </ol>
+      <a href="#lab-records">Full laboratory records</a>
+    </nav>
+    <main>
+      <h2 id="step-1">1. Provision a fresh EC2 instance</h2>
+      <p>Use a disposable Ubuntu Server 24.04 LTS x86_64 instance. The Experiment 003 baseline used
+        <code>us-east-1</code>, a <code>t3.medium</code> instance, and a 30 GiB gp3 root volume. Enable EBS encryption,
+        require IMDSv2, and leave the IAM instance role unset. For this public SSH access path, use a subnet with
+        internet routing and assign a public IPv4 address. Allow inbound TCP 22 from your current public IPv4 address
+        only (<code>/32</code>). Keep port 18789 closed in the security group. The instance needs outbound access for
+        package downloads and model API requests.
+      </p>
+      <h3 id="step-2">On your Mac</h3>
+      <p>Replace the key path and instance address with your own values.</p>
+      <pre><code class="language-bash">EC2_HOST=&#39;replace-with-instance-public-ip-or-dns&#39;
+EC2_KEY=&quot;$HOME/.ssh/openclaw-lab.pem&quot;
+chmod 600 &quot;$EC2_KEY&quot;
+ssh -i &quot;$EC2_KEY&quot; &quot;ubuntu@$EC2_HOST&quot;
+</code></pre>
+      <p>If SSH hangs after a stop/start, check both the instance&#39;s current public address and your current public
+        IPv4 in the security group. Verify the instance&#39;s host key before accepting it.</p>
+      <h3 id="step-3">On EC2 as ubuntu</h3>
+      <pre><code class="language-bash">lsb_release -ds
+uname -m
+free -h
+df -h /
+ip -4 route
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install git ansible-core
+swapon --show
+</code></pre>
+      <p>If the upgrade requests a reboot, reboot and reconnect before proceeding. On a fresh instance with no swap and
+        sufficient disk space, create the baseline&#39;s 2 GiB swap file. If a swap file already exists, inspect it
+        before running these commands.</p>
+      <pre><code class="language-bash">sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+grep -q &#39;^/swapfile[[:space:]]&#39; /etc/fstab ||
+  printf &#39;%s\n&#39; &#39;/swapfile none swap sw 0 0&#39; | sudo tee -a /etc/fstab
+swapon --show
+free -h
+</code></pre>
+      <h2 id="step-4">2. Prepare and run the local Ansible playbook</h2>
+      <p>Use the revision recorded in Experiment 003. Its dependencies and release packages resolve at install time, so
+        record the installed versions. Stop if the commit cannot be resolved or preflight fails.</p>
+      <pre><code class="language-bash">git clone https://github.com/openclaw/openclaw-ansible.git ~/openclaw-ansible
+cd ~/openclaw-ansible
+git checkout --detach 238f100
+git status --short
+git rev-parse HEAD
+ansible --version
+python3 --version
+git --version
+ansible-galaxy collection install -r requirements.yml
+ansible-galaxy collection list
+</code></pre>
+      <p>Create <code>/home/ubuntu/openclaw-lab-vars.yml</code> as <code>ubuntu</code>.</p>
+      <pre><code class="language-bash">cat &gt; /home/ubuntu/openclaw-lab-vars.yml &lt;&lt;&#39;YAML&#39;
+---
+openclaw_user: nexus
+openclaw_home: /home/nexus
+nodejs_version: &quot;24.x&quot;
+openclaw_install_mode: release
+tailscale_enabled: false
+openclaw_ssh_keys: []
+YAML
+
+ansible-playbook playbook.yml -e @/home/ubuntu/openclaw-lab-vars.yml --syntax-check
+./run-playbook.sh -e @/home/ubuntu/openclaw-lab-vars.yml -e openclaw_user=nexus
+</code></pre>
+      <p>Implicit-localhost inventory warnings were observed during the syntax check. Save a sanitized copy of the play
+        recap and confirm the installer succeeded before onboarding. Keep an administrative SSH session open while
+        checking that a second SSH session can still connect after firewall configuration.</p>
+      <pre><code class="language-bash">id nexus
+getent passwd nexus
+sudo -l -U nexus
+sudo systemctl is-active docker
+getent group docker
+sudo ufw status verbose
+loginctl show-user nexus -p Linger
+</code></pre>
+      <p>The observed baseline had a dedicated Nexus account, scoped sudo grants, an active rootful Docker service, and
+        no Docker group membership for Nexus. Record any differences. Docker service status alone does not establish
+        tool isolation.</p>
+      <h2 id="step-5">3. Onboard OpenClaw as Nexus</h2>
+      <pre><code class="language-bash">sudo su - nexus
+whoami
+node --version
+pnpm --version
+openclaw --version
+printenv XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS
+openclaw onboard --install-daemon
+</code></pre>
+      <p>Select manual setup, a local Gateway with Node.js, port 18789, loopback binding, and Tailscale exposure off.
+        Configure OpenAI using the interactive prompt and select a model your account can access. Experiment 003 used
+        <code>openai/gpt-6-astra</code>. Use generated token authentication for the Gateway and keep the token and
+        provider key private. Skip channels, embeddings, web search, and optional skill and plugin setup for the
+        baseline. Record the actual selections and versions if the prompts differ.
+      </p>
+      <pre><code class="language-bash">systemctl --user status openclaw-gateway.service --no-pager
+ss -ltn &#39;( sport = :18789 )&#39;
+openclaw status --deep
+</code></pre>
+      <p>Expect an active service, loopback-only listeners, and a successful connectivity check. Use the next section if
+        a check fails.</p>
+      <h2 id="step-6">4. Resolve the two observed Gateway failures</h2>
+      <h3 id="step-7">Service installation rejects the user configuration directory</h3>
+      <p>As <code>nexus</code>, inspect the directory. If it belongs to Nexus and matches the unsafe-permissions
+        finding, restrict that directory and retry service installation.</p>
+      <pre><code class="language-bash">stat -c &#39;%A %a %U:%G %n&#39; /home/nexus/.config
+chmod 700 /home/nexus/.config
+openclaw gateway install
+systemctl --user status openclaw-gateway.service --no-pager
+</code></pre>
+      <h3 id="step-8">Service starts but the port never listens</h3>
+      <p>Inspect the user service journal and processes. Apply the Experiment 003 recovery only if the logs and process
+        list point to an obsolete onboarding process holding Gateway state. Close that onboarding session if possible.
+        Otherwise identify its live PID and send it TERM as Nexus.</p>
+      <pre><code class="language-bash">journalctl --user -u openclaw-gateway.service -n 100 --no-pager
+ps -u nexus -o pid,ppid,stat,etime,args
+</code></pre>
+      <pre><code class="language-bash">read -r -p &#39;Verified obsolete onboarding parent PID: &#39; onboarding_pid
+ps -p &quot;$onboarding_pid&quot; -o user,pid,ppid,stat,etime,args
+# Run the following only after confirming the displayed process.
+kill -TERM &quot;$onboarding_pid&quot;
+</code></pre>
+      <p>Confirm that the obsolete parent and child have exited before restarting. Leave the SQLite state files intact.
+      </p>
+      <pre><code class="language-bash">ps -u nexus -o pid,ppid,stat,etime,args
+systemctl --user restart openclaw-gateway.service
+ss -ltn &#39;( sport = :18789 )&#39;
+openclaw status --deep
+</code></pre>
+      <h2 id="step-9">5. Open the Dashboard and test a model response</h2>
+      <p>In another Mac terminal, set the same connection variables and start a private tunnel.</p>
+      <pre><code class="language-bash">EC2_HOST=&#39;replace-with-instance-public-ip-or-dns&#39;
+EC2_KEY=&quot;$HOME/.ssh/openclaw-lab.pem&quot;
+ssh -i &quot;$EC2_KEY&quot; -N -o ExitOnForwardFailure=yes \
+  -L 127.0.0.1:18789:127.0.0.1:18789 &quot;ubuntu@$EC2_HOST&quot;
+</code></pre>
+      <p>Open <a href="http://127.0.0.1:18789/">http://127.0.0.1:18789/</a> and supply the Gateway token locally if
+        prompted. Send a harmless prompt such as “Reply with: AI access works.” Save the model name and result without
+        recording secrets. The earlier successful response demonstrated one working completion. Its response time is
+        historical evidence.</p>
+      <p>If you want to reproduce Nexus&#39;s conversational identity setup, follow Finding 003-03 in the record below
+        after the connection test. Review any workspace changes locally. Inspect scheduled work before leaving the
+        instance running. The original installation record documents heartbeat and memory dreaming behavior for its
+        observed build. Confirm the effective settings on the installed version before applying those historical
+        commands.</p>
+      <h2 id="step-10">6. Record the clean-install result</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>Evidence to capture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Provisioning</td>
+            <td>Region, AMI, instance type, storage, swap and security-group scope</td>
+          </tr>
+          <tr>
+            <td>Repeatable inputs</td>
+            <td>Full Git revision, variables, collection versions and installed versions</td>
+          </tr>
+          <tr>
+            <td>Ansible run</td>
+            <td>Sanitized recap and any applied recovery</td>
+          </tr>
+          <tr>
+            <td>Account boundaries</td>
+            <td>User identity, sudo grants, group membership and service user</td>
+          </tr>
+          <tr>
+            <td>Gateway</td>
+            <td>Active user service, loopback listeners and deep status</td>
+          </tr>
+          <tr>
+            <td>End-to-end test</td>
+            <td>Dashboard through SSH and one successful model response</td>
+          </tr>
+          <tr>
+            <td>Persistence</td>
+            <td>Close all SSH sessions, reconnect independently and check service health. Repeat after reboot.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Experiment 003 observed the installation, Gateway recovery, Dashboard access, and conversational bootstrap. The
+        independent logout and reboot checks, effective tool restrictions, credential-file permissions, Docker sandbox
+        execution, and clean-install repeat remain open in that record. Mark each check according to the evidence from
+        the new run.</p>
+
+      <h2 id="lab-records">Full laboratory records</h2>
+      <p>The original EC2 record covers the direct installer and its findings. The Experiment 003 record covers the
+        Ansible run, Gateway recovery, and the status of sandbox and permission testing.</p>
+      <details id="ec2-record">
+        <summary>Original EC2 installation record</summary>
+        <p>Historical lab record. Use the installation steps above for the clean Ansible run.</p>
+        <p><a href="../../docs/installation/aws-ec2-openclaw.md">Source Markdown</a></p>
+        <nav aria-label="Original EC2 installation record contents">
+          <ol>
+            <li><a href="#ec2-record-1">OpenClaw Lab — AWS EC2 Installation Guide</a></li>
+            <li><a href="#ec2-record-2">Overview</a></li>
+            <li><a href="#ec2-record-4">AWS Infrastructure</a></li>
+            <li><a href="#ec2-record-9">Security Group</a></li>
+            <li><a href="#ec2-record-13">Connecting to EC2</a></li>
+            <li><a href="#ec2-record-16">Verify Ubuntu</a></li>
+            <li><a href="#ec2-record-17">Update the Operating System</a></li>
+            <li><a href="#ec2-record-18">Configure Swap</a></li>
+            <li><a href="#ec2-record-22">Install OpenClaw</a></li>
+            <li><a href="#ec2-record-26">OpenClaw Onboarding</a></li>
+            <li><a href="#ec2-record-36">OpenClaw CLI PATH Issue</a></li>
+            <li><a href="#ec2-record-40">Secure Dashboard Access</a></li>
+            <li><a href="#ec2-record-44">Initial Functional Test</a></li>
+            <li><a href="#ec2-record-47">Inspect Initial Automation Jobs</a></li>
+            <li><a href="#ec2-record-50">Disable Heartbeat</a></li>
+            <li><a href="#ec2-record-53">Disable Memory Dreaming</a></li>
+            <li><a href="#ec2-record-57">Important Security Practices</a></li>
+            <li><a href="#ec2-record-62">AWS Cost Management</a></li>
+            <li><a href="#ec2-record-63">Current Deployment Status</a></li>
+            <li><a href="#ec2-record-64">Known Issues and Findings</a></li>
+            <li><a href="#ec2-record-69">Recommended Next Session</a></li>
+            <li><a href="#ec2-record-70">Future Laboratory Roadmap</a></li>
+            <li><a href="#ec2-record-77">Final Notes</a></li>
+          </ol>
+        </nav>
+        <h3 id="ec2-record-1">OpenClaw Lab — AWS EC2 Installation Guide</h3>
+        <p><strong>Project:</strong> OpenClaw AI Agents Lab<br><strong>Milestone:</strong> 001 — First Secure
+          Deployment<br><strong>Platform:</strong> AWS EC2<br><strong>Operating System:</strong> Ubuntu Server 24.04
+          LTS<br><strong>OpenClaw Version Tested:</strong> 2026.11.1<br><strong>Status:</strong> Initial deployment
+          completed — configuration review pending<br><strong>Last Updated:</strong> November 8, 2026</p>
+        <hr>
+        <h3 id="ec2-record-2">1. Overview</h3>
+        <p>This document describes the installation process followed to deploy OpenClaw on an AWS EC2 instance.</p>
+        <p>The objective is to create a secure laboratory for learning how autonomous AI agents operate, communicate,
+          use tools, maintain memory, and coordinate specialized agents.</p>
+        <p>The installation uses external AI providers instead of hosting language models locally.</p>
+        <h4 id="ec2-record-3">Architecture</h4>
+        <pre><code class="language-text">MacBook
+   |
+   | SSH Tunnel (encrypted)
+   |
+   v
+AWS EC2 - Ubuntu 24.04
+   |
+   | localhost:18789
+   |
+   v
+OpenClaw Gateway
+   |
+   +-- Web Dashboard
+   |
+   +-- Chief of Staff
+   |      |
+   |      +-- Specialized Agents
+   |
+   +-- Tools / Skills
+   |
+   +-- Memory
+   |
+   +-- Automations
+   |
+   v
+OpenAI API / Gemini API (future)
+</code></pre>
+        <p><strong>Security principle:</strong> The OpenClaw Gateway must not be exposed directly to the public
+          internet.</p>
+        <hr>
+        <h3 id="ec2-record-4">2. AWS Infrastructure</h3>
+        <h4 id="ec2-record-5">2.1 Region</h4>
+        <p>The laboratory was deployed in:</p>
+        <pre><code class="language-text">us-east-1
+US East (N. Virginia)
+</code></pre>
+        <h4 id="ec2-record-6">2.2 EC2 Instance</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Setting</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Name</td>
+              <td><code>openclaw-lab</code></td>
+            </tr>
+            <tr>
+              <td>Instance type</td>
+              <td><code>t3.medium</code></td>
+            </tr>
+            <tr>
+              <td>vCPU</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>RAM</td>
+              <td>4 GiB</td>
+            </tr>
+            <tr>
+              <td>AMI</td>
+              <td>Ubuntu Server 24.04 LTS</td>
+            </tr>
+            <tr>
+              <td>Architecture</td>
+              <td>x86_64</td>
+            </tr>
+            <tr>
+              <td>Purchase option</td>
+              <td>On-Demand</td>
+            </tr>
+            <tr>
+              <td>Instance metadata</td>
+              <td>IMDSv2 required</td>
+            </tr>
+            <tr>
+              <td>IAM role</td>
+              <td>None initially</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The instance is intended to run the OpenClaw Gateway and its tools.</p>
+        <p>Language model inference is handled by external APIs.</p>
+        <h4 id="ec2-record-7">2.3 Storage</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Setting</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Storage type</td>
+              <td>EBS gp3</td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>30 GiB</td>
+            </tr>
+            <tr>
+              <td>Encryption</td>
+              <td>Enabled</td>
+            </tr>
+            <tr>
+              <td>KMS key</td>
+              <td><code>aws/ebs</code></td>
+            </tr>
+            <tr>
+              <td>Delete on termination</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+        <h4 id="ec2-record-8">2.4 SSH Key Pair</h4>
+        <p>Create or select an AWS EC2 key pair.</p>
+        <p>Configuration used:</p>
+        <pre><code class="language-text">Name: AnjrotDev
+Format: PEM
+</code></pre>
+        <p>The private key must be stored securely on the local Mac.</p>
+        <p>Never upload the private key to the EC2 instance or commit it to a repository.</p>
+        <hr>
+        <h3 id="ec2-record-9">3. Security Group</h3>
+        <p>A dedicated Security Group was created for the laboratory.</p>
+        <pre><code class="language-text">Name: AnjrotOpenClawLab
+</code></pre>
+        <h4 id="ec2-record-10">3.1 Inbound Rules</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Protocol</th>
+              <th>Port</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SSH</td>
+              <td>TCP</td>
+              <td>22</td>
+              <td>Personal public IP <code>/32</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Only the administrator&#39;s current public IP should be allowed.</p>
+        <p>Do not expose the OpenClaw Gateway port <code>18789</code>.</p>
+        <h4 id="ec2-record-11">3.2 Outbound Rules</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Protocol</th>
+              <th>Port</th>
+              <th>Destination</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HTTP</td>
+              <td>TCP</td>
+              <td>80</td>
+              <td><code>0.0.0.0/0</code></td>
+            </tr>
+            <tr>
+              <td>HTTPS</td>
+              <td>TCP</td>
+              <td>443</td>
+              <td><code>0.0.0.0/0</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>These rules allow downloading packages and connecting to external APIs over standard web ports.</p>
+        <p><strong>Note:</strong> Some future OpenClaw integrations may require additional outbound connectivity.
+          Evaluate each requirement before opening more ports.</p>
+        <h4 id="ec2-record-12">3.3 Security Considerations</h4>
+        <ul>
+          <li>Do not use the default Security Group.</li>
+          <li>Do not expose OpenClaw directly to the internet.</li>
+          <li>Restrict SSH access to trusted IP addresses.</li>
+          <li>Do not assign unnecessary IAM permissions to EC2.</li>
+          <li>Keep the laboratory separate from production infrastructure.</li>
+          <li>Use dedicated API keys.</li>
+          <li>Avoid running agent tools with root privileges.</li>
+        </ul>
+        <hr>
+        <h3 id="ec2-record-13">4. Connecting to EC2</h3>
+        <h4 id="ec2-record-14">4.1 Prepare the Private Key on macOS</h4>
+        <pre><code class="language-bash">mkdir -p ~/.ssh
+
+mv ~/Downloads/AnjrotDev.pem ~/.ssh/
+
+chmod 400 ~/.ssh/AnjrotDev.pem
+</code></pre>
+        <p>Adjust the source path if the private key is stored elsewhere.</p>
+        <p>Do not overwrite an existing key unintentionally.</p>
+        <h4 id="ec2-record-15">4.2 Connect via SSH</h4>
+        <p>Replace <code>EC2_PUBLIC_IP</code> with the current public IPv4 address of the instance.</p>
+        <pre><code class="language-bash">ssh -i ~/.ssh/AnjrotDev.pem ubuntu@EC2_PUBLIC_IP
+</code></pre>
+        <p>The default username for the Ubuntu EC2 AMI is:</p>
+        <pre><code class="language-text">ubuntu
+</code></pre>
+        <p>On the first connection, verify the SSH host fingerprint through an independent trusted channel before
+          accepting it.</p>
+        <p><strong>Important:</strong> The automatically assigned public IPv4 address can change after stopping and
+          starting the instance.</p>
+        <hr>
+        <h3 id="ec2-record-16">5. Verify Ubuntu</h3>
+        <p>Once connected:</p>
+        <pre><code class="language-bash">cat /etc/os-release
+</code></pre>
+        <p>Expected:</p>
+        <pre><code class="language-text">Ubuntu 24.04 LTS
+</code></pre>
+        <p>Check memory:</p>
+        <pre><code class="language-bash">free -h
+</code></pre>
+        <p>Check disk space:</p>
+        <pre><code class="language-bash">df -h
+</code></pre>
+        <p>Initial environment observed:</p>
+        <pre><code class="language-text">RAM: approximately 3.7 GiB
+Available memory: approximately 3.3 GiB
+Root filesystem: approximately 29 GiB
+Free disk space: approximately 26 GiB
+</code></pre>
+        <hr>
+        <h3 id="ec2-record-17">6. Update the Operating System</h3>
+        <p>Update available packages:</p>
+        <pre><code class="language-bash">sudo apt update
+sudo apt upgrade -y
+</code></pre>
+        <p>Check whether a reboot is required:</p>
+        <pre><code class="language-bash">if [ -f /var/run/reboot-required ]; then
+  echo &quot;Reboot required&quot;
+else
+  echo &quot;No reboot required&quot;
+fi
+</code></pre>
+        <p>If a reboot is required:</p>
+        <pre><code class="language-bash">sudo reboot
+</code></pre>
+        <p>Reconnect using SSH after the instance becomes available.</p>
+        <p><strong>Observed during initial installation:</strong> No reboot was required.</p>
+        <hr>
+        <h3 id="ec2-record-18">7. Configure Swap</h3>
+        <p>The original EC2 instance had no swap.</p>
+        <p>A 2 GiB swap file was created as an additional memory safety margin.</p>
+        <h4 id="ec2-record-19">7.1 Create Swap File</h4>
+        <pre><code class="language-bash">sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+</code></pre>
+        <h4 id="ec2-record-20">7.2 Enable Swap After Reboot</h4>
+        <p>Add the following line to <code>/etc/fstab</code>:</p>
+        <pre><code class="language-text">/swapfile none swap sw 0 0
+</code></pre>
+        <p>For a new installation, append it only if it does not already exist:</p>
+        <pre><code class="language-bash">grep -q &#39;^/swapfile &#39; /etc/fstab || \
+  echo &#39;/swapfile none swap sw 0 0&#39; | sudo tee -a /etc/fstab
+</code></pre>
+        <h4 id="ec2-record-21">7.3 Verify</h4>
+        <pre><code class="language-bash">free -h
+swapon --show
+</code></pre>
+        <p>Expected:</p>
+        <pre><code class="language-text">Swap: 2.0 GiB
+</code></pre>
+        <p>Swap does not increase physical memory or improve processing speed.</p>
+        <p>It provides a fallback when physical RAM becomes scarce.</p>
+        <hr>
+        <h3 id="ec2-record-22">8. Install OpenClaw</h3>
+        <h4 id="ec2-record-23">8.1 Official Installer</h4>
+        <p>OpenClaw was installed using its official installation script:</p>
+        <pre><code class="language-bash">curl -fsSL --proto &#39;=https&#39; --tlsv1.2 \
+  https://openclaw.ai/install.sh | bash
+</code></pre>
+        <p>For a security-sensitive environment, review the installer before executing it:</p>
+        <pre><code class="language-bash">curl -fsSL --proto &#39;=https&#39; --tlsv1.2 \
+  https://openclaw.ai/install.sh \
+  -o /tmp/openclaw-install.sh
+
+less /tmp/openclaw-install.sh
+
+bash /tmp/openclaw-install.sh
+</code></pre>
+        <p>Use one installation method, not both.</p>
+        <p>The installer handles the OpenClaw installation and required Node.js dependencies when necessary.</p>
+        <h4 id="ec2-record-24">8.2 Versions Observed</h4>
+        <pre><code class="language-text">OpenClaw: 2026.11.1
+Node.js: 24.22.2
+Git: 2.43.0
+</code></pre>
+        <h4 id="ec2-record-25">8.3 Installation User</h4>
+        <p>OpenClaw was installed under:</p>
+        <pre><code class="language-text">/home/ubuntu
+</code></pre>
+        <p>The installation was performed using the regular <code>ubuntu</code> user.</p>
+        <p>Do not run the OpenClaw Gateway as root unless a specific documented requirement makes it necessary.</p>
+        <hr>
+        <h3 id="ec2-record-26">9. OpenClaw Onboarding</h3>
+        <p>The installer launched an interactive setup wizard.</p>
+        <p>The following options were encountered during the initial installation.</p>
+        <h4 id="ec2-record-27">9.1 Setup Mode</h4>
+        <p>Options:</p>
+        <pre><code class="language-text">Quick start
+Custom setup
+</code></pre>
+        <p>Selected:</p>
+        <pre><code class="language-text">Custom setup
+</code></pre>
+        <p>Reason: The laboratory is intended to explore configuration and security options rather than accept all
+          defaults automatically.</p>
+        <h4 id="ec2-record-28">9.2 Security Warning</h4>
+        <p>The wizard warned that OpenClaw can access files, execute commands, and use tools with real system
+          permissions.</p>
+        <p>Selected:</p>
+        <pre><code class="language-text">Yes
+</code></pre>
+        <p>This allowed the setup wizard to continue.</p>
+        <p>Accepting the warning should not be confused with approving unrestricted future agent actions.</p>
+        <h4 id="ec2-record-29">9.3 Anonymous Telemetry</h4>
+        <p>Selected:</p>
+        <pre><code class="language-text">No thanks
+</code></pre>
+        <p>This avoids opting into optional usage telemetry during the initial laboratory setup.</p>
+        <h4 id="ec2-record-30">9.4 Chief of Staff</h4>
+        <p>The wizard requested a name for the coordinating agent.</p>
+        <p>Selected:</p>
+        <pre><code class="language-text">nexus
+</code></pre>
+        <p><strong>Important discovery after installation:</strong></p>
+        <p>The Dashboard displayed the role <strong>Chief of Staff</strong>, and three additional agents appeared to
+          have been created by the onboarding process.</p>
+        <p>The actual relationship between the configured name <code>nexus</code>, the Chief of Staff role, and those
+          additional agents has not yet been verified.</p>
+        <p>Do not assume this initial configuration represents the final desired multi-agent architecture.</p>
+        <h4 id="ec2-record-31">9.5 Environment Discovery</h4>
+        <p>Selected:</p>
+        <pre><code class="language-text">Ask first
+</code></pre>
+        <p>This was preferred over automatic full-access discovery.</p>
+        <h4 id="ec2-record-32">9.6 Credential Discovery</h4>
+        <p>Selected:</p>
+        <pre><code class="language-text">No — I&#39;ll configure it manually
+</code></pre>
+        <p>This prevents the setup process from unnecessarily searching the system for existing provider credentials.
+        </p>
+        <h4 id="ec2-record-33">9.7 AI Provider</h4>
+        <p>Selected:</p>
+        <pre><code class="language-text">OpenAI
+</code></pre>
+        <p>An OpenAI API key was configured securely through the onboarding wizard.</p>
+        <p>The initial model shown in the Dashboard was:</p>
+        <pre><code class="language-text">openai/gpt-6-astra
+</code></pre>
+        <p>Gemini was intentionally left for a later experiment.</p>
+        <p>Do not paste API keys into chat logs, documentation or screenshots.</p>
+        <h4 id="ec2-record-34">9.8 Memory Embeddings</h4>
+        <p>Selected:</p>
+        <pre><code class="language-text">No
+</code></pre>
+        <p>Semantic memory embeddings were postponed until the basic platform installation could be verified.</p>
+        <p>This does not necessarily disable all memory capabilities.</p>
+        <h4 id="ec2-record-35">9.9 Gateway</h4>
+        <p>The setup completed the OpenClaw Gateway installation.</p>
+        <p>Observed Gateway address:</p>
+        <pre><code class="language-text">127.0.0.1:18789
+</code></pre>
+        <p>The installer configured a persistent user-level systemd service and enabled lingering for the service user.
+        </p>
+        <p>This allows the Gateway to remain active even after the interactive SSH session ends.</p>
+        <hr>
+        <h3 id="ec2-record-36">10. OpenClaw CLI PATH Issue</h3>
+        <p>After installation, the command:</p>
+        <pre><code class="language-bash">openclaw --version
+</code></pre>
+        <p>returned:</p>
+        <pre><code class="language-text">command not found
+</code></pre>
+        <p>The installation itself was successful.</p>
+        <p>The issue was that the global npm binaries directory was not included in the shell&#39;s <code>PATH</code>.
+        </p>
+        <h4 id="ec2-record-37">10.1 Diagnose</h4>
+        <pre><code class="language-bash">node -v
+npm prefix -g
+command -v openclaw
+</code></pre>
+        <p>Observed:</p>
+        <pre><code class="language-text">Node.js: v24.22.2
+npm global prefix: /home/ubuntu/.npm-global
+</code></pre>
+        <p>The executable was located at:</p>
+        <pre><code class="language-text">/home/ubuntu/.npm-global/bin/openclaw
+</code></pre>
+        <h4 id="ec2-record-38">10.2 Verify Executable</h4>
+        <pre><code class="language-bash">ls -l ~/.npm-global/bin/
+</code></pre>
+        <pre><code class="language-bash">~/.npm-global/bin/openclaw --version
+</code></pre>
+        <p>Observed:</p>
+        <pre><code class="language-text">OpenClaw 2026.11.1 (4ffdd20)
+</code></pre>
+        <h4 id="ec2-record-39">10.3 Fix PATH</h4>
+        <p>Add the npm global binaries directory to Bash:</p>
+        <pre><code class="language-bash">echo &#39;export PATH=&quot;$HOME/.npm-global/bin:$PATH&quot;&#39; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre>
+        <p>For a repeatable installation, avoid inserting duplicate lines if the PATH entry already exists.</p>
+        <p>Verify:</p>
+        <pre><code class="language-bash">command -v openclaw
+openclaw --version
+</code></pre>
+        <p>Expected executable path:</p>
+        <pre><code class="language-text">/home/ubuntu/.npm-global/bin/openclaw
+</code></pre>
+        <hr>
+        <h3 id="ec2-record-40">11. Secure Dashboard Access</h3>
+        <p>The Dashboard was accessed through an SSH tunnel from macOS.</p>
+        <p>The Gateway must remain bound to the loopback interface on EC2.</p>
+        <h4 id="ec2-record-41">11.1 Start SSH Tunnel</h4>
+        <p>In a separate terminal on the Mac:</p>
+        <pre><code class="language-bash">ssh -N \
+  -L 18789:127.0.0.1:18789 \
+  -i ~/.ssh/AnjrotDev.pem \
+  ubuntu@EC2_PUBLIC_IP
+</code></pre>
+        <p>The command does not return to the shell while the tunnel remains active.</p>
+        <h4 id="ec2-record-42">11.2 Open Dashboard</h4>
+        <p>Open:</p>
+        <pre><code class="language-text">http://localhost:18789
+</code></pre>
+        <p>During the initial onboarding, OpenClaw provided a bootstrap URL containing an authentication token.</p>
+        <p>That URL was opened locally through the SSH tunnel to complete the initial Dashboard connection.</p>
+        <p>Never publish or share the bootstrap token.</p>
+        <h4 id="ec2-record-43">11.3 Tunnel Behavior</h4>
+        <ul>
+          <li>The SSH tunnel must remain active while accessing the Dashboard through this method.</li>
+          <li>Closing the tunnel does not stop OpenClaw.</li>
+          <li>The Gateway continues running on EC2.</li>
+          <li>The tunnel can be reopened whenever remote access is required.</li>
+        </ul>
+        <p>Do not open port <code>18789</code> in the AWS Security Group.</p>
+        <hr>
+        <h3 id="ec2-record-44">12. Initial Functional Test</h3>
+        <p>After connecting to the Dashboard, a first conversation was initiated with the main agent.</p>
+        <p>Test instruction:</p>
+        <blockquote>
+          <p>We are configuring an AI agent laboratory on AWS to learn OpenClaw. Introduce yourself briefly, explain
+            your role as Chief of Staff, and describe your currently available capabilities. Do not execute tools or
+            modify files.</p>
+        </blockquote>
+        <p>The agent responded successfully.</p>
+        <h5 id="ec2-record-45">Verified</h5>
+        <ul>
+          <li>OpenClaw Gateway was operational.</li>
+          <li>Dashboard was accessible through the SSH tunnel.</li>
+          <li>OpenAI API integration worked.</li>
+          <li>The agent generated a response.</li>
+        </ul>
+        <h5 id="ec2-record-46">Not yet verified</h5>
+        <ul>
+          <li>Actual specialist agent configuration.</li>
+          <li>Task delegation.</li>
+          <li>Tool permissions.</li>
+          <li>Web research execution.</li>
+          <li>Browser automation.</li>
+          <li>Filesystem isolation.</li>
+          <li>Agent-specific workspaces.</li>
+          <li>Autonomous task execution.</li>
+        </ul>
+        <p>A successful conversational response does not prove that all declared tools and capabilities are configured.
+        </p>
+        <hr>
+        <h3 id="ec2-record-47">13. Inspect Initial Automation Jobs</h3>
+        <p>The installation created background automation jobs.</p>
+        <p>Because the laboratory uses a paid model API, their behavior was reviewed before enabling further
+          experiments.</p>
+        <h4 id="ec2-record-48">13.1 Inspect Heartbeat Configuration</h4>
+        <pre><code class="language-bash">openclaw config get agents.defaults.heartbeat
+</code></pre>
+        <p>Initial observed output:</p>
+        <pre><code class="language-json">{
+  &quot;agentId&quot;: &quot;nexus&quot;
+}
+</code></pre>
+        <p>The heartbeat interval was not explicitly present in that configuration.</p>
+        <h4 id="ec2-record-49">13.2 List Scheduled Jobs</h4>
+        <pre><code class="language-bash">openclaw cron list --all
+</code></pre>
+        <p>Two initial jobs were observed:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Job</th>
+              <th>Schedule</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Heartbeat (nexus)</td>
+              <td>Every 30 minutes</td>
+            </tr>
+            <tr>
+              <td>Memory Dreaming Promotion</td>
+              <td>Daily at 03:00</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <h3 id="ec2-record-50">14. Disable Heartbeat</h3>
+        <p>An initial attempt to disable the heartbeat through the cron interface failed.</p>
+        <p>Attempted command:</p>
+        <pre><code class="language-bash">openclaw cron disable &lt;HEARTBEAT_JOB_ID&gt;
+</code></pre>
+        <p>Error:</p>
+        <pre><code class="language-text">system-owned monitor jobs cannot be edited by cron clients
+</code></pre>
+        <p>This showed that the heartbeat was system-managed.</p>
+        <h4 id="ec2-record-51">14.1 Correct Configuration</h4>
+        <pre><code class="language-bash">openclaw config set agents.defaults.heartbeat.every &quot;0m&quot;
+</code></pre>
+        <p>The CLI confirmed that the change would apply without restarting the Gateway.</p>
+        <h4 id="ec2-record-52">14.2 Verify</h4>
+        <pre><code class="language-bash">openclaw config get agents.defaults.heartbeat
+</code></pre>
+        <p>Then:</p>
+        <pre><code class="language-bash">openclaw cron list --all
+</code></pre>
+        <p>Observed result:</p>
+        <pre><code class="language-text">Heartbeat (nexus)
+Status: disabled
+Next: -
+</code></pre>
+        <p>The heartbeat was successfully disabled.</p>
+        <hr>
+        <h3 id="ec2-record-53">15. Disable Memory Dreaming</h3>
+        <p>The second automatically scheduled job was:</p>
+        <pre><code class="language-text">Memory Dreaming Promotion
+</code></pre>
+        <p>Its job declaration was:</p>
+        <pre><code class="language-text">memory-core:memory-dreaming-promotion
+</code></pre>
+        <p>The job was originally scheduled daily at 03:00.</p>
+        <h4 id="ec2-record-54">15.1 Inspect Job</h4>
+        <p>The initial installation used:</p>
+        <pre><code class="language-bash">openclaw cron show &lt;MEMORY_DREAMING_JOB_ID&gt;
+</code></pre>
+        <p>The job was enabled and had not executed yet.</p>
+        <h4 id="ec2-record-55">15.2 Disable Dreaming</h4>
+        <pre><code class="language-bash">openclaw config set \
+  plugins.entries.memory-core.config.dreaming.enabled false
+</code></pre>
+        <p>The CLI confirmed that the change would apply without restarting the Gateway.</p>
+        <h4 id="ec2-record-56">15.3 Verify</h4>
+        <pre><code class="language-bash">openclaw config get \
+  plugins.entries.memory-core.config.dreaming
+</code></pre>
+        <p>Observed output:</p>
+        <pre><code class="language-json">{
+  &quot;enabled&quot;: false
+}
+</code></pre>
+        <p>Then:</p>
+        <pre><code class="language-bash">openclaw cron list --all
+</code></pre>
+        <p>The Memory Dreaming job no longer appeared in the scheduled jobs list.</p>
+        <p>The heartbeat remained listed as disabled.</p>
+        <p><strong>Result:</strong> Both initial periodic automation mechanisms were disabled during laboratory setup.
+        </p>
+        <p>This does not disable normal interactive conversations with OpenClaw.</p>
+        <hr>
+        <h3 id="ec2-record-57">16. Important Security Practices</h3>
+        <p>The agent platform has access to operational tools and should be treated as privileged software.</p>
+        <h4 id="ec2-record-58">Server</h4>
+        <ul>
+          <li>Keep the Gateway bound to <code>127.0.0.1</code>.</li>
+          <li>Use SSH tunneling for administrative access.</li>
+          <li>Do not expose the Dashboard publicly.</li>
+          <li>Apply system updates.</li>
+          <li>Keep SSH restricted.</li>
+          <li>Use a regular Linux account for the Gateway.</li>
+          <li>Avoid unnecessary sudo permissions for agent tools.</li>
+        </ul>
+        <h4 id="ec2-record-59">Credentials</h4>
+        <ul>
+          <li>Use dedicated API keys.</li>
+          <li>Do not store secrets in Git.</li>
+          <li>Do not paste keys into documentation.</li>
+          <li>Inspect configuration files before sharing them.</li>
+          <li>Rotate credentials if accidentally exposed.</li>
+          <li>Do not grant unnecessary AWS IAM permissions.</li>
+        </ul>
+        <h4 id="ec2-record-60">Agent Execution</h4>
+        <ul>
+          <li>Start with read-only tools.</li>
+          <li>Require approval for sensitive actions.</li>
+          <li>Do not install arbitrary third-party skills without reviewing them.</li>
+          <li>Use isolated test workspaces.</li>
+          <li>Review commands before execution where approval controls are available.</li>
+          <li>Monitor token consumption and API spending.</li>
+        </ul>
+        <h4 id="ec2-record-61">Project Isolation</h4>
+        <p>The OpenClaw laboratory must remain independent from Abidegen.</p>
+        <p>No production repositories, credentials, databases or infrastructure should be accessible to its agents.</p>
+        <hr>
+        <h3 id="ec2-record-62">17. AWS Cost Management</h3>
+        <p>The selected EC2 instance is:</p>
+        <pre><code class="language-text">t3.medium
+2 vCPU
+4 GiB RAM
+</code></pre>
+        <p>The instance is charged while running.</p>
+        <p>Additional charges can include:</p>
+        <ul>
+          <li>EBS storage.</li>
+          <li>Public IPv4.</li>
+          <li>Data transfer.</li>
+          <li>CPU credits under applicable T3 Unlimited usage.</li>
+          <li>External AI API consumption.</li>
+        </ul>
+        <p>The instance may be stopped between experiments to reduce compute charges.</p>
+        <p>However:</p>
+        <ul>
+          <li>EBS continues to incur storage charges.</li>
+          <li>The automatic public IPv4 may change after stop/start.</li>
+          <li>OpenClaw will not be available while EC2 is stopped.</li>
+        </ul>
+        <p>AWS Budgets should be configured for billing notifications.</p>
+        <p>Budget alerts are not equivalent to hard spending limits.</p>
+        <hr>
+        <h3 id="ec2-record-63">18. Current Deployment Status</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>EC2 Ubuntu 24.04</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Dedicated Security Group</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>EBS encryption</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>SSH access</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Ubuntu updates</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>2 GiB swap</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Node.js runtime</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>OpenClaw installation</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>OpenAI API</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Gateway service</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>SSH tunnel</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Dashboard access</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Initial chat test</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>CLI PATH correction</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Heartbeat disabled</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Memory Dreaming disabled</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Agent structure inspection</td>
+              <td>Pending</td>
+            </tr>
+            <tr>
+              <td>Specialist agent configuration review</td>
+              <td>Pending</td>
+            </tr>
+            <tr>
+              <td>Tool permissions review</td>
+              <td>Pending</td>
+            </tr>
+            <tr>
+              <td>Gemini integration</td>
+              <td>Pending</td>
+            </tr>
+            <tr>
+              <td>Memory experiments</td>
+              <td>Pending</td>
+            </tr>
+            <tr>
+              <td>Automation experiments</td>
+              <td>Pending</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <h3 id="ec2-record-64">19. Known Issues and Findings</h3>
+        <h4 id="ec2-record-65">Finding 001 — OpenClaw CLI Missing from PATH</h4>
+        <p><strong>Cause:</strong> npm global binaries directory was not in the user&#39;s PATH.</p>
+        <p><strong>Resolution:</strong> Add <code>~/.npm-global/bin</code> to <code>.bashrc</code>.</p>
+        <p><strong>Status:</strong> Resolved.</p>
+        <h4 id="ec2-record-66">Finding 002 — Unexpected Initial Agent Structure</h4>
+        <p>The onboarding appeared to create a Chief of Staff configuration and three additional specialized agents.</p>
+        <p>The name <code>nexus</code> was entered during onboarding, but the Dashboard displayed the primary role as
+          <code>Chief of Staff</code>.
+        </p>
+        <p><strong>Status:</strong> Investigation required.</p>
+        <p>Before deleting or reconfiguring agents, inspect:</p>
+        <ul>
+          <li>OpenClaw&#39;s configuration.</li>
+          <li>Agent IDs and names.</li>
+          <li>Agent workspaces.</li>
+          <li>Agent-specific instructions.</li>
+          <li>Delegation configuration.</li>
+          <li>Tool permissions.</li>
+        </ul>
+        <p>Do not assume those three agents are correctly configured or necessary.</p>
+        <h4 id="ec2-record-67">Finding 003 — Background Automation Enabled by Default</h4>
+        <p>Heartbeat and Memory Dreaming were initially scheduled.</p>
+        <p><strong>Resolution:</strong> Both mechanisms were disabled for the initial laboratory.</p>
+        <p><strong>Status:</strong> Resolved.</p>
+        <h4 id="ec2-record-68">Finding 004 — Dashboard Workspace Unavailable</h4>
+        <p>The Dashboard initially displayed:</p>
+        <pre><code class="language-text">Workspace unavailable
+</code></pre>
+        <p>The cause has not been determined.</p>
+        <p><strong>Status:</strong> Investigation required.</p>
+        <hr>
+        <h3 id="ec2-record-69">20. Recommended Next Session</h3>
+        <p>Before enabling additional capabilities or creating new agents:</p>
+        <ol>
+          <li>Inspect the existing OpenClaw configuration.</li>
+          <li>Identify all agents created by onboarding.</li>
+          <li>Examine the relationship between Nexus and Chief of Staff.</li>
+          <li>Review current tool permissions and agent workspaces.</li>
+          <li>Decide whether to keep or reset the onboarding configuration.</li>
+          <li>Document the chosen agent architecture.</li>
+          <li>Run a controlled read-only tool experiment.</li>
+        </ol>
+        <p><strong>Do not reset or delete the current configuration until the existing structure has been inspected and
+            understood.</strong></p>
+        <hr>
+        <h3 id="ec2-record-70">21. Future Laboratory Roadmap</h3>
+        <h4 id="ec2-record-71">Stage 1 — Infrastructure</h4>
+        <p>Completed.</p>
+        <h4 id="ec2-record-72">Stage 2 — Agent Fundamentals</h4>
+        <ul>
+          <li>Explore the OpenClaw configuration.</li>
+          <li>Understand the Gateway.</li>
+          <li>Understand agents and workspaces.</li>
+          <li>Explore tools and skills.</li>
+          <li>Understand context and memory.</li>
+        </ul>
+        <h4 id="ec2-record-73">Stage 3 — Multiple AI Providers</h4>
+        <ul>
+          <li>Configure Google Gemini API.</li>
+          <li>Compare OpenAI and Gemini.</li>
+          <li>Monitor token consumption.</li>
+          <li>Explore model selection and fallback.</li>
+        </ul>
+        <h4 id="ec2-record-74">Stage 4 — Specialized Agents</h4>
+        <ul>
+          <li>Research Agent.</li>
+          <li>Content Agent.</li>
+          <li>Planning Agent.</li>
+          <li>Coordinator Agent.</li>
+        </ul>
+        <h4 id="ec2-record-75">Stage 5 — Autonomous Workflows</h4>
+        <ul>
+          <li>Scheduled research.</li>
+          <li>Periodic reports.</li>
+          <li>Notifications.</li>
+          <li>Task delegation.</li>
+          <li>Human approval workflows.</li>
+        </ul>
+        <h4 id="ec2-record-76">Stage 6 — Affiliate Research &amp; Content Automation</h4>
+        <p>Future business use case:</p>
+        <ul>
+          <li>Product and keyword research.</li>
+          <li>Affiliate opportunity analysis.</li>
+          <li>SEO content planning.</li>
+          <li>WordPress draft generation.</li>
+          <li>Human editorial approval.</li>
+          <li>Search performance measurement.</li>
+          <li>Affiliate commission tracking.</li>
+        </ul>
+        <p>Initial validation website:</p>
+        <pre><code class="language-text">anjrot.com
+</code></pre>
+        <p>The business workflow will be developed only after the laboratory fundamentals have been validated.</p>
+        <hr>
+        <h3 id="ec2-record-77">22. Final Notes</h3>
+        <p>This guide documents the first successful deployment of OpenClaw on AWS EC2.</p>
+        <p>The installation demonstrated that a cloud-hosted agent platform can be accessed privately from macOS using
+          SSH tunneling and connected to an external AI model provider.</p>
+        <p>The environment is operational, but the multi-agent configuration and tool permissions still require
+          inspection.</p>
+        <p>The next iteration should prioritize understanding OpenClaw&#39;s actual architecture rather than simply
+          completing the installation wizard.</p>
+        <p><strong>Project principle:</strong> Learn first, validate second, productize third.</p>
+
+      </details>
+      <details id="experiment-003">
+        <summary>Experiment 003 record</summary>
+        <p>Historical lab record. Use the installation steps above for the clean Ansible run.</p>
+        <p><a href="../../experiments/003-docker-sandbox/README.md">Source Markdown</a></p>
+        <nav aria-label="Experiment 003 record contents">
+          <ol>
+            <li><a href="#experiment-003-2">Objective and Method</a></li>
+            <li><a href="#experiment-003-4">Infrastructure and Access</a></li>
+            <li><a href="#experiment-003-8">Ansible Reference and Preflight</a></li>
+            <li><a href="#experiment-003-14">Upstream Security Behavior Observed in Source</a></li>
+            <li><a href="#experiment-003-21">Baseline Installation and Verification</a></li>
+            <li><a href="#experiment-003-26">OpenClaw Onboarding</a></li>
+            <li><a href="#experiment-003-34">Findings and Resolutions</a></li>
+            <li><a href="#experiment-003-58">Verification Matrix and Next Tests</a></li>
+            <li><a href="#experiment-003-60">Current Conclusions</a></li>
+            <li><a href="#experiment-003-62">References</a></li>
+          </ol>
+        </nav>
+        <h2 id="experiment-003-1">Experiment 003 — OpenClaw Security, Dedicated User &amp; Docker Sandbox</h2>
+        <p><strong>Project:</strong> OpenClaw Agents Lab<br><strong>Environment:</strong> AWS EC2 —
+          <code>openclaw-lab-3</code><br><strong>Started:</strong> November 8, 2026<br><strong>Last Updated:</strong>
+          November 9, 2026<br><strong>Status:</strong> In Progress — Ansible Baseline and Gateway Verified; Sandbox
+          Pending
+        </p>
+        <blockquote>
+          <p>This is an experiment log, <strong>not</strong> a production deployment guide or security certification.
+            Distinguish observed outputs, operator decisions, agent reports, hypotheses, and untested proposals. Never
+            commit credentials, tokens, private SSH keys, or unredacted OpenClaw configuration.</p>
+        </blockquote>
+        <hr>
+        <h3 id="experiment-003-2">1. Objective and Method</h3>
+        <p>Evaluate the official <code>openclaw-ansible</code> deployment on a disposable EC2 instance, starting with an
+          unmodified upstream baseline and then testing security controls incrementally.</p>
+        <p>Areas of interest include:</p>
+        <ul>
+          <li>Dedicated Linux service identity.</li>
+          <li>Effective sudo privileges.</li>
+          <li>Docker daemon access.</li>
+          <li>Sandboxed agent tool execution.</li>
+          <li>Gateway availability and persistence.</li>
+          <li>Agent workspace initialization.</li>
+          <li>Reproducible deployment configuration.</li>
+          <li>Potential upstream improvements.</li>
+        </ul>
+        <p>The agreed methodology is:</p>
+        <p><strong>Inspect → Deploy with minimal variables → Verify → Document → Change one control → Retest.</strong>
+        </p>
+        <p>The upstream scoped sudo grants are intentionally retained for the initial baseline. This does
+          <strong>not</strong> constitute acceptance of those permissions for unattended or production workloads.
+        </p>
+        <p>Neither behavioral instructions nor a running Docker daemon prove tool containment. Potential upstream issues
+          or pull requests require demonstrated causes and repeatable evidence.</p>
+        <h4 id="experiment-003-3">1.1 Evidence Status</h4>
+        <ul>
+          <li><strong>Verified:</strong> Output observed from terminal commands or direct Dashboard access supplied by
+            the operator.</li>
+          <li><strong>Reported:</strong> Nexus described performing an operation; independent verification is still
+            needed.</li>
+          <li><strong>Pending:</strong> Not yet tested or not sufficiently evidenced.</li>
+          <li><strong>Design concern:</strong> Risk inferred from inspected configuration, not necessarily a
+            demonstrated failure.</li>
+        </ul>
+        <hr>
+        <h3 id="experiment-003-4">2. Infrastructure and Access</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Observed configuration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>EC2 name</td>
+              <td><code>openclaw-lab-3</code></td>
+            </tr>
+            <tr>
+              <td>Region</td>
+              <td><code>us-east-1</code></td>
+            </tr>
+            <tr>
+              <td>Instance type</td>
+              <td><code>t3.medium</code></td>
+            </tr>
+            <tr>
+              <td>Operating system</td>
+              <td>Ubuntu Server 24.04.5 LTS</td>
+            </tr>
+            <tr>
+              <td>Architecture</td>
+              <td>x86_64</td>
+            </tr>
+            <tr>
+              <td>CPU</td>
+              <td>2 vCPU</td>
+            </tr>
+            <tr>
+              <td>RAM</td>
+              <td>Approximately 3.7 GiB</td>
+            </tr>
+            <tr>
+              <td>Storage</td>
+              <td>30 GiB EBS gp3</td>
+            </tr>
+            <tr>
+              <td>Initial available storage</td>
+              <td>Approximately 24 GiB</td>
+            </tr>
+            <tr>
+              <td>Swap</td>
+              <td>2 GiB</td>
+            </tr>
+            <tr>
+              <td>Instance metadata</td>
+              <td>IMDSv2 required</td>
+            </tr>
+            <tr>
+              <td>IAM instance role</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td>Administrator</td>
+              <td><code>ubuntu</code></td>
+            </tr>
+            <tr>
+              <td>Service account</td>
+              <td><code>nexus</code></td>
+            </tr>
+            <tr>
+              <td>Gateway port</td>
+              <td><code>18789</code></td>
+            </tr>
+            <tr>
+              <td>Gateway access</td>
+              <td>Loopback + SSH tunnel</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The instance was created as a disposable environment for controlled experimentation.</p>
+        <h4 id="experiment-003-5">2.1 Administrative Access</h4>
+        <p>The <code>ubuntu</code> Linux account is used for SSH administration and installation management.</p>
+        <p>Authentication is performed using the EC2 SSH private key stored on the maintainer&#39;s Mac.</p>
+        <p>The Security Group permits inbound TCP port 22 only from the maintainer&#39;s current public IPv4 address.
+        </p>
+        <p>The <code>nexus</code> service account has no additional SSH authorized key configured through Ansible.</p>
+        <h4 id="experiment-003-6">2.2 Finding — Dynamic Public IP and SSH Access</h4>
+        <p>After stopping and starting the instance, SSH initially appeared to hang.</p>
+        <p><strong>Cause:</strong> The maintainer&#39;s public IP address had changed, while the EC2 Security Group
+          still allowed the previous address.</p>
+        <p><strong>Resolution:</strong> Updating the inbound SSH rule to the current public IPv4 restored access
+          immediately.</p>
+        <p><strong>Lessons learned:</strong></p>
+        <ul>
+          <li>An EC2 instance reporting <code>Running</code> does not guarantee SSH connectivity.</li>
+          <li>The Security Group independently controls network access.</li>
+          <li>The maintainer&#39;s public IP can change.</li>
+          <li>The instance&#39;s own public IP can also change after stop/start when no Elastic IP is assigned.</li>
+        </ul>
+        <h4 id="experiment-003-7">2.3 Initial Network Configuration</h4>
+        <p>Observed:</p>
+        <pre><code class="language-text">ens5: 172.31.25.2/20
+default via 172.31.16.1 dev ens5
+172.31.16.0/20 dev ens5
+</code></pre>
+        <p>This network information will also be relevant when evaluating Docker address allocation.</p>
+        <hr>
+        <h3 id="experiment-003-8">3. Ansible Reference and Preflight</h3>
+        <p><strong>Upstream repository:</strong> <a
+            href="https://github.com/openclaw/openclaw-ansible">https://github.com/openclaw/openclaw-ansible</a></p>
+        <p><strong>Local clone:</strong> <code>/home/ubuntu/openclaw-ansible</code></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Inspected commit</td>
+              <td><code>238f100</code></td>
+            </tr>
+            <tr>
+              <td>Revision date</td>
+              <td>November 4, 2026</td>
+            </tr>
+            <tr>
+              <td>Commit subject</td>
+              <td><code>fix(release): trust current maintainer signing key (#87)</code></td>
+            </tr>
+            <tr>
+              <td>Git working tree</td>
+              <td>Clean at inspection</td>
+            </tr>
+            <tr>
+              <td>Installation approach</td>
+              <td>Local playbook</td>
+            </tr>
+            <tr>
+              <td>Execution script</td>
+              <td><code>run-playbook.sh</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The automatic <code>install.sh</code> was not used because it downloads an Ansible collection from the moving
+          <code>main</code> branch, potentially installing code different from the revision inspected.
+        </p>
+        <p>Instead, the local <code>run-playbook.sh</code> was selected.</p>
+        <h4 id="experiment-003-9">3.1 Toolchain</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Observed version</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ansible Core</td>
+              <td><code>2.16.3</code></td>
+            </tr>
+            <tr>
+              <td>Python</td>
+              <td><code>3.12.3</code></td>
+            </tr>
+            <tr>
+              <td>Git</td>
+              <td><code>2.43.0</code></td>
+            </tr>
+            <tr>
+              <td>Node.js after installation</td>
+              <td><code>v24.22.2</code></td>
+            </tr>
+            <tr>
+              <td>pnpm after installation</td>
+              <td><code>12.15.0</code></td>
+            </tr>
+            <tr>
+              <td>OpenClaw after installation</td>
+              <td><code>2026.11.2 (b556fdf)</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The repository requires Ansible Core 2.14 or newer.</p>
+        <h4 id="experiment-003-10">3.2 Ansible Collections</h4>
+        <p>The repository declares these dependencies in <code>requirements.yml</code>:</p>
+        <pre><code class="language-yaml">collections:
+  - name: community.docker
+    version: &quot;&gt;=3.4.0&quot;
+  - name: community.general
+    version: &quot;&gt;=8.0.0&quot;
+  - name: ansible.posix
+    version: &quot;&gt;=1.5.0&quot;
+</code></pre>
+        <p>Installation command:</p>
+        <pre><code class="language-bash">cd ~/openclaw-ansible
+ansible-galaxy collection install -r requirements.yml
+</code></pre>
+        <p><strong>Evidence limitation:</strong> The exact resolved collection versions and the full installation
+          transcript were not preserved.</p>
+        <p>Future runs should record them.</p>
+        <h4 id="experiment-003-11">3.3 Configuration Overrides</h4>
+        <p>File:</p>
+        <pre><code class="language-text">/home/ubuntu/openclaw-lab-3-vars.yml
+</code></pre>
+        <p>Contents:</p>
+        <pre><code class="language-yaml">---
+openclaw_user: nexus
+openclaw_home: /home/nexus
+nodejs_version: &quot;24.x&quot;
+openclaw_install_mode: release
+tailscale_enabled: false
+openclaw_ssh_keys: []
+</code></pre>
+        <p>These are <strong>Ansible extra variables</strong>, not operating-system environment variables.</p>
+        <p>No upstream task or template modifications were intentionally introduced for the initial baseline.</p>
+        <h4 id="experiment-003-12">3.4 Syntax Validation</h4>
+        <p>Command:</p>
+        <pre><code class="language-bash">ansible-playbook playbook.yml \
+  -e @/home/ubuntu/openclaw-lab-3-vars.yml \
+  --syntax-check
+</code></pre>
+        <p>Observed output:</p>
+        <pre><code class="language-text">[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available
+
+playbook: playbook.yml
+</code></pre>
+        <p>The syntax check completed successfully.</p>
+        <p>The warnings were consistent with the playbook using:</p>
+        <pre><code class="language-yaml">hosts: localhost
+connection: local
+become: true
+</code></pre>
+        <p>A successful syntax check does not prove task execution correctness or effective security.</p>
+        <h4 id="experiment-003-13">3.5 Upstream Files Inspected</h4>
+        <pre><code class="language-text">playbook.yml
+playbooks/install.yml
+roles/openclaw/defaults/main.yml
+roles/openclaw/tasks/main.yml
+roles/openclaw/tasks/user.yml
+roles/openclaw/tasks/docker-linux.yml
+roles/openclaw/tasks/docker-security.yml
+roles/openclaw/tasks/firewall-linux.yml
+roles/openclaw/tasks/nodejs.yml
+roles/openclaw/tasks/openclaw.yml
+roles/openclaw/tasks/openclaw-release.yml
+roles/openclaw/templates/daemon.json.j2
+roles/openclaw/handlers/main.yml
+requirements.yml
+run-playbook.sh
+install.sh
+</code></pre>
+        <p>The main role executes the following stages:</p>
+        <ol>
+          <li>System tools installation.</li>
+          <li>Optional Tailscale setup.</li>
+          <li>Dedicated service user creation.</li>
+          <li>Docker installation.</li>
+          <li>Firewall and host security configuration.</li>
+          <li>Node.js and pnpm installation.</li>
+          <li>OpenClaw package installation.</li>
+        </ol>
+        <p><strong>Onboarding and Gateway systemd installation are separate, operator-initiated steps.</strong></p>
+        <hr>
+        <h3 id="experiment-003-14">4. Upstream Security Behavior Observed in Source</h3>
+        <h4 id="experiment-003-15">4.1 Linux User and Sudo</h4>
+        <p>The variables <code>openclaw_user</code> and <code>openclaw_home</code> allow the service account to be
+          customized.</p>
+        <p>The Ansible <code>user.yml</code> task creates a system account with:</p>
+        <pre><code class="language-yaml">system: true
+shell: /bin/bash
+create_home: true
+</code></pre>
+        <p>The playbook also creates:</p>
+        <pre><code class="language-text">/etc/sudoers.d/nexus
+</code></pre>
+        <p>This file grants specific <code>NOPASSWD</code> permissions covering:</p>
+        <ul>
+          <li>Selected <code>systemctl</code> operations targeting a service named <code>openclaw</code>.</li>
+          <li><code>systemctl daemon-reload</code>.</li>
+          <li>Selected Tailscale commands.</li>
+          <li>Selected <code>journalctl</code> commands.</li>
+        </ul>
+        <p>These grants are more restrictive than <code>NOPASSWD: ALL</code>, but are <strong>not equivalent to zero
+            sudo</strong>.</p>
+        <p>The Tailscale rules are created even when <code>tailscale_enabled: false</code>.</p>
+        <p>The Gateway subsequently created by onboarding is a systemd user service named
+          <code>openclaw-gateway.service</code>. Therefore, the practical usefulness of the playbook&#39;s
+          <code>openclaw</code> system-service sudo rules remains untested.
+        </p>
+        <p><strong>Experimental decision:</strong> Preserve the upstream sudo rules during initial functionality
+          testing. Later, remove or restrict unnecessary privileges and repeat the relevant tests.</p>
+        <p>A future execution of the original playbook may recreate the sudoers configuration.</p>
+        <h4 id="experiment-003-16">4.2 Docker Daemon and Sandbox Integration</h4>
+        <p>The installer provisions conventional <strong>rootful Docker CE</strong>, not Rootless Docker.</p>
+        <p>The main Docker service is:</p>
+        <pre><code class="language-text">docker.service
+</code></pre>
+        <p>The <code>docker-security.yml</code> task explicitly removes the OpenClaw service account from the
+          <code>docker</code> group.
+        </p>
+        <p>This is intentional because access to the rootful Docker socket provides effectively host-root-equivalent
+          control.</p>
+        <p>However, this introduces an unresolved question:</p>
+        <p><strong>How can the unprivileged Gateway create Docker sandbox containers without obtaining privileged access
+            to the rootful daemon?</strong></p>
+        <p>Docker installation does not automatically enable OpenClaw&#39;s agent sandbox.</p>
+        <p>The laboratory must not solve the problem by blindly:</p>
+        <ul>
+          <li>Adding <code>nexus</code> to the rootful <code>docker</code> group.</li>
+          <li>Making the Docker socket globally writable.</li>
+          <li>Mounting the Docker socket into agent containers.</li>
+          <li>Disabling the sandbox to make commands succeed.</li>
+        </ul>
+        <p>Potential solutions to evaluate include Rootless Docker or another supported isolation backend.</p>
+        <p>Actual tool execution must be verified before claiming the agent is sandboxed.</p>
+        <h4 id="experiment-003-17">4.3 Firewall and Host Security</h4>
+        <p>The inspected playbook configures:</p>
+        <ul>
+          <li>UFW firewall.</li>
+          <li>Incoming traffic denied by default.</li>
+          <li>SSH access allowed on TCP port 22.</li>
+          <li>Optional Tailscale UDP access.</li>
+          <li>Fail2ban for SSH protection.</li>
+          <li>Unattended security updates.</li>
+          <li>Docker-related firewall rules.</li>
+          <li>Docker log rotation.</li>
+        </ul>
+        <p>Firewall changes can disrupt remote administration if configured incorrectly.</p>
+        <p>Administrative recovery access should remain available during future changes.</p>
+        <h4 id="experiment-003-18">4.4 Docker Daemon Configuration</h4>
+        <p>The inspected <code>daemon.json.j2</code> template contains:</p>
+        <pre><code class="language-json">{
+  &quot;iptables&quot;: true,
+  &quot;ip-forward&quot;: true,
+  &quot;userland-proxy&quot;: false,
+  &quot;live-restore&quot;: true,
+  &quot;ip6tables&quot;: false,
+  &quot;log-driver&quot;: &quot;json-file&quot;,
+  &quot;log-opts&quot;: {
+    &quot;max-size&quot;: &quot;10m&quot;,
+    &quot;max-file&quot;: &quot;3&quot;
+  },
+  &quot;default-address-pools&quot;: [
+    {
+      &quot;base&quot;: &quot;172.17.0.0/12&quot;,
+      &quot;size&quot;: 24
+    }
+  ]
+}
+</code></pre>
+        <h4 id="experiment-003-19">4.5 Design Concern — Docker Network Overlap</h4>
+        <p>The configured pool:</p>
+        <pre><code class="language-text">172.17.0.0/12
+</code></pre>
+        <p>includes the AWS <code>172.31.x.x</code> address space.</p>
+        <p>The EC2 instance uses <code>172.31.25.2/20</code>.</p>
+        <p>This creates a <strong>potential</strong> overlap between Docker-assigned networks and AWS networking.</p>
+        <p>No actual collision has been demonstrated.</p>
+        <p><strong>Baseline decision:</strong> Preserve the upstream template unchanged and inspect the networks created
+          by Docker before deciding whether a change is necessary.</p>
+        <p>A possible upstream enhancement would allow the Docker address pool to be configured through Ansible
+          variables.</p>
+        <h4 id="experiment-003-20">4.6 Package Reproducibility</h4>
+        <p>The release installation task runs:</p>
+        <pre><code class="language-bash">pnpm install -g openclaw@latest
+</code></pre>
+        <p>under the dedicated service account.</p>
+        <p>The observed version was:</p>
+        <pre><code class="language-text">OpenClaw 2026.11.2 (b556fdf)
+</code></pre>
+        <p>However, <code>@latest</code> is not a reproducible version pin.</p>
+        <p>Later installations could resolve to a different release.</p>
+        <p>The NodeSource repository task also uses <code>creates</code>, so changing <code>nodejs_version</code> in
+          Ansible variables may not update an existing NodeSource repository configuration during reruns.</p>
+        <p>Explicit package versions and recorded dependency manifests are future reproducibility improvements.</p>
+        <hr>
+        <h3 id="experiment-003-21">5. Baseline Installation and Verification</h3>
+        <h4 id="experiment-003-22">5.1 Execution</h4>
+        <p>The local installer was executed with the custom variables:</p>
+        <pre><code class="language-bash">cd ~/openclaw-ansible
+
+./run-playbook.sh \
+  -e @/home/ubuntu/openclaw-lab-3-vars.yml \
+  -e openclaw_user=nexus
+</code></pre>
+        <p>The additional <code>-e openclaw_user=nexus</code> also allows the wrapper script to display the correct
+          service-user name in its final instructions.</p>
+        <p>The installer reported:</p>
+        <pre><code class="language-text">INSTALLATION COMPLETE!
+</code></pre>
+        <p><strong>Evidence limitation:</strong> The full Ansible <code>PLAY RECAP</code> was not preserved.</p>
+        <p>The success message and subsequent runtime checks demonstrate that the installation completed sufficiently
+          for the observed functionality, but do not constitute a complete task-by-task audit.</p>
+        <h4 id="experiment-003-23">5.2 Linux Account Verification</h4>
+        <p>Commands:</p>
+        <pre><code class="language-bash">id nexus
+getent passwd nexus
+sudo -l -U nexus
+</code></pre>
+        <p>Observed:</p>
+        <pre><code class="language-text">uid=999(nexus) gid=988(nexus) groups=988(nexus)
+nexus:x:999:988:OpenClaw Service User:/home/nexus:/bin/bash
+</code></pre>
+        <p>The account belonged only to its primary group.</p>
+        <p>The <code>sudo -l -U nexus</code> output confirmed the scoped rules described previously, with no reported
+          <code>NOPASSWD: ALL</code>.
+        </p>
+        <p>Runtime enforcement of agent tool restrictions remains untested.</p>
+        <h4 id="experiment-003-24">5.3 Docker Verification</h4>
+        <p>Commands:</p>
+        <pre><code class="language-bash">sudo systemctl is-active docker
+sudo docker info --format &#39;{{json .SecurityOptions}}&#39;
+getent group docker
+</code></pre>
+        <p>Observed:</p>
+        <pre><code class="language-text">active
+[&quot;name=apparmor,profile=default&quot;,&quot;name=seccomp,profile=builtin&quot;,&quot;name=cgroupns&quot;]
+docker:x:987:
+</code></pre>
+        <p>The Docker daemon was active.</p>
+        <p>The <code>docker</code> group had no listed members.</p>
+        <p>These Docker security options do not demonstrate that Nexus&#39;s tools are sandboxed.</p>
+        <p>Rootless Docker and the agent sandbox are not yet configured.</p>
+        <h4 id="experiment-003-25">5.4 Service Account Environment</h4>
+        <p>The operator entered the service account with:</p>
+        <pre><code class="language-bash">sudo su - nexus
+</code></pre>
+        <p>Checks performed:</p>
+        <pre><code class="language-bash">whoami
+echo &quot;$HOME&quot;
+node -v
+pnpm -v
+openclaw --version
+echo &quot;$XDG_RUNTIME_DIR&quot;
+echo &quot;$DBUS_SESSION_BUS_ADDRESS&quot;
+loginctl show-user nexus -p Linger
+</code></pre>
+        <table>
+          <thead>
+            <tr>
+              <th>Check</th>
+              <th>Observed result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>whoami</code></td>
+              <td><code>nexus</code></td>
+            </tr>
+            <tr>
+              <td><code>HOME</code></td>
+              <td><code>/home/nexus</code></td>
+            </tr>
+            <tr>
+              <td>Node.js</td>
+              <td><code>v24.22.2</code></td>
+            </tr>
+            <tr>
+              <td>pnpm</td>
+              <td><code>12.15.0</code></td>
+            </tr>
+            <tr>
+              <td>OpenClaw</td>
+              <td><code>2026.11.2 (b556fdf)</code></td>
+            </tr>
+            <tr>
+              <td>XDG runtime</td>
+              <td><code>/run/user/999</code></td>
+            </tr>
+            <tr>
+              <td>DBus</td>
+              <td><code>unix:path=/run/user/999/bus</code></td>
+            </tr>
+            <tr>
+              <td>Lingering</td>
+              <td><code>Linger=yes</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Ansible also generated a one-time welcome message explaining the next onboarding steps.</p>
+        <p><strong>Verified:</strong> The service-account shell environment works and OpenClaw is accessible under the
+          correct Linux identity.</p>
+        <p><strong>Pending:</strong> Persistence after SSH logout and instance reboot.</p>
+        <hr>
+        <h3 id="experiment-003-26">6. OpenClaw Onboarding</h3>
+        <p>The onboarding was started as <code>nexus</code>:</p>
+        <pre><code class="language-bash">openclaw onboard --install-daemon
+</code></pre>
+        <h4 id="experiment-003-27">6.1 Configuration Selected</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>Selection or observation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Setup</td>
+              <td>Manual setup</td>
+            </tr>
+            <tr>
+              <td>Gateway</td>
+              <td>Local Gateway</td>
+            </tr>
+            <tr>
+              <td>Gateway runtime</td>
+              <td>Node.js</td>
+            </tr>
+            <tr>
+              <td>Gateway port</td>
+              <td><code>18789</code></td>
+            </tr>
+            <tr>
+              <td>Gateway binding</td>
+              <td>Loopback</td>
+            </tr>
+            <tr>
+              <td>Tailscale exposure</td>
+              <td>Off</td>
+            </tr>
+            <tr>
+              <td>Gateway secret</td>
+              <td>Locally generated/stored plaintext</td>
+            </tr>
+            <tr>
+              <td>AI provider</td>
+              <td>OpenAI</td>
+            </tr>
+            <tr>
+              <td>Model observed</td>
+              <td><code>openai/gpt-6-astra</code></td>
+            </tr>
+            <tr>
+              <td>Live AI completion</td>
+              <td>Successful</td>
+            </tr>
+            <tr>
+              <td>Chat channels</td>
+              <td>Skipped</td>
+            </tr>
+            <tr>
+              <td>Memory embeddings</td>
+              <td>Skipped</td>
+            </tr>
+            <tr>
+              <td>Web search</td>
+              <td>Skipped</td>
+            </tr>
+            <tr>
+              <td>Optional skill dependencies</td>
+              <td>Skipped</td>
+            </tr>
+            <tr>
+              <td>Optional plugin installations</td>
+              <td>Skipped</td>
+            </tr>
+            <tr>
+              <td>Optional plugin configuration</td>
+              <td>Skipped</td>
+            </tr>
+            <tr>
+              <td>Agent ID</td>
+              <td><code>nexus</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The synthetic AI test returned:</p>
+        <pre><code class="language-text">AI access works. Replied in 16.3s.
+</code></pre>
+        <p>This confirms successful access for that request, not a general performance benchmark.</p>
+        <p>The onboarding reported configuration and session initialization:</p>
+        <pre><code class="language-text">Updated config: ~/.openclaw/openclaw.json
+Workspace OK: ~/.openclaw/workspace
+Sessions OK: ~/.openclaw/agents/nexus/sessions
+</code></pre>
+        <p>It also reported creating:</p>
+        <pre><code class="language-text">~/.openclaw/openclaw.json.bak
+</code></pre>
+        <h4 id="experiment-003-28">6.2 Gateway Secret Storage</h4>
+        <p>The onboarding offered:</p>
+        <ul>
+          <li>Generate/store plaintext secret.</li>
+          <li>Use SecretRef.</li>
+        </ul>
+        <p>The default plaintext option was selected for the baseline.</p>
+        <p>The Gateway configuration and credentials must be reviewed later to verify that sensitive files are
+          adequately protected.</p>
+        <p>Do not publish the generated secret, API credentials or unredacted configuration.</p>
+        <h4 id="experiment-003-29">6.3 Codex-Related Plugin</h4>
+        <p>During onboarding, OpenClaw reported installing or using a Codex-related plugin/app-server.</p>
+        <p>Its exact authentication mechanism, effective capabilities and API billing behavior have not been
+          independently verified.</p>
+        <p>Installing a plugin does not demonstrate that it is actively used or that requests are being billed.</p>
+        <p>For this reason, the <code>Codex Hosted Search</code> option was not enabled.</p>
+        <p>The description <code>key-free</code> must not be interpreted as proof of free or unlimited usage.</p>
+        <h4 id="experiment-003-30">6.4 Skills with Missing Dependencies</h4>
+        <p>The onboarding offered these 24 skills:</p>
+        <pre><code class="language-text">1password
+blogwatcher
+blucli
+camsnap
+eightctl
+gemini
+gh-issues
+gifgrep
+github
+gog
+goplaces
+himalaya
+mcporter
+model-usage
+nano-pdf
+openai-whisper
+openhue
+oracle
+ordercli
+sag
+songsee
+sonoscli
+summarize
+xurl
+</code></pre>
+        <p><strong>Decision:</strong> Skip dependency installation.</p>
+        <p>Future candidates include:</p>
+        <ul>
+          <li><code>summarize</code></li>
+          <li><code>openai-whisper</code></li>
+          <li><code>github</code></li>
+          <li><code>model-usage</code></li>
+          <li><code>nano-pdf</code></li>
+        </ul>
+        <p>The presence of these skills in the onboarding catalog is not proof that their dependencies are installed.
+        </p>
+        <h4 id="experiment-003-31">6.5 Optional Plugins Offered for Installation</h4>
+        <p>The onboarding presented the following 26 options:</p>
+        <pre><code class="language-text">ACPX Runtime
+CUA Computer
+Diagnostics OpenTelemetry
+Diagnostics Prometheus
+Diff Viewer Language Pack
+Diffs
+FaceTime
+Fish Audio Speech
+GitHub Copilot agent runtime
+Google Meet
+Gradium
+Inworld
+llama.cpp Provider
+Lobster
+Memory LanceDB
+Microsoft Teams meetings
+Muse Code
+MXC Sandbox Execution
+ONNX
+OpenShell Sandbox
+Slack huddles
+Team Reports
+Tokenjuice
+TypeSafe AI
+Voice Call
+Zoom meetings
+</code></pre>
+        <p><strong>Decision:</strong> Skip optional installation.</p>
+        <p>Potential future research includes observability, alternate sandbox backends, local inference, memory storage
+          and agent runtimes.</p>
+        <h4 id="experiment-003-32">6.6 Plugins Offered for Configuration</h4>
+        <pre><code class="language-text">@openclaw/google-plugin
+@openclaw/huggingface-provider
+@openclaw/minimax-provider
+@openclaw/ollama-provider
+Anthropic
+Codex
+Device Pairing
+Geolocation
+Linux Node
+xAI (Grok)
+</code></pre>
+        <p><strong>Decision:</strong> Skip optional plugin configuration.</p>
+        <h4 id="experiment-003-33">6.7 Web Search Providers Offered</h4>
+        <pre><code class="language-text">Codex Hosted Search
+Brave Search
+DuckDuckGo Search (experimental)
+Exa Search
+Firecrawl Search
+Firecrawl Search (Free)
+Gemini (Google Search)
+Grok (xAI)
+Kimi (Moonshot)
+MiniMax Search
+Ollama Web Search
+Parallel Search
+Parallel Search (Free)
+Perplexity Search
+SearXNG Search
+Tavily Search
+</code></pre>
+        <p><strong>Decision:</strong> Skip web-search setup.</p>
+        <p>The authentication and billing behavior of Codex Hosted Search remain pending investigation.</p>
+        <p>All optional capabilities will be revisited during the corresponding roadmap phases, rather than enabled
+          indiscriminately during the security baseline.</p>
+        <hr>
+        <h3 id="experiment-003-34">7. Findings and Resolutions</h3>
+        <h4 id="experiment-003-35">Finding 003-01 — Unsafe systemd Directory Permissions</h4>
+        <p><strong>Status:</strong> Resolved<br><strong>Root origin:</strong> Pending
+          investigation<br><strong>Date:</strong> November 9, 2026</p>
+        <h5 id="experiment-003-36">Observed Behavior</h5>
+        <p>During onboarding, Gateway service installation failed:</p>
+        <pre><code class="language-text">SERVICE_DEFINITION_UNKNOWN: [unsafe-permissions]
+The service directory (~/.config/systemd/user)
+or its nearest existing ancestor is group/world-writable.
+</code></pre>
+        <p>The internal terminal chat and API test were still functional, but the managed Gateway service had not been
+          installed.</p>
+        <h5 id="experiment-003-37">Diagnosis</h5>
+        <p>Commands:</p>
+        <pre><code class="language-bash">namei -l /home/nexus/.config/systemd/user
+</code></pre>
+        <pre><code class="language-bash">stat -c &#39;%A %a %U:%G %n&#39; \
+  /home/nexus \
+  /home/nexus/.config \
+  /home/nexus/.config/systemd \
+  /home/nexus/.config/systemd/user
+</code></pre>
+        <p>Observed:</p>
+        <pre><code class="language-text">755 nexus:nexus /home/nexus
+775 nexus:nexus /home/nexus/.config
+</code></pre>
+        <p>The <code>systemd/user</code> directory did not yet exist.</p>
+        <p>The group-write permission on <code>/home/nexus/.config</code> caused OpenClaw&#39;s service-definition
+          safety check to reject the installation.</p>
+        <h5 id="experiment-003-38">Remediation</h5>
+        <p>Performed as <code>nexus</code>:</p>
+        <pre><code class="language-bash">chmod 700 /home/nexus/.config
+</code></pre>
+        <p>Verification:</p>
+        <pre><code class="language-bash">stat -c &#39;%A %a %U:%G %n&#39; /home/nexus/.config
+</code></pre>
+        <p>Observed:</p>
+        <pre><code class="language-text">drwx------ 700 nexus:nexus /home/nexus/.config
+</code></pre>
+        <p>The service installation was retried:</p>
+        <pre><code class="language-bash">openclaw gateway install
+</code></pre>
+        <p>Observed result:</p>
+        <pre><code class="language-text">Installed systemd service:
+/home/nexus/.config/systemd/user/openclaw-gateway.service
+
+Gateway service installed.
+</code></pre>
+        <h5 id="experiment-003-39">Conclusion</h5>
+        <p>The permission-related installation failure was resolved without modifying upstream Ansible tasks.</p>
+        <p>The specific step that originally created <code>.config</code> with mode <code>0775</code> has not yet been
+          identified.</p>
+        <p>A potential upstream improvement would ensure that the service directory structure has permissions accepted
+          by OpenClaw.</p>
+        <p><strong>Do not claim an Ansible defect until the origin is independently reproduced.</strong></p>
+        <hr>
+        <h4 id="experiment-003-40">Finding 003-02 — Concurrent Gateway State Ownership</h4>
+        <p><strong>Status:</strong> Resolved<br><strong>Date:</strong> November 9, 2026<br><strong>Component:</strong>
+          Gateway startup / SQLite state ownership</p>
+        <h5 id="experiment-003-41">Observed Behavior</h5>
+        <p>After the systemd service was installed, the Gateway process appeared active, but connectivity failed:</p>
+        <pre><code class="language-text">Runtime: running
+Connectivity check: failed
+connect ECONNREFUSED 127.0.0.1:18789
+</code></pre>
+        <p>The port was not listening despite systemd reporting an active process.</p>
+        <h5 id="experiment-003-42">Log Investigation</h5>
+        <p>Application log:</p>
+        <pre><code class="language-text">/tmp/openclaw/openclaw-2026-11-09.log
+</code></pre>
+        <p>Relevant messages:</p>
+        <pre><code class="language-text">waiting for Gateway state ownership held by another OpenClaw process,
+up to 300 s
+</code></pre>
+        <p>After approximately 300 seconds:</p>
+        <pre><code class="language-text">OpenClaw state database is busy at
+/home/nexus/.openclaw/state/openclaw.sqlite
+
+holder 10834 ... The holder 10834 is alive on this host
+</code></pre>
+        <p>This revealed that another OpenClaw process was retaining ownership of the application state.</p>
+        <h5 id="experiment-003-43">Root Cause</h5>
+        <p>Process inspection identified an earlier interactive onboarding process:</p>
+        <pre><code class="language-text">PID 10819 — openclaw onboard --install-daemon
+PID 10834 — openclaw (child of PID 10819)
+</code></pre>
+        <p>The child process held state ownership while the systemd-managed Gateway attempted to acquire the same state.
+        </p>
+        <p>This was a process lifecycle conflict, not a demonstrated Docker or network failure.</p>
+        <h5 id="experiment-003-44">Remediation</h5>
+        <p>The obsolete onboarding process was terminated gracefully:</p>
+        <pre><code class="language-bash">kill -TERM 10819
+</code></pre>
+        <p>Verification:</p>
+        <pre><code class="language-bash">ps -p 10819,10834 -o pid,ppid,stat,etime,cmd
+</code></pre>
+        <p>Neither process remained active.</p>
+        <p>Then the Gateway service was restarted:</p>
+        <pre><code class="language-bash">systemctl --user restart openclaw-gateway.service
+</code></pre>
+        <p>No SQLite databases or lock files were manually deleted.</p>
+        <h5 id="experiment-003-45">Verification</h5>
+        <p>The service reported:</p>
+        <pre><code class="language-text">Active: active (running)
+Main PID: 12970
+</code></pre>
+        <p>Socket inspection:</p>
+        <pre><code class="language-text">LISTEN 127.0.0.1:18789
+LISTEN [::1]:18789
+</code></pre>
+        <p>Deep status:</p>
+        <pre><code class="language-text">Gateway version: 2026.11.2
+Runtime: running
+Connectivity check: ok
+Listening: 127.0.0.1:18789
+</code></pre>
+        <p>The Gateway became operational under the <code>nexus</code> Linux account.</p>
+        <h5 id="experiment-003-46">Lessons Learned</h5>
+        <ul>
+          <li>An active systemd process does not necessarily mean the Gateway is ready.</li>
+          <li>OpenClaw processes sharing the same state directory can block each other.</li>
+          <li>An interactive onboarding process may remain active after configuration.</li>
+          <li>Logs can reveal state ownership conflicts not visible in basic service status.</li>
+          <li>Graceful termination and service restart resolved the problem without reinstalling OpenClaw.</li>
+        </ul>
+        <p><strong>Potential upstream improvement:</strong> Better reporting or prevention of concurrent state ownership
+          during onboarding and Gateway startup.</p>
+        <p>No upstream defect has yet been established.</p>
+        <hr>
+        <h4 id="experiment-003-47">Finding 003-03 — Conversational Agent Bootstrap</h4>
+        <p><strong>Status:</strong> Conversational bootstrap demonstrated; manual preconfiguration pending
+          validation<br><strong>Date:</strong> November 9, 2026</p>
+        <h5 id="experiment-003-48">Dashboard Access</h5>
+        <p>After the Gateway recovered, the operator established an SSH tunnel from macOS and accessed the Dashboard
+          successfully.</p>
+        <p>The interface displayed the main Nexus conversation and workspace files.</p>
+        <p>This confirms that Dashboard access through the private SSH tunnel worked during the test.</p>
+        <p>Gateway persistence after SSH logout or EC2 reboot remains a separate validation task.</p>
+        <h5 id="experiment-003-49">Conversational Identity Setup</h5>
+        <p>Instead of copying the previously prepared templates, the operator decided to let Nexus initialize its
+          identity through conversation.</p>
+        <p>The initial Spanish-language instructions defined:</p>
+        <ul>
+          <li>Name: Nexus.</li>
+          <li>Emoji: 🥷.</li>
+          <li>Role: Personal AI assistant.</li>
+          <li>Friendly, professional, direct and curious personality.</li>
+          <li>Moderate humor and sarcasm when appropriate.</li>
+          <li>Communication in the same language used by the operator.</li>
+          <li>Concise answers for simple questions and detailed technical explanations when necessary.</li>
+          <li>Explicit honesty and correction of mistaken assumptions.</li>
+          <li>Workspace autonomy within authorized tasks.</li>
+          <li>Approval requirements for system changes, installations, external communications, automation and
+            commercial activities.</li>
+          <li>No automatic avatar generation.</li>
+        </ul>
+        <p>The objective was to observe how OpenClaw transforms conversational instructions into persistent workspace
+          files.</p>
+        <h5 id="experiment-003-50">Changes Reported by Nexus</h5>
+        <p>Nexus reported:</p>
+        <ul>
+          <li>Updating <code>IDENTITY.md</code>.</li>
+          <li>Updating <code>SOUL.md</code>.</li>
+          <li>Updating <code>USER.md</code>.</li>
+          <li>Synchronizing the visible identity using <code>openclaw agents set-identity</code>.</li>
+          <li>Verifying the identity using <code>openclaw agents list --json</code>.</li>
+          <li>Moving <code>BOOTSTRAP.md</code> to a recoverable trash location.</li>
+          <li>Not installing plugins or creating automations.</li>
+          <li>Not generating an avatar.</li>
+          <li>Not expanding privileges.</li>
+        </ul>
+        <p>The operator supplied the resulting file contents.</p>
+        <p>These support the reported file changes, but command execution details and the bootstrap removal location
+          were not independently verified.</p>
+        <h5 id="experiment-003-51">File Review</h5>
+        <p><strong><code>IDENTITY.md</code></strong></p>
+        <p>The file contained:</p>
+        <ul>
+          <li>Nexus as the name.</li>
+          <li>The agreed assistant role.</li>
+          <li>The chosen personality.</li>
+          <li>Emoji 🥷.</li>
+          <li>No generated avatar.</li>
+        </ul>
+        <p><strong><code>SOUL.md</code></strong></p>
+        <p>Nexus retained most of the default structure and added:</p>
+        <ul>
+          <li>Authorization boundaries.</li>
+          <li>Prohibition on unauthorized autonomous tasks.</li>
+          <li>Instructions against fabricated information.</li>
+          <li>Prompt-injection awareness.</li>
+          <li>The agreed communication style.</li>
+        </ul>
+        <p><strong><code>USER.md</code></strong></p>
+        <p>Nexus created dated directives using the expected metadata format:</p>
+        <pre><code class="language-md">&lt;!-- observed: 2026-11-09 | status: active --&gt;
+</code></pre>
+        <p>However, two quality issues were observed:</p>
+        <ul>
+          <li>The heading <code># USER.md - User Model</code> was duplicated.</li>
+          <li>Instructions mixed English imperative keywords with Spanish text, such as <code>Always llama...</code> and
+            <code>Never inventes...</code>.
+          </li>
+        </ul>
+        <p>These issues do not necessarily prevent the model from interpreting the instructions, but they demonstrate
+          the need for review of generated configuration.</p>
+        <p><strong><code>AGENTS.md</code></strong></p>
+        <p>The file apparently retained its default content.</p>
+        <p>The original instructions included proactive automation, scheduled checks, external outreach and autonomous
+          Git operations.</p>
+        <p>Some of these expectations may conflict with the more restrictive instructions in <code>SOUL.md</code> and
+          <code>USER.md</code>.
+        </p>
+        <p>This is an instruction-consistency concern, not evidence that the agent has executed unauthorized activities.
+        </p>
+        <h5 id="experiment-003-52">Workspace Instruction Reloading</h5>
+        <p>Nexus explained that manually editing workspace files should affect behavior when OpenClaw loads their
+          updated context, commonly during a subsequent turn or a new session.</p>
+        <p>It also clarified:</p>
+        <ul>
+          <li><code>AGENTS.md</code> defines operational conventions.</li>
+          <li><code>SOUL.md</code> defines personality and behavioral principles.</li>
+          <li><code>USER.md</code> stores stable user preferences.</li>
+          <li><code>IDENTITY.md</code> contains visible identity metadata.</li>
+          <li><code>openclaw agents set-identity</code> synchronizes identity information; it does not generally reload
+            all workspace instructions.</li>
+        </ul>
+        <p>This explanation is consistent with the roles of the files, but the exact timing of instruction reloads has
+          not yet been independently tested.</p>
+        <p>A future experiment should modify a harmless instruction, start a fresh session and verify that the agent
+          incorporates it.</p>
+        <hr>
+        <h5 id="experiment-003-53">Manual Workspace Preconfiguration</h5>
+        <p><strong>Status:</strong> Documented behavior — Pending clean-install validation</p>
+        <p>The inspected <code>BOOTSTRAP.md</code> and Nexus&#39;s explanation support a second initialization approach.
+        </p>
+        <p>Instead of completing identity through conversation, an operator could prepare the workspace files manually
+          before the first agent interaction.</p>
+        <p>Relevant files:</p>
+        <ul>
+          <li><code>AGENTS.md</code> — Operational instructions and conventions.</li>
+          <li><code>IDENTITY.md</code> — Name, emoji and identity metadata.</li>
+          <li><code>SOUL.md</code> — Personality and behavioral principles.</li>
+          <li><code>USER.md</code> — Stable preferences.</li>
+          <li><code>MEMORY.md</code> — Optional persistent memory.</li>
+        </ul>
+        <p>If the files contain valid configuration and <code>BOOTSTRAP.md</code> is absent, the agent is expected to
+          begin the first conversation using the preconfigured workspace instructions rather than initiating the default
+          identity bootstrap.</p>
+        <p>This approach has not yet been tested in a clean laboratory deployment.</p>
+        <h6 id="experiment-003-54">Platform Onboarding vs. Agent Bootstrap</h6>
+        <p>These processes are separate.</p>
+        <p><strong>Platform onboarding</strong> configures:</p>
+        <ul>
+          <li>Gateway.</li>
+          <li>Model providers.</li>
+          <li>API credentials.</li>
+          <li>Channels.</li>
+          <li>Plugins and integrations.</li>
+          <li>Runtime services.</li>
+        </ul>
+        <p><strong>Agent bootstrap</strong> configures:</p>
+        <ul>
+          <li>Identity.</li>
+          <li>Personality.</li>
+          <li>Workspace operating rules.</li>
+          <li>User preferences.</li>
+          <li>Initial agent context.</li>
+        </ul>
+        <p>Preparing the workspace files does not automatically complete platform onboarding.</p>
+        <h6 id="experiment-003-55">Visible Identity Synchronization</h6>
+        <p>The visible identity may require synchronization with OpenClaw configuration:</p>
+        <pre><code class="language-bash">openclaw agents set-identity \
+  --agent nexus \
+  --workspace /home/nexus/.openclaw/workspace \
+  --from-identity
+</code></pre>
+        <p>This command updates supported identity metadata.</p>
+        <p>It is not required merely to make ordinary <code>AGENTS.md</code>, <code>SOUL.md</code> or
+          <code>USER.md</code> instructions available to the agent.
+        </p>
+        <h6 id="experiment-003-56">Expected Benefits</h6>
+        <ul>
+          <li>Avoid repeating the identity conversation.</li>
+          <li>Reduce initial model API consumption.</li>
+          <li>Reuse reviewed templates.</li>
+          <li>Improve reproducibility.</li>
+          <li>Maintain consistent agent configuration between deployments.</li>
+        </ul>
+        <h6 id="experiment-003-57">Pending Validation</h6>
+        <p>A future experiment should verify that:</p>
+        <ol>
+          <li>A clean workspace with preconfigured files does not initiate the identity ritual.</li>
+          <li>The first conversation uses the intended instructions.</li>
+          <li>The visible identity is synchronized correctly.</li>
+          <li>Existing workspace files are preserved.</li>
+          <li>Platform onboarding remains independent.</li>
+          <li>New sessions load updated instructions correctly.</li>
+        </ol>
+        <p><strong>Conclusion:</strong> Conversational bootstrap has been demonstrated. Manual workspace
+          preconfiguration is a promising alternative, but remains unvalidated in this laboratory.</p>
+        <hr>
+        <h3 id="experiment-003-58">8. Verification Matrix and Next Tests</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Check</th>
+              <th>Status</th>
+              <th>Evidence or next step</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Local Ansible execution</td>
+              <td>Verified</td>
+              <td>Installer success</td>
+            </tr>
+            <tr>
+              <td>Node.js, pnpm and OpenClaw</td>
+              <td>Verified</td>
+              <td>Runtime version commands</td>
+            </tr>
+            <tr>
+              <td>Dedicated <code>nexus</code> identity</td>
+              <td>Verified</td>
+              <td><code>id</code>, <code>getent</code>, shell checks</td>
+            </tr>
+            <tr>
+              <td>Scoped sudo rules</td>
+              <td>Verified</td>
+              <td><code>sudo -l -U nexus</code></td>
+            </tr>
+            <tr>
+              <td>No Docker group membership</td>
+              <td>Verified</td>
+              <td><code>id nexus</code>, <code>getent group docker</code></td>
+            </tr>
+            <tr>
+              <td>Rootful Docker service</td>
+              <td>Verified</td>
+              <td><code>systemctl is-active docker</code></td>
+            </tr>
+            <tr>
+              <td>Gateway service installation</td>
+              <td>Verified</td>
+              <td>Finding 003-01</td>
+            </tr>
+            <tr>
+              <td>Gateway listener and connectivity</td>
+              <td>Verified</td>
+              <td>Finding 003-02</td>
+            </tr>
+            <tr>
+              <td>Dashboard access through SSH</td>
+              <td>Observed</td>
+              <td>Dashboard opened successfully</td>
+            </tr>
+            <tr>
+              <td>Conversational workspace changes</td>
+              <td>Observed / Reported</td>
+              <td>Files provided; execution details not independently audited</td>
+            </tr>
+            <tr>
+              <td>Persistence after SSH logout</td>
+              <td>Pending</td>
+              <td>Test service from an independent session</td>
+            </tr>
+            <tr>
+              <td>Persistence after EC2 reboot</td>
+              <td>Pending</td>
+              <td>Reboot and verify service</td>
+            </tr>
+            <tr>
+              <td>Gateway token and state file permissions</td>
+              <td>Pending</td>
+              <td>Inspect metadata without exposing secrets</td>
+            </tr>
+            <tr>
+              <td>Tool permissions and approvals</td>
+              <td>Pending</td>
+              <td>Effective policy inspection</td>
+            </tr>
+            <tr>
+              <td>Rootful Docker socket access</td>
+              <td>Pending</td>
+              <td>Non-mutating permission check</td>
+            </tr>
+            <tr>
+              <td>Docker network overlap</td>
+              <td>Pending</td>
+              <td>Inspect actual routes and Docker networks</td>
+            </tr>
+            <tr>
+              <td>Rootless Docker or alternative sandbox</td>
+              <td>Pending</td>
+              <td>Evaluate secure integration</td>
+            </tr>
+            <tr>
+              <td>Main-agent sandbox execution</td>
+              <td>Pending</td>
+              <td>Effective configuration and actual tool test</td>
+            </tr>
+            <tr>
+              <td>Workspace read/write boundaries</td>
+              <td>Pending</td>
+              <td>Synthetic workspace tests</td>
+            </tr>
+            <tr>
+              <td>Unmounted host-file denial</td>
+              <td>Pending</td>
+              <td>Synthetic canary tests</td>
+            </tr>
+            <tr>
+              <td>Elevated and host execution denial</td>
+              <td>Pending</td>
+              <td>Negative tests</td>
+            </tr>
+            <tr>
+              <td>Scoped sudo removal</td>
+              <td>Pending</td>
+              <td>Controlled experiment</td>
+            </tr>
+            <tr>
+              <td>Regression after hardening</td>
+              <td>Pending</td>
+              <td>Repeat baseline tests</td>
+            </tr>
+            <tr>
+              <td>Backup and recovery</td>
+              <td>Pending</td>
+              <td>Controlled validation</td>
+            </tr>
+            <tr>
+              <td>Reproducible clean installation</td>
+              <td>Pending</td>
+              <td>Repeat deployment</td>
+            </tr>
+            <tr>
+              <td>Preconfigured workspace bootstrap</td>
+              <td>Pending</td>
+              <td>Clean-install experiment</td>
+            </tr>
+          </tbody>
+        </table>
+        <h4 id="experiment-003-59">8.1 Next Experimental Activities</h4>
+        <p>The next stage should focus on understanding and validating actual runtime permissions.</p>
+        <p>Planned work:</p>
+        <ol>
+          <li>Confirm Gateway persistence independently of the original SSH session.</li>
+          <li>Inspect sensitive file permissions.</li>
+          <li>Review effective OpenClaw tool policies.</li>
+          <li>Determine how <code>nexus</code> can safely interact with a sandbox backend.</li>
+          <li>Evaluate Rootless Docker or another supported sandbox mechanism.</li>
+          <li>Enable sandbox execution for the main agent.</li>
+          <li>Validate containment using harmless synthetic files and commands.</li>
+          <li>Remove unnecessary scoped sudo grants.</li>
+          <li>Repeat functionality and security tests.</li>
+          <li>Record changes and evaluate upstream contributions.</li>
+        </ol>
+        <p>Do not enable broad tool execution merely because the Gateway and Dashboard are operational.</p>
+        <hr>
+        <h3 id="experiment-003-60">9. Current Conclusions</h3>
+        <p>The official Ansible installation produced a working OpenClaw environment under a dedicated Linux service
+          account.</p>
+        <p>Two independent Gateway problems were diagnosed and resolved:</p>
+        <ol>
+          <li>Unsafe permissions on <code>/home/nexus/.config</code> prevented installation of the systemd user service.
+          </li>
+          <li>An earlier onboarding process retained SQLite state ownership and prevented the Gateway listener from
+            starting.</li>
+        </ol>
+        <p>After applying the respective corrections, OpenClaw reported successful connectivity on loopback.</p>
+        <p>The operator also accessed the Dashboard through a private SSH tunnel.</p>
+        <p>Conversational bootstrap was demonstrated using the initial Nexus identity configuration.</p>
+        <p>The resulting files show that the agent can generate persistent identity and preference instructions from
+          natural-language interaction, although the generated configuration still requires human review.</p>
+        <p><strong>What remains unproven:</strong></p>
+        <p>The agent has <strong>not yet been demonstrated to execute its tools inside a sandbox</strong>.</p>
+        <p>The default rootful Docker daemon is intentionally inaccessible through <code>docker</code> group membership.
+        </p>
+        <p>The remaining work includes effective tool restrictions, sudo hardening, secret protection, sandbox
+          integration, persistence and reproducibility.</p>
+        <p>This deployment must not yet be classified as hardened or production-ready.</p>
+        <h4 id="experiment-003-61">9.1 Potential Upstream Contributions</h4>
+        <p>Possible improvement candidates include:</p>
+        <ul>
+          <li>Preparing systemd user-service directories with compatible permissions.</li>
+          <li>Improving reporting and handling of concurrent onboarding and Gateway state ownership.</li>
+          <li>Making Docker address pools configurable through Ansible variables.</li>
+          <li>Improving reproducibility through version pinning.</li>
+          <li>Making administrative sudo grants configurable or optional.</li>
+        </ul>
+        <p>These are research candidates, not confirmed upstream defects.</p>
+        <p>Any future issue or PR should contain reproducible evidence and distinguish upstream behavior from local
+          environment conditions.</p>
+        <hr>
+        <h3 id="experiment-003-62">10. References</h3>
+        <ul>
+          <li><a href="https://github.com/openclaw/openclaw-ansible">OpenClaw Ansible</a></li>
+          <li><a href="https://docs.openclaw.ai/gateway/health">OpenClaw Gateway Health</a></li>
+          <li><a href="https://docs.openclaw.ai/gateway/troubleshooting">OpenClaw Gateway Troubleshooting</a></li>
+          <li><a href="https://docs.openclaw.ai/security">OpenClaw Security</a></li>
+          <li><a href="https://docs.openclaw.ai/gateway/sandboxing">OpenClaw Sandboxing</a></li>
+          <li><a href="https://docs.openclaw.ai/gateway/sandboxing/docker-backend">OpenClaw Docker Backend</a></li>
+          <li><a href="https://docs.openclaw.ai/concepts/agent-workspace">OpenClaw Agent Workspace</a></li>
+          <li><a href="https://docs.openclaw.ai/start/bootstrapping">OpenClaw Bootstrapping</a></li>
+        </ul>
+        <p><strong>Documentation rule:</strong> Store sanitized outputs, exact observed versions and explicit
+          uncertainty. Preserve the upstream repository revision and record future patches separately from the original
+          baseline.</p>
+
+      </details>
+    </main>
+  </div>
+  <script>
+    function revealLinkedSection() {
+      document.getElementById(location.hash.slice(1))?.closest('details')?.setAttribute('open', '');
+    }
+    window.addEventListener('hashchange', revealLinkedSection);
+    revealLinkedSection();
+  </script>
+</body>
+
+</html>

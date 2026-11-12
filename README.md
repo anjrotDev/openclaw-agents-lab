@@ -108,13 +108,15 @@ openclaw-agents-lab/
     ├── 001-agent-fundamentals/
     ├── 002-tools-and-skills/
     ├── 003-docker-sandbox/
-    ├── 004-local-embeddings/
+    ├── 004-reproducible-openclaw-installation/
     └── 005-multi-agent/
 ```
 
 Some directories and documents represent planned work and may not exist yet.
 
 ### Documentation
+
+- [Experiment 004: Reproducible OpenClaw Installation Guide](experiments/004-reproducible-openclaw-installation/index.html)
 
 | Document                                                        | Purpose                                                                  |
 | --------------------------------------------------------------- | ------------------------------------------------------------------------ |

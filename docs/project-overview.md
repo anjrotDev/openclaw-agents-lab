@@ -591,7 +591,7 @@ openclaw-agents-lab/
     ├── 001-agent-fundamentals/
     ├── 002-tools-and-skills/
     ├── 003-docker-sandbox/
-    ├── 004-local-embeddings/
+    ├── 004-reproducible-openclaw-installation/
     └── 005-multi-agent/
 ```
 

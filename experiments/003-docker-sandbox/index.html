@@ -1,0 +1,1415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experiment 003 | OpenClaw Agents Lab</title>
+<style>
+
+    :root {
+      color-scheme: light;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --paper: #fff;
+      --panel: #edf5f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: #142b36;
+      color: #eff8fa;
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+h1 { max-width: 27ch; }
+.toc { max-height: calc(100vh - 2rem); overflow: auto; padding: .2rem .5rem; }
+.table-scroll { overflow-x: auto; margin-block: 1rem; }
+.table-scroll table { min-width: 30rem; }
+.table-scroll:focus-visible { outline: 3px solid var(--accent); }
+@media (max-width:48rem) { .toc { max-height: none; } }
+</style>
+</head>
+<body>
+<header id="top"><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../../index.html">← OpenClaw Agents Lab</a></nav>
+<h1 id="section-1">Experiment 003 — OpenClaw Security, Dedicated User &amp; Docker Sandbox</h1>
+
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="Experiment contents">
+<p>On this page</p>
+<ol>
+<li><a href="#section-2">Objective and Method</a></li>
+<li><a href="#section-4">Infrastructure and Access</a></li>
+<li><a href="#section-8">Ansible Reference and Preflight</a></li>
+<li><a href="#section-14">Upstream Security Behavior Observed in Source</a></li>
+<li><a href="#section-21">Baseline Installation and Verification</a></li>
+<li><a href="#section-26">OpenClaw Onboarding</a></li>
+<li><a href="#section-34">Findings and Resolutions</a></li>
+<li><a href="#section-58">Verification Matrix and Next Tests</a></li>
+<li><a href="#section-60">Current Conclusions</a></li>
+<li><a href="#section-62">References</a></li>
+</ol>
+<a href="#top">Back to top ↑</a>
+</nav>
+<main>
+<p><strong>Project:</strong> OpenClaw Agents Lab<br><strong>Environment:</strong> AWS EC2 — <code>openclaw-lab-3</code><br><strong>Started:</strong> November 8, 2026<br><strong>Last Updated:</strong> November 9, 2026<br><strong>Status:</strong> In Progress — Ansible Baseline and Gateway Verified; Sandbox Pending</p>
+<blockquote>
+<p>This is an experiment log, <strong>not</strong> a production deployment guide or security certification. Distinguish observed outputs, operator decisions, agent reports, hypotheses, and untested proposals. Never commit credentials, tokens, private SSH keys, or unredacted OpenClaw configuration.</p>
+</blockquote>
+<hr>
+<h2 id="section-2">1. Objective and Method</h2>
+<p>Evaluate the official <code>openclaw-ansible</code> deployment on a disposable EC2 instance, starting with an unmodified upstream baseline and then testing security controls incrementally.</p>
+<p>Areas of interest include:</p>
+<ul>
+<li>Dedicated Linux service identity.</li>
+<li>Effective sudo privileges.</li>
+<li>Docker daemon access.</li>
+<li>Sandboxed agent tool execution.</li>
+<li>Gateway availability and persistence.</li>
+<li>Agent workspace initialization.</li>
+<li>Reproducible deployment configuration.</li>
+<li>Potential upstream improvements.</li>
+</ul>
+<p>The agreed methodology is:</p>
+<p><strong>Inspect → Deploy with minimal variables → Verify → Document → Change one control → Retest.</strong></p>
+<p>The upstream scoped sudo grants are intentionally retained for the initial baseline. This does <strong>not</strong> constitute acceptance of those permissions for unattended or production workloads.</p>
+<p>Neither behavioral instructions nor a running Docker daemon prove tool containment. Potential upstream issues or pull requests require demonstrated causes and repeatable evidence.</p>
+<h3 id="section-3">1.1 Evidence Status</h3>
+<ul>
+<li><strong>Verified:</strong> Output observed from terminal commands or direct Dashboard access supplied by the operator.</li>
+<li><strong>Reported:</strong> Nexus described performing an operation; independent verification is still needed.</li>
+<li><strong>Pending:</strong> Not yet tested or not sufficiently evidenced.</li>
+<li><strong>Design concern:</strong> Risk inferred from inspected configuration, not necessarily a demonstrated failure.</li>
+</ul>
+<hr>
+<h2 id="section-4">2. Infrastructure and Access</h2>
+<div class="table-scroll" role="region" aria-label="Experiment data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Observed configuration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EC2 name</td>
+<td><code>openclaw-lab-3</code></td>
+</tr>
+<tr>
+<td>Region</td>
+<td><code>us-east-1</code></td>
+</tr>
+<tr>
+<td>Instance type</td>
+<td><code>t3.medium</code></td>
+</tr>
+<tr>
+<td>Operating system</td>
+<td>Ubuntu Server 24.04.5 LTS</td>
+</tr>
+<tr>
+<td>Architecture</td>
+<td>x86_64</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>2 vCPU</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>Approximately 3.7 GiB</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>30 GiB EBS gp3</td>
+</tr>
+<tr>
+<td>Initial available storage</td>
+<td>Approximately 24 GiB</td>
+</tr>
+<tr>
+<td>Swap</td>
+<td>2 GiB</td>
+</tr>
+<tr>
+<td>Instance metadata</td>
+<td>IMDSv2 required</td>
+</tr>
+<tr>
+<td>IAM instance role</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Administrator</td>
+<td><code>ubuntu</code></td>
+</tr>
+<tr>
+<td>Service account</td>
+<td><code>nexus</code></td>
+</tr>
+<tr>
+<td>Gateway port</td>
+<td><code>18789</code></td>
+</tr>
+<tr>
+<td>Gateway access</td>
+<td>Loopback + SSH tunnel</td>
+</tr>
+</tbody></table></div>
+<p>The instance was created as a disposable environment for controlled experimentation.</p>
+<h3 id="section-5">2.1 Administrative Access</h3>
+<p>The <code>ubuntu</code> Linux account is used for SSH administration and installation management.</p>
+<p>Authentication is performed using the EC2 SSH private key stored on the maintainer&#39;s Mac.</p>
+<p>The Security Group permits inbound TCP port 22 only from the maintainer&#39;s current public IPv4 address.</p>
+<p>The <code>nexus</code> service account has no additional SSH authorized key configured through Ansible.</p>
+<h3 id="section-6">2.2 Finding — Dynamic Public IP and SSH Access</h3>
+<p>After stopping and starting the instance, SSH initially appeared to hang.</p>
+<p><strong>Cause:</strong> The maintainer&#39;s public IP address had changed, while the EC2 Security Group still allowed the previous address.</p>
+<p><strong>Resolution:</strong> Updating the inbound SSH rule to the current public IPv4 restored access immediately.</p>
+<p><strong>Lessons learned:</strong></p>
+<ul>
+<li>An EC2 instance reporting <code>Running</code> does not guarantee SSH connectivity.</li>
+<li>The Security Group independently controls network access.</li>
+<li>The maintainer&#39;s public IP can change.</li>
+<li>The instance&#39;s own public IP can also change after stop/start when no Elastic IP is assigned.</li>
+</ul>
+<h3 id="section-7">2.3 Initial Network Configuration</h3>
+<p>Observed:</p>
+<pre><code class="language-text">ens5: 172.31.25.2/20
+default via 172.31.16.1 dev ens5
+172.31.16.0/20 dev ens5
+</code></pre>
+<p>This network information will also be relevant when evaluating Docker address allocation.</p>
+<hr>
+<h2 id="section-8">3. Ansible Reference and Preflight</h2>
+<p><strong>Upstream repository:</strong> <a href="https://github.com/openclaw/openclaw-ansible">https://github.com/openclaw/openclaw-ansible</a></p>
+<p><strong>Local clone:</strong> <code>/home/ubuntu/openclaw-ansible</code></p>
+<div class="table-scroll" role="region" aria-label="Experiment data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Inspected commit</td>
+<td><code>238f100</code></td>
+</tr>
+<tr>
+<td>Revision date</td>
+<td>November 4, 2026</td>
+</tr>
+<tr>
+<td>Commit subject</td>
+<td><code>fix(release): trust current maintainer signing key (#87)</code></td>
+</tr>
+<tr>
+<td>Git working tree</td>
+<td>Clean at inspection</td>
+</tr>
+<tr>
+<td>Installation approach</td>
+<td>Local playbook</td>
+</tr>
+<tr>
+<td>Execution script</td>
+<td><code>run-playbook.sh</code></td>
+</tr>
+</tbody></table></div>
+<p>The automatic <code>install.sh</code> was not used because it downloads an Ansible collection from the moving <code>main</code> branch, potentially installing code different from the revision inspected.</p>
+<p>Instead, the local <code>run-playbook.sh</code> was selected.</p>
+<h3 id="section-9">3.1 Toolchain</h3>
+<div class="table-scroll" role="region" aria-label="Experiment data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Observed version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ansible Core</td>
+<td><code>2.16.3</code></td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>3.12.3</code></td>
+</tr>
+<tr>
+<td>Git</td>
+<td><code>2.43.0</code></td>
+</tr>
+<tr>
+<td>Node.js after installation</td>
+<td><code>v24.22.2</code></td>
+</tr>
+<tr>
+<td>pnpm after installation</td>
+<td><code>12.15.0</code></td>
+</tr>
+<tr>
+<td>OpenClaw after installation</td>
+<td><code>2026.11.2 (b556fdf)</code></td>
+</tr>
+</tbody></table></div>
+<p>The repository requires Ansible Core 2.14 or newer.</p>
+<h3 id="section-10">3.2 Ansible Collections</h3>
+<p>The repository declares these dependencies in <code>requirements.yml</code>:</p>
+<pre><code class="language-yaml">collections:
+  - name: community.docker
+    version: &quot;&gt;=3.4.0&quot;
+  - name: community.general
+    version: &quot;&gt;=8.0.0&quot;
+  - name: ansible.posix
+    version: &quot;&gt;=1.5.0&quot;
+</code></pre>
+<p>Installation command:</p>
+<pre><code class="language-bash">cd ~/openclaw-ansible
+ansible-galaxy collection install -r requirements.yml
+</code></pre>
+<p><strong>Evidence limitation:</strong> The exact resolved collection versions and the full installation transcript were not preserved.</p>
+<p>Future runs should record them.</p>
+<h3 id="section-11">3.3 Configuration Overrides</h3>
+<p>File:</p>
+<pre><code class="language-text">/home/ubuntu/openclaw-lab-3-vars.yml
+</code></pre>
+<p>Contents:</p>
+<pre><code class="language-yaml">---
+openclaw_user: nexus
+openclaw_home: /home/nexus
+nodejs_version: &quot;24.x&quot;
+openclaw_install_mode: release
+tailscale_enabled: false
+openclaw_ssh_keys: []
+</code></pre>
+<p>These are <strong>Ansible extra variables</strong>, not operating-system environment variables.</p>
+<p>No upstream task or template modifications were intentionally introduced for the initial baseline.</p>
+<h3 id="section-12">3.4 Syntax Validation</h3>
+<p>Command:</p>
+<pre><code class="language-bash">ansible-playbook playbook.yml \
+  -e @/home/ubuntu/openclaw-lab-3-vars.yml \
+  --syntax-check
+</code></pre>
+<p>Observed output:</p>
+<pre><code class="language-text">[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available
+
+playbook: playbook.yml
+</code></pre>
+<p>The syntax check completed successfully.</p>
+<p>The warnings were consistent with the playbook using:</p>
+<pre><code class="language-yaml">hosts: localhost
+connection: local
+become: true
+</code></pre>
+<p>A successful syntax check does not prove task execution correctness or effective security.</p>
+<h3 id="section-13">3.5 Upstream Files Inspected</h3>
+<pre><code class="language-text">playbook.yml
+playbooks/install.yml
+roles/openclaw/defaults/main.yml
+roles/openclaw/tasks/main.yml
+roles/openclaw/tasks/user.yml
+roles/openclaw/tasks/docker-linux.yml
+roles/openclaw/tasks/docker-security.yml
+roles/openclaw/tasks/firewall-linux.yml
+roles/openclaw/tasks/nodejs.yml
+roles/openclaw/tasks/openclaw.yml
+roles/openclaw/tasks/openclaw-release.yml
+roles/openclaw/templates/daemon.json.j2
+roles/openclaw/handlers/main.yml
+requirements.yml
+run-playbook.sh
+install.sh
+</code></pre>
+<p>The main role executes the following stages:</p>
+<ol>
+<li>System tools installation.</li>
+<li>Optional Tailscale setup.</li>
+<li>Dedicated service user creation.</li>
+<li>Docker installation.</li>
+<li>Firewall and host security configuration.</li>
+<li>Node.js and pnpm installation.</li>
+<li>OpenClaw package installation.</li>
+</ol>
+<p><strong>Onboarding and Gateway systemd installation are separate, operator-initiated steps.</strong></p>
+<hr>
+<h2 id="section-14">4. Upstream Security Behavior Observed in Source</h2>
+<h3 id="section-15">4.1 Linux User and Sudo</h3>
+<p>The variables <code>openclaw_user</code> and <code>openclaw_home</code> allow the service account to be customized.</p>
+<p>The Ansible <code>user.yml</code> task creates a system account with:</p>
+<pre><code class="language-yaml">system: true
+shell: /bin/bash
+create_home: true
+</code></pre>
+<p>The playbook also creates:</p>
+<pre><code class="language-text">/etc/sudoers.d/nexus
+</code></pre>
+<p>This file grants specific <code>NOPASSWD</code> permissions covering:</p>
+<ul>
+<li>Selected <code>systemctl</code> operations targeting a service named <code>openclaw</code>.</li>
+<li><code>systemctl daemon-reload</code>.</li>
+<li>Selected Tailscale commands.</li>
+<li>Selected <code>journalctl</code> commands.</li>
+</ul>
+<p>These grants are more restrictive than <code>NOPASSWD: ALL</code>, but are <strong>not equivalent to zero sudo</strong>.</p>
+<p>The Tailscale rules are created even when <code>tailscale_enabled: false</code>.</p>
+<p>The Gateway subsequently created by onboarding is a systemd user service named <code>openclaw-gateway.service</code>. Therefore, the practical usefulness of the playbook&#39;s <code>openclaw</code> system-service sudo rules remains untested.</p>
+<p><strong>Experimental decision:</strong> Preserve the upstream sudo rules during initial functionality testing. Later, remove or restrict unnecessary privileges and repeat the relevant tests.</p>
+<p>A future execution of the original playbook may recreate the sudoers configuration.</p>
+<h3 id="section-16">4.2 Docker Daemon and Sandbox Integration</h3>
+<p>The installer provisions conventional <strong>rootful Docker CE</strong>, not Rootless Docker.</p>
+<p>The main Docker service is:</p>
+<pre><code class="language-text">docker.service
+</code></pre>
+<p>The <code>docker-security.yml</code> task explicitly removes the OpenClaw service account from the <code>docker</code> group.</p>
+<p>This is intentional because access to the rootful Docker socket provides effectively host-root-equivalent control.</p>
+<p>However, this introduces an unresolved question:</p>
+<p><strong>How can the unprivileged Gateway create Docker sandbox containers without obtaining privileged access to the rootful daemon?</strong></p>
+<p>Docker installation does not automatically enable OpenClaw&#39;s agent sandbox.</p>
+<p>The laboratory must not solve the problem by blindly:</p>
+<ul>
+<li>Adding <code>nexus</code> to the rootful <code>docker</code> group.</li>
+<li>Making the Docker socket globally writable.</li>
+<li>Mounting the Docker socket into agent containers.</li>
+<li>Disabling the sandbox to make commands succeed.</li>
+</ul>
+<p>Potential solutions to evaluate include Rootless Docker or another supported isolation backend.</p>
+<p>Actual tool execution must be verified before claiming the agent is sandboxed.</p>
+<h3 id="section-17">4.3 Firewall and Host Security</h3>
+<p>The inspected playbook configures:</p>
+<ul>
+<li>UFW firewall.</li>
+<li>Incoming traffic denied by default.</li>
+<li>SSH access allowed on TCP port 22.</li>
+<li>Optional Tailscale UDP access.</li>
+<li>Fail2ban for SSH protection.</li>
+<li>Unattended security updates.</li>
+<li>Docker-related firewall rules.</li>
+<li>Docker log rotation.</li>
+</ul>
+<p>Firewall changes can disrupt remote administration if configured incorrectly.</p>
+<p>Administrative recovery access should remain available during future changes.</p>
+<h3 id="section-18">4.4 Docker Daemon Configuration</h3>
+<p>The inspected <code>daemon.json.j2</code> template contains:</p>
+<pre><code class="language-json">{
+  &quot;iptables&quot;: true,
+  &quot;ip-forward&quot;: true,
+  &quot;userland-proxy&quot;: false,
+  &quot;live-restore&quot;: true,
+  &quot;ip6tables&quot;: false,
+  &quot;log-driver&quot;: &quot;json-file&quot;,
+  &quot;log-opts&quot;: {
+    &quot;max-size&quot;: &quot;10m&quot;,
+    &quot;max-file&quot;: &quot;3&quot;
+  },
+  &quot;default-address-pools&quot;: [
+    {
+      &quot;base&quot;: &quot;172.17.0.0/12&quot;,
+      &quot;size&quot;: 24
+    }
+  ]
+}
+</code></pre>
+<h3 id="section-19">4.5 Design Concern — Docker Network Overlap</h3>
+<p>The configured pool:</p>
+<pre><code class="language-text">172.17.0.0/12
+</code></pre>
+<p>includes the AWS <code>172.31.x.x</code> address space.</p>
+<p>The EC2 instance uses <code>172.31.25.2/20</code>.</p>
+<p>This creates a <strong>potential</strong> overlap between Docker-assigned networks and AWS networking.</p>
+<p>No actual collision has been demonstrated.</p>
+<p><strong>Baseline decision:</strong> Preserve the upstream template unchanged and inspect the networks created by Docker before deciding whether a change is necessary.</p>
+<p>A possible upstream enhancement would allow the Docker address pool to be configured through Ansible variables.</p>
+<h3 id="section-20">4.6 Package Reproducibility</h3>
+<p>The release installation task runs:</p>
+<pre><code class="language-bash">pnpm install -g openclaw@latest
+</code></pre>
+<p>under the dedicated service account.</p>
+<p>The observed version was:</p>
+<pre><code class="language-text">OpenClaw 2026.11.2 (b556fdf)
+</code></pre>
+<p>However, <code>@latest</code> is not a reproducible version pin.</p>
+<p>Later installations could resolve to a different release.</p>
+<p>The NodeSource repository task also uses <code>creates</code>, so changing <code>nodejs_version</code> in Ansible variables may not update an existing NodeSource repository configuration during reruns.</p>
+<p>Explicit package versions and recorded dependency manifests are future reproducibility improvements.</p>
+<hr>
+<h2 id="section-21">5. Baseline Installation and Verification</h2>
+<h3 id="section-22">5.1 Execution</h3>
+<p>The local installer was executed with the custom variables:</p>
+<pre><code class="language-bash">cd ~/openclaw-ansible
+
+./run-playbook.sh \
+  -e @/home/ubuntu/openclaw-lab-3-vars.yml \
+  -e openclaw_user=nexus
+</code></pre>
+<p>The additional <code>-e openclaw_user=nexus</code> also allows the wrapper script to display the correct service-user name in its final instructions.</p>
+<p>The installer reported:</p>
+<pre><code class="language-text">INSTALLATION COMPLETE!
+</code></pre>
+<p><strong>Evidence limitation:</strong> The full Ansible <code>PLAY RECAP</code> was not preserved.</p>
+<p>The success message and subsequent runtime checks demonstrate that the installation completed sufficiently for the observed functionality, but do not constitute a complete task-by-task audit.</p>
+<h3 id="section-23">5.2 Linux Account Verification</h3>
+<p>Commands:</p>
+<pre><code class="language-bash">id nexus
+getent passwd nexus
+sudo -l -U nexus
+</code></pre>
+<p>Observed:</p>
+<pre><code class="language-text">uid=999(nexus) gid=988(nexus) groups=988(nexus)
+nexus:x:999:988:OpenClaw Service User:/home/nexus:/bin/bash
+</code></pre>
+<p>The account belonged only to its primary group.</p>
+<p>The <code>sudo -l -U nexus</code> output confirmed the scoped rules described previously, with no reported <code>NOPASSWD: ALL</code>.</p>
+<p>Runtime enforcement of agent tool restrictions remains untested.</p>
+<h3 id="section-24">5.3 Docker Verification</h3>
+<p>Commands:</p>
+<pre><code class="language-bash">sudo systemctl is-active docker
+sudo docker info --format &#39;{{json .SecurityOptions}}&#39;
+getent group docker
+</code></pre>
+<p>Observed:</p>
+<pre><code class="language-text">active
+[&quot;name=apparmor,profile=default&quot;,&quot;name=seccomp,profile=builtin&quot;,&quot;name=cgroupns&quot;]
+docker:x:987:
+</code></pre>
+<p>The Docker daemon was active.</p>
+<p>The <code>docker</code> group had no listed members.</p>
+<p>These Docker security options do not demonstrate that Nexus&#39;s tools are sandboxed.</p>
+<p>Rootless Docker and the agent sandbox are not yet configured.</p>
+<h3 id="section-25">5.4 Service Account Environment</h3>
+<p>The operator entered the service account with:</p>
+<pre><code class="language-bash">sudo su - nexus
+</code></pre>
+<p>Checks performed:</p>
+<pre><code class="language-bash">whoami
+echo &quot;$HOME&quot;
+node -v
+pnpm -v
+openclaw --version
+echo &quot;$XDG_RUNTIME_DIR&quot;
+echo &quot;$DBUS_SESSION_BUS_ADDRESS&quot;
+loginctl show-user nexus -p Linger
+</code></pre>
+<div class="table-scroll" role="region" aria-label="Experiment data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Observed result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>whoami</code></td>
+<td><code>nexus</code></td>
+</tr>
+<tr>
+<td><code>HOME</code></td>
+<td><code>/home/nexus</code></td>
+</tr>
+<tr>
+<td>Node.js</td>
+<td><code>v24.22.2</code></td>
+</tr>
+<tr>
+<td>pnpm</td>
+<td><code>12.15.0</code></td>
+</tr>
+<tr>
+<td>OpenClaw</td>
+<td><code>2026.11.2 (b556fdf)</code></td>
+</tr>
+<tr>
+<td>XDG runtime</td>
+<td><code>/run/user/999</code></td>
+</tr>
+<tr>
+<td>DBus</td>
+<td><code>unix:path=/run/user/999/bus</code></td>
+</tr>
+<tr>
+<td>Lingering</td>
+<td><code>Linger=yes</code></td>
+</tr>
+</tbody></table></div>
+<p>Ansible also generated a one-time welcome message explaining the next onboarding steps.</p>
+<p><strong>Verified:</strong> The service-account shell environment works and OpenClaw is accessible under the correct Linux identity.</p>
+<p><strong>Pending:</strong> Persistence after SSH logout and instance reboot.</p>
+<hr>
+<h2 id="section-26">6. OpenClaw Onboarding</h2>
+<p>The onboarding was started as <code>nexus</code>:</p>
+<pre><code class="language-bash">openclaw onboard --install-daemon
+</code></pre>
+<h3 id="section-27">6.1 Configuration Selected</h3>
+<div class="table-scroll" role="region" aria-label="Experiment data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Selection or observation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Setup</td>
+<td>Manual setup</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td>Local Gateway</td>
+</tr>
+<tr>
+<td>Gateway runtime</td>
+<td>Node.js</td>
+</tr>
+<tr>
+<td>Gateway port</td>
+<td><code>18789</code></td>
+</tr>
+<tr>
+<td>Gateway binding</td>
+<td>Loopback</td>
+</tr>
+<tr>
+<td>Tailscale exposure</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>Gateway secret</td>
+<td>Locally generated/stored plaintext</td>
+</tr>
+<tr>
+<td>AI provider</td>
+<td>OpenAI</td>
+</tr>
+<tr>
+<td>Model observed</td>
+<td><code>openai/gpt-6-astra</code></td>
+</tr>
+<tr>
+<td>Live AI completion</td>
+<td>Successful</td>
+</tr>
+<tr>
+<td>Chat channels</td>
+<td>Skipped</td>
+</tr>
+<tr>
+<td>Memory embeddings</td>
+<td>Skipped</td>
+</tr>
+<tr>
+<td>Web search</td>
+<td>Skipped</td>
+</tr>
+<tr>
+<td>Optional skill dependencies</td>
+<td>Skipped</td>
+</tr>
+<tr>
+<td>Optional plugin installations</td>
+<td>Skipped</td>
+</tr>
+<tr>
+<td>Optional plugin configuration</td>
+<td>Skipped</td>
+</tr>
+<tr>
+<td>Agent ID</td>
+<td><code>nexus</code></td>
+</tr>
+</tbody></table></div>
+<p>The synthetic AI test returned:</p>
+<pre><code class="language-text">AI access works. Replied in 16.3s.
+</code></pre>
+<p>This confirms successful access for that request, not a general performance benchmark.</p>
+<p>The onboarding reported configuration and session initialization:</p>
+<pre><code class="language-text">Updated config: ~/.openclaw/openclaw.json
+Workspace OK: ~/.openclaw/workspace
+Sessions OK: ~/.openclaw/agents/nexus/sessions
+</code></pre>
+<p>It also reported creating:</p>
+<pre><code class="language-text">~/.openclaw/openclaw.json.bak
+</code></pre>
+<h3 id="section-28">6.2 Gateway Secret Storage</h3>
+<p>The onboarding offered:</p>
+<ul>
+<li>Generate/store plaintext secret.</li>
+<li>Use SecretRef.</li>
+</ul>
+<p>The default plaintext option was selected for the baseline.</p>
+<p>The Gateway configuration and credentials must be reviewed later to verify that sensitive files are adequately protected.</p>
+<p>Do not publish the generated secret, API credentials or unredacted configuration.</p>
+<h3 id="section-29">6.3 Codex-Related Plugin</h3>
+<p>During onboarding, OpenClaw reported installing or using a Codex-related plugin/app-server.</p>
+<p>Its exact authentication mechanism, effective capabilities and API billing behavior have not been independently verified.</p>
+<p>Installing a plugin does not demonstrate that it is actively used or that requests are being billed.</p>
+<p>For this reason, the <code>Codex Hosted Search</code> option was not enabled.</p>
+<p>The description <code>key-free</code> must not be interpreted as proof of free or unlimited usage.</p>
+<h3 id="section-30">6.4 Skills with Missing Dependencies</h3>
+<p>The onboarding offered these 24 skills:</p>
+<pre><code class="language-text">1password
+blogwatcher
+blucli
+camsnap
+eightctl
+gemini
+gh-issues
+gifgrep
+github
+gog
+goplaces
+himalaya
+mcporter
+model-usage
+nano-pdf
+openai-whisper
+openhue
+oracle
+ordercli
+sag
+songsee
+sonoscli
+summarize
+xurl
+</code></pre>
+<p><strong>Decision:</strong> Skip dependency installation.</p>
+<p>Future candidates include:</p>
+<ul>
+<li><code>summarize</code></li>
+<li><code>openai-whisper</code></li>
+<li><code>github</code></li>
+<li><code>model-usage</code></li>
+<li><code>nano-pdf</code></li>
+</ul>
+<p>The presence of these skills in the onboarding catalog is not proof that their dependencies are installed.</p>
+<h3 id="section-31">6.5 Optional Plugins Offered for Installation</h3>
+<p>The onboarding presented the following 26 options:</p>
+<pre><code class="language-text">ACPX Runtime
+CUA Computer
+Diagnostics OpenTelemetry
+Diagnostics Prometheus
+Diff Viewer Language Pack
+Diffs
+FaceTime
+Fish Audio Speech
+GitHub Copilot agent runtime
+Google Meet
+Gradium
+Inworld
+llama.cpp Provider
+Lobster
+Memory LanceDB
+Microsoft Teams meetings
+Muse Code
+MXC Sandbox Execution
+ONNX
+OpenShell Sandbox
+Slack huddles
+Team Reports
+Tokenjuice
+TypeSafe AI
+Voice Call
+Zoom meetings
+</code></pre>
+<p><strong>Decision:</strong> Skip optional installation.</p>
+<p>Potential future research includes observability, alternate sandbox backends, local inference, memory storage and agent runtimes.</p>
+<h3 id="section-32">6.6 Plugins Offered for Configuration</h3>
+<pre><code class="language-text">@openclaw/google-plugin
+@openclaw/huggingface-provider
+@openclaw/minimax-provider
+@openclaw/ollama-provider
+Anthropic
+Codex
+Device Pairing
+Geolocation
+Linux Node
+xAI (Grok)
+</code></pre>
+<p><strong>Decision:</strong> Skip optional plugin configuration.</p>
+<h3 id="section-33">6.7 Web Search Providers Offered</h3>
+<pre><code class="language-text">Codex Hosted Search
+Brave Search
+DuckDuckGo Search (experimental)
+Exa Search
+Firecrawl Search
+Firecrawl Search (Free)
+Gemini (Google Search)
+Grok (xAI)
+Kimi (Moonshot)
+MiniMax Search
+Ollama Web Search
+Parallel Search
+Parallel Search (Free)
+Perplexity Search
+SearXNG Search
+Tavily Search
+</code></pre>
+<p><strong>Decision:</strong> Skip web-search setup.</p>
+<p>The authentication and billing behavior of Codex Hosted Search remain pending investigation.</p>
+<p>All optional capabilities will be revisited during the corresponding roadmap phases, rather than enabled indiscriminately during the security baseline.</p>
+<hr>
+<h2 id="section-34">7. Findings and Resolutions</h2>
+<h3 id="section-35">Finding 003-01 — Unsafe systemd Directory Permissions</h3>
+<p><strong>Status:</strong> Resolved<br><strong>Root origin:</strong> Pending investigation<br><strong>Date:</strong> November 9, 2026</p>
+<h4 id="section-36">Observed Behavior</h4>
+<p>During onboarding, Gateway service installation failed:</p>
+<pre><code class="language-text">SERVICE_DEFINITION_UNKNOWN: [unsafe-permissions]
+The service directory (~/.config/systemd/user)
+or its nearest existing ancestor is group/world-writable.
+</code></pre>
+<p>The internal terminal chat and API test were still functional, but the managed Gateway service had not been installed.</p>
+<h4 id="section-37">Diagnosis</h4>
+<p>Commands:</p>
+<pre><code class="language-bash">namei -l /home/nexus/.config/systemd/user
+</code></pre>
+<pre><code class="language-bash">stat -c &#39;%A %a %U:%G %n&#39; \
+  /home/nexus \
+  /home/nexus/.config \
+  /home/nexus/.config/systemd \
+  /home/nexus/.config/systemd/user
+</code></pre>
+<p>Observed:</p>
+<pre><code class="language-text">755 nexus:nexus /home/nexus
+775 nexus:nexus /home/nexus/.config
+</code></pre>
+<p>The <code>systemd/user</code> directory did not yet exist.</p>
+<p>The group-write permission on <code>/home/nexus/.config</code> caused OpenClaw&#39;s service-definition safety check to reject the installation.</p>
+<h4 id="section-38">Remediation</h4>
+<p>Performed as <code>nexus</code>:</p>
+<pre><code class="language-bash">chmod 700 /home/nexus/.config
+</code></pre>
+<p>Verification:</p>
+<pre><code class="language-bash">stat -c &#39;%A %a %U:%G %n&#39; /home/nexus/.config
+</code></pre>
+<p>Observed:</p>
+<pre><code class="language-text">drwx------ 700 nexus:nexus /home/nexus/.config
+</code></pre>
+<p>The service installation was retried:</p>
+<pre><code class="language-bash">openclaw gateway install
+</code></pre>
+<p>Observed result:</p>
+<pre><code class="language-text">Installed systemd service:
+/home/nexus/.config/systemd/user/openclaw-gateway.service
+
+Gateway service installed.
+</code></pre>
+<h4 id="section-39">Conclusion</h4>
+<p>The permission-related installation failure was resolved without modifying upstream Ansible tasks.</p>
+<p>The specific step that originally created <code>.config</code> with mode <code>0775</code> has not yet been identified.</p>
+<p>A potential upstream improvement would ensure that the service directory structure has permissions accepted by OpenClaw.</p>
+<p><strong>Do not claim an Ansible defect until the origin is independently reproduced.</strong></p>
+<hr>
+<h3 id="section-40">Finding 003-02 — Concurrent Gateway State Ownership</h3>
+<p><strong>Status:</strong> Resolved<br><strong>Date:</strong> November 9, 2026<br><strong>Component:</strong> Gateway startup / SQLite state ownership</p>
+<h4 id="section-41">Observed Behavior</h4>
+<p>After the systemd service was installed, the Gateway process appeared active, but connectivity failed:</p>
+<pre><code class="language-text">Runtime: running
+Connectivity check: failed
+connect ECONNREFUSED 127.0.0.1:18789
+</code></pre>
+<p>The port was not listening despite systemd reporting an active process.</p>
+<h4 id="section-42">Log Investigation</h4>
+<p>Application log:</p>
+<pre><code class="language-text">/tmp/openclaw/openclaw-2026-11-09.log
+</code></pre>
+<p>Relevant messages:</p>
+<pre><code class="language-text">waiting for Gateway state ownership held by another OpenClaw process,
+up to 300 s
+</code></pre>
+<p>After approximately 300 seconds:</p>
+<pre><code class="language-text">OpenClaw state database is busy at
+/home/nexus/.openclaw/state/openclaw.sqlite
+
+holder 10834 ... The holder 10834 is alive on this host
+</code></pre>
+<p>This revealed that another OpenClaw process was retaining ownership of the application state.</p>
+<h4 id="section-43">Root Cause</h4>
+<p>Process inspection identified an earlier interactive onboarding process:</p>
+<pre><code class="language-text">PID 10819 — openclaw onboard --install-daemon
+PID 10834 — openclaw (child of PID 10819)
+</code></pre>
+<p>The child process held state ownership while the systemd-managed Gateway attempted to acquire the same state.</p>
+<p>This was a process lifecycle conflict, not a demonstrated Docker or network failure.</p>
+<h4 id="section-44">Remediation</h4>
+<p>The obsolete onboarding process was terminated gracefully:</p>
+<pre><code class="language-bash">kill -TERM 10819
+</code></pre>
+<p>Verification:</p>
+<pre><code class="language-bash">ps -p 10819,10834 -o pid,ppid,stat,etime,cmd
+</code></pre>
+<p>Neither process remained active.</p>
+<p>Then the Gateway service was restarted:</p>
+<pre><code class="language-bash">systemctl --user restart openclaw-gateway.service
+</code></pre>
+<p>No SQLite databases or lock files were manually deleted.</p>
+<h4 id="section-45">Verification</h4>
+<p>The service reported:</p>
+<pre><code class="language-text">Active: active (running)
+Main PID: 12970
+</code></pre>
+<p>Socket inspection:</p>
+<pre><code class="language-text">LISTEN 127.0.0.1:18789
+LISTEN [::1]:18789
+</code></pre>
+<p>Deep status:</p>
+<pre><code class="language-text">Gateway version: 2026.11.2
+Runtime: running
+Connectivity check: ok
+Listening: 127.0.0.1:18789
+</code></pre>
+<p>The Gateway became operational under the <code>nexus</code> Linux account.</p>
+<h4 id="section-46">Lessons Learned</h4>
+<ul>
+<li>An active systemd process does not necessarily mean the Gateway is ready.</li>
+<li>OpenClaw processes sharing the same state directory can block each other.</li>
+<li>An interactive onboarding process may remain active after configuration.</li>
+<li>Logs can reveal state ownership conflicts not visible in basic service status.</li>
+<li>Graceful termination and service restart resolved the problem without reinstalling OpenClaw.</li>
+</ul>
+<p><strong>Potential upstream improvement:</strong> Better reporting or prevention of concurrent state ownership during onboarding and Gateway startup.</p>
+<p>No upstream defect has yet been established.</p>
+<hr>
+<h3 id="section-47">Finding 003-03 — Conversational Agent Bootstrap</h3>
+<p><strong>Status:</strong> Conversational bootstrap demonstrated; manual preconfiguration pending validation<br><strong>Date:</strong> November 9, 2026</p>
+<h4 id="section-48">Dashboard Access</h4>
+<p>After the Gateway recovered, the operator established an SSH tunnel from macOS and accessed the Dashboard successfully.</p>
+<p>The interface displayed the main Nexus conversation and workspace files.</p>
+<p>This confirms that Dashboard access through the private SSH tunnel worked during the test.</p>
+<p>Gateway persistence after SSH logout or EC2 reboot remains a separate validation task.</p>
+<h4 id="section-49">Conversational Identity Setup</h4>
+<p>Instead of copying the previously prepared templates, the operator decided to let Nexus initialize its identity through conversation.</p>
+<p>The initial Spanish-language instructions defined:</p>
+<ul>
+<li>Name: Nexus.</li>
+<li>Emoji: 🥷.</li>
+<li>Role: Personal AI assistant.</li>
+<li>Friendly, professional, direct and curious personality.</li>
+<li>Moderate humor and sarcasm when appropriate.</li>
+<li>Communication in the same language used by the operator.</li>
+<li>Concise answers for simple questions and detailed technical explanations when necessary.</li>
+<li>Explicit honesty and correction of mistaken assumptions.</li>
+<li>Workspace autonomy within authorized tasks.</li>
+<li>Approval requirements for system changes, installations, external communications, automation and commercial activities.</li>
+<li>No automatic avatar generation.</li>
+</ul>
+<p>The objective was to observe how OpenClaw transforms conversational instructions into persistent workspace files.</p>
+<h4 id="section-50">Changes Reported by Nexus</h4>
+<p>Nexus reported:</p>
+<ul>
+<li>Updating <code>IDENTITY.md</code>.</li>
+<li>Updating <code>SOUL.md</code>.</li>
+<li>Updating <code>USER.md</code>.</li>
+<li>Synchronizing the visible identity using <code>openclaw agents set-identity</code>.</li>
+<li>Verifying the identity using <code>openclaw agents list --json</code>.</li>
+<li>Moving <code>BOOTSTRAP.md</code> to a recoverable trash location.</li>
+<li>Not installing plugins or creating automations.</li>
+<li>Not generating an avatar.</li>
+<li>Not expanding privileges.</li>
+</ul>
+<p>The operator supplied the resulting file contents.</p>
+<p>These support the reported file changes, but command execution details and the bootstrap removal location were not independently verified.</p>
+<h4 id="section-51">File Review</h4>
+<p><strong><code>IDENTITY.md</code></strong></p>
+<p>The file contained:</p>
+<ul>
+<li>Nexus as the name.</li>
+<li>The agreed assistant role.</li>
+<li>The chosen personality.</li>
+<li>Emoji 🥷.</li>
+<li>No generated avatar.</li>
+</ul>
+<p><strong><code>SOUL.md</code></strong></p>
+<p>Nexus retained most of the default structure and added:</p>
+<ul>
+<li>Authorization boundaries.</li>
+<li>Prohibition on unauthorized autonomous tasks.</li>
+<li>Instructions against fabricated information.</li>
+<li>Prompt-injection awareness.</li>
+<li>The agreed communication style.</li>
+</ul>
+<p><strong><code>USER.md</code></strong></p>
+<p>Nexus created dated directives using the expected metadata format:</p>
+<pre><code class="language-md">&lt;!-- observed: 2026-11-09 | status: active --&gt;
+</code></pre>
+<p>However, two quality issues were observed:</p>
+<ul>
+<li>The heading <code># USER.md - User Model</code> was duplicated.</li>
+<li>Instructions mixed English imperative keywords with Spanish text, such as <code>Always llama...</code> and <code>Never inventes...</code>.</li>
+</ul>
+<p>These issues do not necessarily prevent the model from interpreting the instructions, but they demonstrate the need for review of generated configuration.</p>
+<p><strong><code>AGENTS.md</code></strong></p>
+<p>The file apparently retained its default content.</p>
+<p>The original instructions included proactive automation, scheduled checks, external outreach and autonomous Git operations.</p>
+<p>Some of these expectations may conflict with the more restrictive instructions in <code>SOUL.md</code> and <code>USER.md</code>.</p>
+<p>This is an instruction-consistency concern, not evidence that the agent has executed unauthorized activities.</p>
+<h4 id="section-52">Workspace Instruction Reloading</h4>
+<p>Nexus explained that manually editing workspace files should affect behavior when OpenClaw loads their updated context, commonly during a subsequent turn or a new session.</p>
+<p>It also clarified:</p>
+<ul>
+<li><code>AGENTS.md</code> defines operational conventions.</li>
+<li><code>SOUL.md</code> defines personality and behavioral principles.</li>
+<li><code>USER.md</code> stores stable user preferences.</li>
+<li><code>IDENTITY.md</code> contains visible identity metadata.</li>
+<li><code>openclaw agents set-identity</code> synchronizes identity information; it does not generally reload all workspace instructions.</li>
+</ul>
+<p>This explanation is consistent with the roles of the files, but the exact timing of instruction reloads has not yet been independently tested.</p>
+<p>A future experiment should modify a harmless instruction, start a fresh session and verify that the agent incorporates it.</p>
+<hr>
+<h4 id="section-53">Manual Workspace Preconfiguration</h4>
+<p><strong>Status:</strong> Documented behavior — Pending clean-install validation</p>
+<p>The inspected <code>BOOTSTRAP.md</code> and Nexus&#39;s explanation support a second initialization approach.</p>
+<p>Instead of completing identity through conversation, an operator could prepare the workspace files manually before the first agent interaction.</p>
+<p>Relevant files:</p>
+<ul>
+<li><code>AGENTS.md</code> — Operational instructions and conventions.</li>
+<li><code>IDENTITY.md</code> — Name, emoji and identity metadata.</li>
+<li><code>SOUL.md</code> — Personality and behavioral principles.</li>
+<li><code>USER.md</code> — Stable preferences.</li>
+<li><code>MEMORY.md</code> — Optional persistent memory.</li>
+</ul>
+<p>If the files contain valid configuration and <code>BOOTSTRAP.md</code> is absent, the agent is expected to begin the first conversation using the preconfigured workspace instructions rather than initiating the default identity bootstrap.</p>
+<p>This approach has not yet been tested in a clean laboratory deployment.</p>
+<h5 id="section-54">Platform Onboarding vs. Agent Bootstrap</h5>
+<p>These processes are separate.</p>
+<p><strong>Platform onboarding</strong> configures:</p>
+<ul>
+<li>Gateway.</li>
+<li>Model providers.</li>
+<li>API credentials.</li>
+<li>Channels.</li>
+<li>Plugins and integrations.</li>
+<li>Runtime services.</li>
+</ul>
+<p><strong>Agent bootstrap</strong> configures:</p>
+<ul>
+<li>Identity.</li>
+<li>Personality.</li>
+<li>Workspace operating rules.</li>
+<li>User preferences.</li>
+<li>Initial agent context.</li>
+</ul>
+<p>Preparing the workspace files does not automatically complete platform onboarding.</p>
+<h5 id="section-55">Visible Identity Synchronization</h5>
+<p>The visible identity may require synchronization with OpenClaw configuration:</p>
+<pre><code class="language-bash">openclaw agents set-identity \
+  --agent nexus \
+  --workspace /home/nexus/.openclaw/workspace \
+  --from-identity
+</code></pre>
+<p>This command updates supported identity metadata.</p>
+<p>It is not required merely to make ordinary <code>AGENTS.md</code>, <code>SOUL.md</code> or <code>USER.md</code> instructions available to the agent.</p>
+<h5 id="section-56">Expected Benefits</h5>
+<ul>
+<li>Avoid repeating the identity conversation.</li>
+<li>Reduce initial model API consumption.</li>
+<li>Reuse reviewed templates.</li>
+<li>Improve reproducibility.</li>
+<li>Maintain consistent agent configuration between deployments.</li>
+</ul>
+<h5 id="section-57">Pending Validation</h5>
+<p>A future experiment should verify that:</p>
+<ol>
+<li>A clean workspace with preconfigured files does not initiate the identity ritual.</li>
+<li>The first conversation uses the intended instructions.</li>
+<li>The visible identity is synchronized correctly.</li>
+<li>Existing workspace files are preserved.</li>
+<li>Platform onboarding remains independent.</li>
+<li>New sessions load updated instructions correctly.</li>
+</ol>
+<p><strong>Conclusion:</strong> Conversational bootstrap has been demonstrated. Manual workspace preconfiguration is a promising alternative, but remains unvalidated in this laboratory.</p>
+<hr>
+<h2 id="section-58">8. Verification Matrix and Next Tests</h2>
+<div class="table-scroll" role="region" aria-label="Experiment data table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Status</th>
+<th>Evidence or next step</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Local Ansible execution</td>
+<td>Verified</td>
+<td>Installer success</td>
+</tr>
+<tr>
+<td>Node.js, pnpm and OpenClaw</td>
+<td>Verified</td>
+<td>Runtime version commands</td>
+</tr>
+<tr>
+<td>Dedicated <code>nexus</code> identity</td>
+<td>Verified</td>
+<td><code>id</code>, <code>getent</code>, shell checks</td>
+</tr>
+<tr>
+<td>Scoped sudo rules</td>
+<td>Verified</td>
+<td><code>sudo -l -U nexus</code></td>
+</tr>
+<tr>
+<td>No Docker group membership</td>
+<td>Verified</td>
+<td><code>id nexus</code>, <code>getent group docker</code></td>
+</tr>
+<tr>
+<td>Rootful Docker service</td>
+<td>Verified</td>
+<td><code>systemctl is-active docker</code></td>
+</tr>
+<tr>
+<td>Gateway service installation</td>
+<td>Verified</td>
+<td>Finding 003-01</td>
+</tr>
+<tr>
+<td>Gateway listener and connectivity</td>
+<td>Verified</td>
+<td>Finding 003-02</td>
+</tr>
+<tr>
+<td>Dashboard access through SSH</td>
+<td>Observed</td>
+<td>Dashboard opened successfully</td>
+</tr>
+<tr>
+<td>Conversational workspace changes</td>
+<td>Observed / Reported</td>
+<td>Files provided; execution details not independently audited</td>
+</tr>
+<tr>
+<td>Persistence after SSH logout</td>
+<td>Pending</td>
+<td>Test service from an independent session</td>
+</tr>
+<tr>
+<td>Persistence after EC2 reboot</td>
+<td>Pending</td>
+<td>Reboot and verify service</td>
+</tr>
+<tr>
+<td>Gateway token and state file permissions</td>
+<td>Pending</td>
+<td>Inspect metadata without exposing secrets</td>
+</tr>
+<tr>
+<td>Tool permissions and approvals</td>
+<td>Pending</td>
+<td>Effective policy inspection</td>
+</tr>
+<tr>
+<td>Rootful Docker socket access</td>
+<td>Pending</td>
+<td>Non-mutating permission check</td>
+</tr>
+<tr>
+<td>Docker network overlap</td>
+<td>Pending</td>
+<td>Inspect actual routes and Docker networks</td>
+</tr>
+<tr>
+<td>Rootless Docker or alternative sandbox</td>
+<td>Pending</td>
+<td>Evaluate secure integration</td>
+</tr>
+<tr>
+<td>Main-agent sandbox execution</td>
+<td>Pending</td>
+<td>Effective configuration and actual tool test</td>
+</tr>
+<tr>
+<td>Workspace read/write boundaries</td>
+<td>Pending</td>
+<td>Synthetic workspace tests</td>
+</tr>
+<tr>
+<td>Unmounted host-file denial</td>
+<td>Pending</td>
+<td>Synthetic canary tests</td>
+</tr>
+<tr>
+<td>Elevated and host execution denial</td>
+<td>Pending</td>
+<td>Negative tests</td>
+</tr>
+<tr>
+<td>Scoped sudo removal</td>
+<td>Pending</td>
+<td>Controlled experiment</td>
+</tr>
+<tr>
+<td>Regression after hardening</td>
+<td>Pending</td>
+<td>Repeat baseline tests</td>
+</tr>
+<tr>
+<td>Backup and recovery</td>
+<td>Pending</td>
+<td>Controlled validation</td>
+</tr>
+<tr>
+<td>Reproducible clean installation</td>
+<td>Pending</td>
+<td>Repeat deployment</td>
+</tr>
+<tr>
+<td>Preconfigured workspace bootstrap</td>
+<td>Pending</td>
+<td>Clean-install experiment</td>
+</tr>
+</tbody></table></div>
+<h3 id="section-59">8.1 Next Experimental Activities</h3>
+<p>The next stage should focus on understanding and validating actual runtime permissions.</p>
+<p>Planned work:</p>
+<ol>
+<li>Confirm Gateway persistence independently of the original SSH session.</li>
+<li>Inspect sensitive file permissions.</li>
+<li>Review effective OpenClaw tool policies.</li>
+<li>Determine how <code>nexus</code> can safely interact with a sandbox backend.</li>
+<li>Evaluate Rootless Docker or another supported sandbox mechanism.</li>
+<li>Enable sandbox execution for the main agent.</li>
+<li>Validate containment using harmless synthetic files and commands.</li>
+<li>Remove unnecessary scoped sudo grants.</li>
+<li>Repeat functionality and security tests.</li>
+<li>Record changes and evaluate upstream contributions.</li>
+</ol>
+<p>Do not enable broad tool execution merely because the Gateway and Dashboard are operational.</p>
+<hr>
+<h2 id="section-60">9. Current Conclusions</h2>
+<p>The official Ansible installation produced a working OpenClaw environment under a dedicated Linux service account.</p>
+<p>Two independent Gateway problems were diagnosed and resolved:</p>
+<ol>
+<li>Unsafe permissions on <code>/home/nexus/.config</code> prevented installation of the systemd user service.</li>
+<li>An earlier onboarding process retained SQLite state ownership and prevented the Gateway listener from starting.</li>
+</ol>
+<p>After applying the respective corrections, OpenClaw reported successful connectivity on loopback.</p>
+<p>The operator also accessed the Dashboard through a private SSH tunnel.</p>
+<p>Conversational bootstrap was demonstrated using the initial Nexus identity configuration.</p>
+<p>The resulting files show that the agent can generate persistent identity and preference instructions from natural-language interaction, although the generated configuration still requires human review.</p>
+<p><strong>What remains unproven:</strong></p>
+<p>The agent has <strong>not yet been demonstrated to execute its tools inside a sandbox</strong>.</p>
+<p>The default rootful Docker daemon is intentionally inaccessible through <code>docker</code> group membership.</p>
+<p>The remaining work includes effective tool restrictions, sudo hardening, secret protection, sandbox integration, persistence and reproducibility.</p>
+<p>This deployment must not yet be classified as hardened or production-ready.</p>
+<h3 id="section-61">9.1 Potential Upstream Contributions</h3>
+<p>Possible improvement candidates include:</p>
+<ul>
+<li>Preparing systemd user-service directories with compatible permissions.</li>
+<li>Improving reporting and handling of concurrent onboarding and Gateway state ownership.</li>
+<li>Making Docker address pools configurable through Ansible variables.</li>
+<li>Improving reproducibility through version pinning.</li>
+<li>Making administrative sudo grants configurable or optional.</li>
+</ul>
+<p>These are research candidates, not confirmed upstream defects.</p>
+<p>Any future issue or PR should contain reproducible evidence and distinguish upstream behavior from local environment conditions.</p>
+<hr>
+<h2 id="section-62">10. References</h2>
+<ul>
+<li><a href="https://github.com/openclaw/openclaw-ansible">OpenClaw Ansible</a></li>
+<li><a href="https://docs.openclaw.ai/gateway/health">OpenClaw Gateway Health</a></li>
+<li><a href="https://docs.openclaw.ai/gateway/troubleshooting">OpenClaw Gateway Troubleshooting</a></li>
+<li><a href="https://docs.openclaw.ai/security">OpenClaw Security</a></li>
+<li><a href="https://docs.openclaw.ai/gateway/sandboxing">OpenClaw Sandboxing</a></li>
+<li><a href="https://docs.openclaw.ai/gateway/sandboxing/docker-backend">OpenClaw Docker Backend</a></li>
+<li><a href="https://docs.openclaw.ai/concepts/agent-workspace">OpenClaw Agent Workspace</a></li>
+<li><a href="https://docs.openclaw.ai/start/bootstrapping">OpenClaw Bootstrapping</a></li>
+</ul>
+<p><strong>Documentation rule:</strong> Store sanitized outputs, exact observed versions and explicit uncertainty. Preserve the upstream repository revision and record future patches separately from the original baseline.</p>
+
+</main>
+</div>
+</body>
+</html>

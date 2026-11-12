@@ -641,11 +641,84 @@ Explore different ways to interact with and administer OpenClaw.
 
 ### 009.2 — Telegram
 
-- Configure a bot.
-- Restrict authorized users.
-- Test communication.
-- Evaluate channel permissions.
-- Measure operational costs.
+#### Telegram Integration — Initial Validation
+
+**Status:** Initial functionality verified  
+**Date:** November 9, 2026  
+**Environment:** OpenClaw Lab 3 — AWS EC2
+
+The Telegram channel was configured and tested successfully using the existing OpenClaw Gateway and the primary Nexus agent.
+
+**Configuration:**
+
+- Created a Telegram bot through BotFather.
+- Configured the primary Telegram account using `openclaw channels add --channel telegram`.
+- Registered the bot token through the interactive setup.
+- Selected `dmPolicy: allowlist`.
+- Authorized the maintainer's numeric Telegram user ID.
+- Skipped chat-based administrative privileges.
+- Retained the existing private Gateway configuration.
+- No additional public inbound AWS ports were required.
+
+**Verified behavior:**
+
+- Telegram successfully delivered messages to Nexus.
+- Nexus replied through the Telegram bot.
+- Nexus recognized the maintainer and responded in Spanish.
+- The channel operated through the existing Gateway.
+- Nexus reported `openai/gpt-5.6-sol` as its active model with medium reasoning.
+
+**Findings:**
+
+- Telegram provides a convenient remote interface without requiring Dashboard access.
+- A single Telegram bot may be reused across laboratory installations, provided simultaneous polling consumers are avoided.
+- The bot token and authorized Telegram user IDs are separate configuration elements.
+- Telegram DM access policies and chat administration privileges are independent.
+- Model selection may be session-specific rather than global.
+
+**Pending validation:**
+
+- [ ] Verify Telegram connectivity while the administrative SSH tunnel is closed.
+- [ ] Inspect channel session isolation.
+- [ ] Compare model selection between Dashboard and Telegram.
+- [ ] Verify the effective model configuration.
+- [ ] Validate service persistence after EC2 restart.
+- [ ] Reassess channel permissions after security hardening.
+
+**Conclusion:** Telegram integration is functional for private conversations with Nexus. Runtime isolation and administrative security require further validation.
+
+#### Telegram and Dashboard — Cross-Channel Observation
+
+**Status:** Partially Verified  
+**Date:** November 9, 2026  
+**Environment:** OpenClaw Lab 3
+
+**Observed behavior:**
+
+- Messages sent to Nexus through Telegram appeared in the OpenClaw Dashboard.
+- Both incoming Telegram messages and Nexus's responses were visible.
+- The Dashboard displayed the agent's operations performed while answering a Telegram message.
+- Nexus reported using `openai/gpt-5.6-sol` with medium reasoning.
+- The Dashboard remained open while these observations were made.
+
+**Findings:**
+
+The Dashboard provides visibility into interactions originating from Telegram, including the agent's responses and tool activity.
+
+However, displaying messages from both interfaces does not independently prove that they share the same internal session identifier or model override.
+
+**Pending experiments:**
+
+- [ ] Close the Dashboard and SSH tunnel while keeping the EC2 instance running.
+- [ ] Send a new Telegram message and verify that Nexus responds.
+- [ ] Compare the internal session identifiers used by Telegram and Dashboard.
+- [ ] Determine whether changing the model in one interface affects the other.
+
+**Expected outcome:**
+
+Telegram should continue functioning through the persistent Gateway service independently of the Dashboard and SSH tunnel.
+
+This expectation must be confirmed through the ongoing experiment.
 
 ### 009.3 — Desktop or Mobile Application
 
