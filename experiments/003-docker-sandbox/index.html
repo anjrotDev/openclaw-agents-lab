@@ -8,12 +8,14 @@
 
     :root {
       color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
       --ink: #182d39;
       --muted: #466070;
       --accent: #095d65;
       --line: #ccd9de;
-      --paper: #fff;
-      --panel: #edf5f6;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
     }
 
     * {
@@ -125,8 +127,8 @@
     pre {
       max-width: 100%;
       overflow: auto;
-      background: #142b36;
-      color: #eff8fa;
+      background: var(--deep);
+      color: var(--on-deep);
       border-radius: .45rem;
       padding: 1rem;
       line-height: 1.5;

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML Design Conventions · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:.8rem;margin:1rem 0}
+.swatches>div{border:1px solid var(--line);border-radius:.5rem;padding:.7rem}
+.swatches i{display:block;height:2.1rem;border:1px solid var(--line);border-radius:.3rem;margin-bottom:.4rem}
+.swatches code{display:block;width:fit-content}
+dd{margin:0 0 .7rem}
+main>p{max-width:75ch}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a href="../../index.html">← OpenClaw Agents Lab</a>
+<h1>HTML design conventions</h1>
+<p>Reusable patterns for guides, experiments, and architecture pages.</p></div></header>
+<main class="wrap">
+<nav aria-label="On this page"><a href="#palette">Palette</a> · <a href="#type">Typography</a> · <a href="#navigation">Navigation</a> · <a href="#components">Components</a> · <a href="#interaction">Interaction</a> · <a href="#review">Review</a></nav>
+<h2 id="palette">Palette</h2>
+<p>Experiment 004 defines the base palette. Use the white canvas for reading, pale teal for orientation and grouped content, and deep blue for code or a featured action.</p>
+<div class="swatches">
+<div><i style="background:var(--paper)"></i><strong>Canvas</strong><code>--paper · #FFFFFF</code></div>
+<div><i style="background:var(--panel)"></i><strong>Panel</strong><code>--panel · #EDF5F6</code></div>
+<div><i style="background:var(--ink)"></i><strong>Primary text</strong><code>--ink · #182D39</code></div>
+<div><i style="background:var(--muted)"></i><strong>Secondary text</strong><code>--muted · #466070</code></div>
+<div><i style="background:var(--accent)"></i><strong>Links and focus</strong><code>--accent · #095D65</code></div>
+<div><i style="background:var(--line)"></i><strong>Border</strong><code>--line · #CCD9DE</code></div>
+<div><i style="background:var(--deep)"></i><strong>Dark surface</strong><code>--deep · #142B36</code></div>
+<div><i style="background:var(--on-deep)"></i><strong>Text on dark</strong><code>--on-deep · #EFF8FA</code></div>
+</div>
+<p>Additional colors are useful for meaningful data categories. Pair each color with a label or shape. Use the accent for links and focus, and keep links underlined in body copy. Check WCAG AA contrast for new foreground and background combinations.</p>
+<h2 id="type">Typography</h2>
+<p>Use <code>system-ui, sans-serif</code> for headings and body text, and <code>ui-monospace, monospace</code> for commands, paths, and output. Start with a 1 rem body size and 1.65 line height. Scale headings with <code>clamp()</code>. Experiment 004 uses <code>clamp(2rem, 5vw, 3.7rem)</code> for its page title. Keep reading passages near 65–75 characters per line where the layout permits.</p>
+<h2 id="navigation">Navigation</h2>
+<ul>
+<li>Use one descriptive page title, a visible link back to the lab homepage, and stable section IDs. Add a table of contents when the page spans several sections.</li>
+<li>Use repository-relative links and explicit filenames such as <code>../../index.html</code>. The lab is opened directly from disk as well as through uploaded previews.</li>
+<li>Let a sidebar index become a normal inline block on narrow screens. Group source material and related experiments near the relevant section or in a sources section.</li>
+</ul>
+<h2 id="components">Components</h2>
+<dl>
+<dt><strong>Reading header and cards</strong></dt><dd>Use a pale panel for page orientation and a dark surface for a single featured route. Cards work for parallel topics and component descriptions.</dd>
+<dt><strong>Evidence table</strong></dt><dd>Use scoped headers, text labels for implemented, verified, and pending work, and a keyboard-focusable horizontal scroll region when needed.</dd>
+<dt><strong>Commands and output</strong></dt><dd>Use <code>&lt;pre&gt;&lt;code&gt;</code> with horizontal scrolling. Identify the execution context and keep commands visually distinct from expected output.</dd>
+<dt><strong>Flow diagrams</strong></dt><dd>Use labeled nodes and directional relationships. Add a caption or nearby text describing the flow. Stack nodes vertically when horizontal space runs out.</dd>
+</dl>
+<details><summary>Example disclosure · Supporting evidence</summary><p>Use native disclosures for full records, optional detail, and troubleshooting branches. Keep required steps and important status visible. If an anchor points into a closed disclosure, open that disclosure when navigating to the anchor.</p></details>
+<h2 id="interaction">Interaction and offline use</h2>
+<p>Prefer native HTML and CSS for navigation, disclosures, tables, and simple diagrams. Use JavaScript when it makes a task easier, such as filtering learning routes or opening an appendix from a section link. Keep core content readable with scripts disabled. Make controls keyboard operable and give dynamic result counts a status region.</p>
+<p>The current pages use native HTML, CSS, and plain JavaScript. They load zero third-party libraries. If a future document benefits from a diagram, chart, or slider library, record its name, exact version, purpose, upstream link, local asset path or embedding approach, initialization example, and readable fallback here. Keep required assets local or embedded, and test from a <code>file:</code> URL without network access.</p>
+<p>Use inline styles for the palette and page presentation so a standalone uploaded HTML preview can still render. A preview may lack the repository paths needed to follow relative links. The complete repository is the reference for navigation testing.</p>
+<h2 id="review">Review before adding a page</h2>
+<ul>
+<li>Choose a layout that serves the content. A guide can use a sidebar, an architecture page can lead with a diagram, and a homepage can use cards.</li>
+<li>Write the documentation in English. Preserve evidence, commands, and source links. Distinguish deployed behavior, observations, and planned work.</li>
+<li>Check desktop and narrow layouts, keyboard focus, local links, and the behavior of interactive controls. Add the document to the homepage or its relevant parent route.</li>
+</ul>
+<p><a href="../../experiments/004-reproducible-openclaw-installation/index.html">Visual reference · Experiment 004</a></p>
+</main>
+</body>
+</html>

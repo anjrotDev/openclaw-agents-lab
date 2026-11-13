@@ -10,13 +10,14 @@
   <style>
     :root {
       color-scheme: light;
-      --paper: #f7f5ee;
-      --surface: #fffdf7;
-      --ink: #162d2a;
-      --muted: #486059;
-      --line: #d7ddd0;
-      --accent: #196453;
-      --dark: #143b33
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
     }
 
     * {
@@ -27,7 +28,7 @@
       margin: 0;
       background: var(--paper);
       color: var(--ink);
-      font: 1rem/1.6 "Instrument Sans", system-ui, sans-serif
+      font: 1rem/1.65 system-ui, sans-serif
     }
 
     [hidden] {
@@ -43,7 +44,7 @@
     button:focus-visible,
     input:focus-visible,
     summary:focus-visible {
-      outline: 3px solid #aa6125;
+      outline: 3px solid var(--accent);
       outline-offset: 4px
     }
 
@@ -66,6 +67,7 @@
     }
 
     header {
+      background: var(--panel);
       border-bottom: 1px solid var(--line)
     }
 
@@ -106,14 +108,14 @@
 
     h1,
     h2 {
-      font-family: "Instrument Serif", Georgia, serif;
-      font-weight: 500;
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
       line-height: 1.02
     }
 
     h1 {
-      font-size: clamp(3.2rem, 8vw, 6rem);
-      letter-spacing: -.055em;
+      font-size: clamp(2rem, 6vw, 4.4rem);
+      letter-spacing: -.035em;
       max-width: 9ch
     }
 
@@ -138,10 +140,14 @@
     }
 
     .feature {
-      background: var(--dark);
-      color: #fffdf7;
+      background: var(--deep);
+      color: var(--paper);
       border-radius: 1.25rem;
       padding: clamp(1.4rem, 4vw, 2.6rem)
+    }
+
+    .feature a:focus-visible {
+      outline-color: var(--on-deep);
     }
 
     .feature h2 {
@@ -149,14 +155,14 @@
     }
 
     .feature p {
-      color: #d9e7dd
+      color: var(--on-deep)
     }
 
     .feature a {
       display: inline-block;
       margin-top: 1.3rem;
-      background: #e2f0b8;
-      color: #193522;
+      background: var(--panel);
+      color: var(--ink);
       padding: .65rem 1rem;
       border-radius: .5rem;
       font-weight: 750;
@@ -197,7 +203,7 @@
       font: inherit;
       border: 1px solid var(--line);
       border-radius: .5rem;
-      background: var(--surface);
+      background: var(--paper);
       color: var(--ink);
       padding: .55rem .8rem
     }
@@ -207,7 +213,7 @@
     }
 
     button[aria-pressed=true] {
-      background: var(--dark);
+      background: var(--deep);
       color: #fff
     }
 
@@ -231,7 +237,7 @@
       padding: 1.1rem;
       border: 1px solid var(--line);
       border-radius: .8rem;
-      background: var(--surface)
+      background: var(--paper)
     }
 
     .card p {
@@ -367,6 +373,7 @@
         <li><a href="docs/roadmap.md">Roadmap</a> · milestones and planned experiments</li>
         <li><a href="docs/installation/aws-ec2-openclaw.md">Original EC2 installation notes</a> · direct installation
           and early findings</li>
+        <li><a href="docs/design/index.html">HTML design conventions</a> · palette, navigation, and reusable components</li>
         <li><a href="README.md">Repository README</a> · project introduction and source links</li>
       </ul>
     </section>

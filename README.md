@@ -118,6 +118,8 @@ Some directories and documents represent planned work and may not exist yet.
 
 ### Documentation
 
+- [HTML Design Conventions](docs/design/index.html) — Visual patterns and offline documentation practices.
+
 - [Experiment 004: Reproducible OpenClaw Installation Guide](experiments/004-reproducible-openclaw-installation/index.html)
 
 | Document                                                        | Purpose                                                                  |
