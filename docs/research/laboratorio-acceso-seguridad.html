@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Historical access and security audit · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../../index.html#reference">← Lab library</a></nav>
+<h1>Historical access and security audit</h1>
+<p><a href="laboratorio-acceso-seguridad.md">Original Markdown (Spanish)</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#lab-access-architecture-and-security">Lab Access, Architecture, and Security</a></li><li class="subsection"><a href="#status-and-scope">Status and scope</a></li><li class="subsection"><a href="#user-confirmed-architecture">User-confirmed architecture</a></li><li class="subsection"><a href="#evidence-provenance-and-impact">Evidence, provenance, and impact</a></li><li class="subsection"><a href="#risks-and-interpretation-limits">Risks and interpretation limits</a></li><li class="subsection"><a href="#proposed-dedicated-linux-identity">Proposed dedicated Linux identity</a></li><li class="subsection"><a href="#proposed-migration-stages">Proposed migration stages</a></li><li class="subsection"><a href="#future-acceptance-criteria">Future acceptance criteria</a></li><li class="subsection"><a href="#sources-and-traceability">Sources and traceability</a></li></ul></nav>
+<main>
+<h2 id="lab-access-architecture-and-security">Lab Access, Architecture, and Security</h2>
+<p><strong>Documentation date: 2026-11-08.</strong></p>
+<h3 id="status-and-scope">Status and scope</h3>
+<p>This historical record preserves user confirmations and findings from an earlier audit. The documentation date is separate from the audit date. Findings were not revalidated. At the time, the decision was to keep the learning lab without Docker or a sandbox. The document records risks and a proposed migration. No configuration, permission, account, service, or network changes were made. No installations, elevation attempts, or new security tests were performed.</p>
+<h3 id="user-confirmed-architecture">User-confirmed architecture</h3>
+<pre><code class="language-text">Maintainer&#39;s Mac
+├─ SSH client → Internet → AWS security group → SSH on EC2
+│                           SSH limited to the maintainer&#39;s public IP
+└─ Browser: localhost:18789
+   └─ SSH tunnel → Gateway: 127.0.0.1:18789 (loopback)
+                   └─ Lab with no Docker or sandbox
+</code></pre>
+<p>The maintainer reported no Tailscale, reverse proxy, or public Gateway port. The security group restriction was user-reported and was not independently checked in AWS. The SSH tunnel provides human Dashboard access without publishing the Gateway.</p>
+<h3 id="evidence-provenance-and-impact">Evidence, provenance, and impact</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Evidence or decision</th>
+<th>Provenance and limits</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EC2 accessed via SSH from a Mac. Security group allows SSH from the maintainer&#39;s public IP only.</td>
+<td>User-confirmed. AWS rules were not audited.</td>
+<td>Reported network restriction. Effective exposure was not independently established.</td>
+</tr>
+<tr>
+<td>Dashboard on localhost:18789 via SSH to Gateway 127.0.0.1:18789. No Tailscale, reverse proxy, or public Gateway port.</td>
+<td>User-confirmed.</td>
+<td>Proposed access path to retain. It does not demonstrate local tool containment.</td>
+</tr>
+<tr>
+<td>Lab used without Docker or sandbox.</td>
+<td>User&#39;s decision at the time of documentation.</td>
+<td>Sandbox isolation was consciously absent. Text instructions are not a technical boundary.</td>
+</tr>
+<tr>
+<td>Ubuntu 24.04.5 on AWS. Account ubuntu, UID 1000, groups sudo and lxd.</td>
+<td>Earlier audit, not revalidated.</td>
+<td>Account and group membership require authorized review. A future account should not inherit privileged lxd membership.</td>
+</tr>
+<tr>
+<td><code>sudo -n -l</code> reported <code>(ALL) NOPASSWD: ALL</code>. No root execution.</td>
+<td>Policy inspection in the earlier audit. Elevation was not attempted.</td>
+<td>High escalation risk from the execution account. Disabling <code>tools.elevated</code> leaves OS-granted privileges in place.</td>
+</tr>
+<tr>
+<td>Exec profile full, host auto, security full, ask off, fallback deny. Harmless commands ran without approval.</td>
+<td>Earlier audit. The main preview did not cover /exec overrides.</td>
+<td>Broad observed execution. Fallback deny alone does not establish required approval or isolation.</td>
+</tr>
+<tr>
+<td>Sandbox runtime direct, mode off.</td>
+<td>Earlier audit, not revalidated.</td>
+<td>Direct execution with no observed sandbox boundary.</td>
+</tr>
+<tr>
+<td><code>tools.fs.workspaceOnly</code> unset. Reads outside the workspace demonstrated with <code>/etc/os-release</code> and <code>/usr/lib/os-release</code>.</td>
+<td>Earlier audit, limited to those files.</td>
+<td>Workspace was not a demonstrated read boundary. Universal access and secret reads were not established.</td>
+</tr>
+<tr>
+<td>Home and OpenClaw configuration appeared writable from metadata.</td>
+<td>Earlier audit. Writes were not attempted.</td>
+<td>Potential to change owned files and configuration. Effective write scope was not exhaustively tested.</td>
+</tr>
+<tr>
+<td>Loopback Gateway with token authentication. State directory mode 0700 and configuration mode 0600.</td>
+<td>Earlier audit, not revalidated. Credentials omitted.</td>
+<td>Observed access controls. They do not isolate secrets from the owning identity or from elevation.</td>
+</tr>
+<tr>
+<td>Audit reported 0 critical, 1 warning for empty trustedProxies, and 1 informational finding.</td>
+<td>Historical result.</td>
+<td>With no reverse proxy, the warning alone does not justify changing trustedProxies. Counts do not rule out other risks.</td>
+</tr>
+<tr>
+<td>SSH listened on wildcard addresses.</td>
+<td>Earlier audit. AWS rules were described by the maintainer.</td>
+<td>A wildcard listener does not establish public reachability. Local listeners and network controls are separate.</td>
+</tr>
+<tr>
+<td>Two paired administrative devices, zero nodes, zero channels.</td>
+<td>Earlier audit. Identifiers omitted.</td>
+<td>An administrative pairing surface existed. Current device validity and permissions were not checked.</td>
+</tr>
+<tr>
+<td>Browser enabled. Authenticated sessions not inspected.</td>
+<td>Earlier audit.</td>
+<td>Access to services or credentials is unknown. No specific authenticated session was established.</td>
+</tr>
+<tr>
+<td>Session visibility unset. Previously consulted local docs described the default as all. agentToAgent enabled.</td>
+<td>Earlier audit and previously consulted docs. Histories were not tested and the references were not reread.</td>
+<td>Potentially broad visibility across sessions or agents requires authorized validation. Access to private conversations was not demonstrated.</td>
+</tr>
+</tbody></table></div>
+<h3 id="risks-and-interpretation-limits">Risks and interpretation limits</h3>
+<ul>
+<li>The primary historical risk was broad execution under a passwordless sudo account. Gateway network exposure, tool approvals, and Linux process privileges are independent controls.</li>
+<li>With the sandbox off, written instructions cannot enforce the operating-system limits of the agent identity.</li>
+<li>Modes 0700 and 0600 limit other ordinary identities and still allow access by processes running as the owner.</li>
+<li>No new audit covered AWS, firewall, SSH, updates, devices, browsers, history, secrets, sockets, effective permissions, or full configuration.</li>
+<li>The recorded audit did not execute as root. This work documented supplied evidence without elevation or out-of-scope writes.</li>
+<li>Historical results describe that observation, and current conditions may differ.</li>
+</ul>
+<h3 id="proposed-dedicated-linux-identity">Proposed dedicated Linux identity</h3>
+<p><strong>Historical proposal, pending authorization and implementation when written.</strong> For later evidence, see <a href="../../experiments/003-docker-sandbox/index.html">Experiment 003</a>.</p>
+<ol>
+<li>Separate the human administrator from the OpenClaw account. The proposed account has no sudo, sudo/docker/lxd memberships, or privileged sockets. Review equivalent and indirect privilege paths in an authorized phase.</li>
+<li>Give the account only the ownership and access needed for its workspace, configuration, and credentials. Keep secrets outside the workspace, including copies in backups or logs. Separate and control human maintenance access.</li>
+<li>Restrict accessible files and commands as additional defenses. Distinguish tool policies from enforced OS controls and verify actual isolation before claiming sandboxing.</li>
+<li>Run the service under the dedicated account with compatible hardening. Restrict writes and reads to required directories and evaluate compatibility before altering service configuration.</li>
+<li>Retain the loopback Gateway and SSH tunnel. A public port or proxy is unnecessary for this migration.</li>
+</ol>
+<p>Removing sudo leaves other capabilities in place. The account can still access its own secrets, may have network access, and may gain capabilities through authenticated browser sessions. Stronger isolation requires explicit design and verification.</p>
+<h3 id="proposed-migration-stages">Proposed migration stages</h3>
+<p>Each stage was proposed for separate authorization. None was executed as part of this historical record.</p>
+<ol>
+<li>Agree on scope, required capabilities, boundaries, owner, and intervention window. Validate relevant conditions and identify dependencies on identity, memory, delegation, and tools.</li>
+<li>Prepare a restricted backup that preserves ownership and permissions. Define rollback and avoid copying secrets into the workspace, outputs, or documentation.</li>
+<li>Prepare the dedicated account with minimum access and separate administration. Plan ownership without indiscriminate transfers or inherited privileges.</li>
+<li>Transition service and required data with secure credential handling. Keep loopback and the tunnel. Apply compatible hardening gradually with recovery points.</li>
+<li>Run authorized continuity and boundary checks. Record evidence without secrets and preserve human recovery access.</li>
+<li>Accept changes after verifying continuity and controls. On failure, follow the rollback plan and document residual risk. Retire old access or resources only after confirming they are no longer needed and obtaining authorization.</li>
+</ol>
+<p>The record contains no executable migration or elevation steps.</p>
+<h3 id="future-acceptance-criteria">Future acceptance criteria</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Expected evidence</th>
+<th>Historical status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dedicated identity without administrative privileges</td>
+<td>Effective process and service identity. No sudo, privileged groups, sockets, or equivalent paths. No unauthorized elevation test.</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>Limited writes and minimum access</td>
+<td>Suitable ownership and modes for workspace, configuration, and credentials. Agreed allowed and denied writes at test locations with no sensitive data.</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>Identity and memory continuity</td>
+<td>Assistant identity and authorized memory remain available without broadening visibility or reproducing secrets.</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>Bounded delegation</td>
+<td>Synthetic data confirms agreed tool and session scope without inspecting private histories.</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>Human access</td>
+<td>Separate administrator, working SSH and Dashboard tunnel, and loopback Gateway with no public port. Inspect network controls if authorized.</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>Operational service and tools</td>
+<td>Dedicated identity and compatibility with allowed capabilities. Check restart and persistence if approved.</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>Usable backup and rollback</td>
+<td>Recovery preserves permissions and keeps secrets out of the workspace. Record owner and recovery point.</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>Explicit residual risk</td>
+<td>Record that a dedicated account without sudo still needs separately validated sandboxing and can retain access to its own secrets, network, or authenticated sessions.</td>
+<td>Pending</td>
+</tr>
+</tbody></table></div>
+<h3 id="sources-and-traceability">Sources and traceability</h3>
+<p>Sources were maintainer confirmations and a supplied summary of an earlier audit. These local references had been consulted earlier and were not reread for the record.</p>
+<ul>
+<li><code>/home/ubuntu/.npm-global/lib/node_modules/openclaw/docs/cli/approvals.md</code></li>
+<li><code>/home/ubuntu/.npm-global/lib/node_modules/openclaw/docs/cli/sandbox.md</code></li>
+<li><code>/home/ubuntu/.npm-global/lib/node_modules/openclaw/docs/gateway/security/tool-permissions.md</code></li>
+</ul>
+<p>The record omits secrets, real public IPs, token values, and device identifiers. Loopback addresses describe local architecture. Proposals and pending criteria describe future validation.</p>
+
+</main>
+</div>
+</body>
+</html>

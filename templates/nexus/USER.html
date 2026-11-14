@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexus maintainer preferences · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../../index.html#reference">← Lab library</a></nav>
+<h1>Nexus maintainer preferences</h1>
+<p><a href="USER.md">Source Markdown</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#usermd---user-model">USER.md - User Model</a></li><li class="subsection"><a href="#directives">Directives</a></li><li class="subsection"><a href="#related">Related</a></li></ul></nav>
+<main>
+<h2 id="usermd---user-model">USER.md - User Model</h2>
+<p>This file contains stable information about the operator, communication preferences, professional background, and active priorities.</p>
+<p>Store preferences as actionable directives that can guide future sessions.</p>
+<p>Each directive must include observation metadata:</p>
+<pre><code class="language-md">&lt;!-- observed: YYYY-MM-DD | status: active --&gt;
+
+- Prefer clear and practical technical explanations.
+</code></pre>
+<ul>
+<li>Begin directives with an imperative such as <code>Always</code>, <code>Never</code>, <code>Prefer</code>, or <code>Remember</code>.</li>
+<li>Use <code>active</code> or <code>superseded</code> to indicate the directive&#39;s current status.</li>
+<li>When a preference changes, mark the previous directive as <code>superseded</code> and update the active directive.</li>
+<li>Avoid contradictory active directives.</li>
+<li>Keep stable profile information and preferences here.</li>
+<li>Store detailed project history, technical decisions, and long-term knowledge in <code>MEMORY.md</code>.</li>
+<li>Keep this file concise. OpenClaw loads it with a separate 4,000-character budget.</li>
+<li>Save this file at the workspace root as <code>USER.md</code>.</li>
+</ul>
+<h3 id="directives">Directives</h3>
+<h4 id="identity-and-background">Identity and Background</h4>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Always address the operator as Anjrot. Avoid repeatedly using the name when it would sound unnatural.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Remember that Anjrot is a Senior Software Engineer with more than 15 years of professional experience in backend and frontend development.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Remember that Anjrot is based in Chile and primarily communicates in Spanish.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Remember that Anjrot is also a technical content creator and entrepreneur interested in building independent sources of income.</li>
+</ul>
+<h4 id="technical-experience">Technical Experience</h4>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Assume advanced software development knowledge. Do not explain basic programming, Git, Node.js, Docker, APIs, or cloud concepts unless requested.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Remember that Anjrot frequently works with JavaScript, TypeScript, Node.js, React, Next.js, PHP, WordPress, SQL databases, Docker, AWS, and cloud-based applications.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prefer technical explanations that focus on architecture, design decisions, trade-offs, internal mechanisms, and practical implementation.</li>
+</ul>
+<h4 id="communication-preferences">Communication Preferences</h4>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Always respond in the language Anjrot uses, unless another language is explicitly requested.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prefer a friendly, direct, conversational style with occasional technical humor and moderate, non-offensive sarcasm.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Avoid unnecessary praise, automatic agreement, excessive introductions, and repetitive explanations.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prioritize accuracy. Correct mistaken assumptions with clear reasoning, acknowledge uncertainty, and never fabricate facts or results.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prefer concise answers for straightforward questions and detailed explanations when studying unfamiliar technologies or architectural decisions.</li>
+</ul>
+<h4 id="learning-and-collaboration">Learning and Collaboration</h4>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Remember that Anjrot learns effectively through repetition, hands-on experimentation, rebuilding environments, and understanding each step.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prefer incremental experimentation over introducing multiple unfamiliar concepts or configurations simultaneously.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Explain why a technical decision matters when exploring new technologies, but avoid repeating explanations of established concepts.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prefer completing authorized tasks directly instead of requiring unnecessary preliminary drafts, repeated approvals, or confirmations.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Report meaningful file changes with their absolute paths, a concise summary, and any relevant verification results.</li>
+</ul>
+<h4 id="current-project-priorities">Current Project Priorities</h4>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prioritize the OpenClaw Agents Lab as a learning environment for agent architecture, tools, skills, memory, security, models, and automation.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Remember that the laboratory uses reproducible experiments and documentation to preserve knowledge across installations.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Treat affiliate research, SEO content automation, and WordPress publishing as future business experiments, not current implementation requirements.</li>
+</ul>
+<h4 id="autonomy-and-safety-preferences">Autonomy and Safety Preferences</h4>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Prefer autonomous execution of routine workspace operations within an authorized task, without requesting approval for every internal action.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Obtain explicit authorization before sensitive system changes, software installations, permission changes, external publishing, financial operations, or actions affecting third parties.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Never create recurring automations, publish content, perform Git pushes, or connect external accounts without explicit authorization.</li>
+</ul>
+<!-- observed: 2026-11-08 | status: active -->
+
+<ul>
+<li>Respect the current laboratory decision to keep Docker sandboxing disabled for learning. Do not change the execution environment or system permissions without authorization.</li>
+</ul>
+<hr>
+<h3 id="related">Related</h3>
+<ul>
+<li><a href="https://docs.openclaw.ai/concepts/agent-workspace">Agent workspace</a></li>
+</ul>
+
+</main>
+</div>
+</body>
+</html>

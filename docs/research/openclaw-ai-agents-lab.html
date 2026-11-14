@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenClaw AI agents research · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../../index.html#reference">← Lab library</a></nav>
+<h1>OpenClaw AI agents research</h1>
+<p><a href="openclaw-ai-agents-lab.md">Source Markdown</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#openclaw-ai-agents-lab">OpenClaw AI Agents Lab</a></li><li class="subsection"><a href="#project-overview-roadmap">Project Overview &amp; Roadmap</a></li><li class="subsection"><a href="#1-project-vision">1. Project Vision</a></li><li class="subsection"><a href="#2-project-objectives">2. Project Objectives</a></li><li class="subsection"><a href="#3-initial-technology-stack">3. Initial Technology Stack</a></li><li class="subsection"><a href="#4-phase-1-infrastructure-installation">4. Phase 1 — Infrastructure &amp; Installation</a></li><li class="subsection"><a href="#5-phase-2-interfaces-remote-access">5. Phase 2 — Interfaces &amp; Remote Access</a></li><li class="subsection"><a href="#6-phase-3-agent-fundamentals">6. Phase 3 — Agent Fundamentals</a></li><li class="subsection"><a href="#7-phase-4-specialized-agents-workflows">7. Phase 4 — Specialized Agents &amp; Workflows</a></li><li class="subsection"><a href="#8-phase-5-automation-autonomy">8. Phase 5 — Automation &amp; Autonomy</a></li><li class="subsection"><a href="#9-phase-6-future-business-use-case">9. Phase 6 — Future Business Use Case</a></li><li class="subsection"><a href="#10-phase-7-replication-productization">10. Phase 7 — Replication &amp; Productization</a></li><li class="subsection"><a href="#11-cost-management">11. Cost Management</a></li><li class="subsection"><a href="#12-project-boundaries">12. Project Boundaries</a></li><li class="subsection"><a href="#13-working-methodology">13. Working Methodology</a></li><li class="subsection"><a href="#14-initial-roadmap">14. Initial Roadmap</a></li><li class="subsection"><a href="#15-initial-decisions">15. Initial Decisions</a></li><li class="subsection"><a href="#16-next-milestone">16. Next Milestone</a></li></ul></nav>
+<main>
+<h2 id="openclaw-ai-agents-lab">OpenClaw AI Agents Lab</h2>
+<h3 id="project-overview-roadmap">Project Overview &amp; Roadmap</h3>
+<p><strong>Status:</strong> Planning<br><strong>Version:</strong> 0.1<br><strong>Project Type:</strong> AI Agents Research &amp; Development Laboratory<br><strong>Technology:</strong> OpenClaw<br><strong>Initial Goal:</strong> Learning, experimentation and architecture validation<br><strong>Future Goal:</strong> Affiliate Research &amp; Content Automation System</p>
+<hr>
+<h3 id="1-project-vision">1. Project Vision</h3>
+<p>The purpose of this project is to create a personal laboratory for learning, experimenting with, and building autonomous AI agents using OpenClaw.</p>
+<p>The laboratory will provide a controlled environment to understand how AI agents operate, communicate, use tools, access external services, maintain memory, and execute tasks autonomously.</p>
+<p>The project will begin as a learning initiative, without immediate commercial requirements.</p>
+<p>However, the long-term vision is to use the knowledge acquired to develop a reusable system for affiliate marketing research, SEO content creation, and WordPress publishing.</p>
+<p>The system will first be tested using websites owned by the project maintainer. If the results demonstrate measurable value, the architecture may eventually be packaged as an installable solution for third-party customers.</p>
+<p><strong>Guiding principle: Learn first, validate second, productize third.</strong></p>
+<hr>
+<h3 id="2-project-objectives">2. Project Objectives</h3>
+<h4 id="primary-objectives">Primary objectives</h4>
+<ol>
+<li>Learn how OpenClaw works and understand its architecture.</li>
+<li>Deploy OpenClaw in a secure cloud environment.</li>
+<li>Configure and evaluate multiple AI model providers.</li>
+<li>Explore the available interfaces for interacting with OpenClaw.</li>
+<li>Learn how to create, configure, and manage specialized agents.</li>
+<li>Understand agent tools, skills, memory, permissions, and execution workflows.</li>
+<li>Experiment with scheduled tasks and agent autonomy.</li>
+<li>Establish safe practices for operating agents that can access external resources.</li>
+<li>Document discoveries, limitations, configuration decisions, and lessons learned.</li>
+</ol>
+<h4 id="secondary-objectives">Secondary objectives</h4>
+<ol>
+<li>Identify practical use cases for personal productivity and automation.</li>
+<li>Evaluate the feasibility of an AI-powered affiliate research and content system.</li>
+<li>Build reusable agent configurations and workflows.</li>
+<li>Investigate future commercial applications.</li>
+</ol>
+<hr>
+<h3 id="3-initial-technology-stack">3. Initial Technology Stack</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Component</th>
+<th align="left">Technology</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Agent platform</td>
+<td align="left">OpenClaw</td>
+</tr>
+<tr>
+<td align="left">Cloud hosting</td>
+<td align="left">AWS EC2 or DigitalOcean</td>
+</tr>
+<tr>
+<td align="left">Operating system</td>
+<td align="left">Ubuntu Linux</td>
+</tr>
+<tr>
+<td align="left">AI providers</td>
+<td align="left">OpenAI API and Google Gemini API</td>
+</tr>
+<tr>
+<td align="left">Remote administration</td>
+<td align="left">SSH</td>
+</tr>
+<tr>
+<td align="left">Secure web access</td>
+<td align="left">SSH tunneling or another private-access solution</td>
+</tr>
+<tr>
+<td align="left">Containerization</td>
+<td align="left">Docker, if appropriate for the chosen deployment</td>
+</tr>
+<tr>
+<td align="left">Version control</td>
+<td align="left">Git</td>
+</tr>
+<tr>
+<td align="left">Documentation</td>
+<td align="left">Markdown</td>
+</tr>
+</tbody></table></div>
+<p>The cloud provider will be selected before deployment.</p>
+<p>Initial infrastructure requirements will be based on the resources necessary to run OpenClaw and its tools, not to host local language models.</p>
+<p><strong>Important:</strong> AI inference will initially be performed through external APIs.</p>
+<p>The laboratory will be completely independent from Abidegen and its production infrastructure.</p>
+<hr>
+<h3 id="4-phase-1-infrastructure-installation">4. Phase 1 — Infrastructure &amp; Installation</h3>
+<p><strong>Objective:</strong> Deploy a functional and secure OpenClaw instance.</p>
+<h4 id="activities">Activities</h4>
+<ul>
+<li>Evaluate AWS EC2 versus DigitalOcean.</li>
+<li>Select a suitable instance size.</li>
+<li>Configure the operating system.</li>
+<li>Establish secure SSH access.</li>
+<li>Create a dedicated non-root user.</li>
+<li>Install OpenClaw using a supported installation method.</li>
+<li>Configure service persistence and restart behavior.</li>
+<li>Configure the initial AI provider.</li>
+<li>Validate communication between OpenClaw and the model API.</li>
+<li>Review logs and basic resource consumption.</li>
+<li>Establish initial backup and recovery procedures.</li>
+</ul>
+<h4 id="security-requirements">Security requirements</h4>
+<ul>
+<li>Do not expose the OpenClaw administrative interface directly to the public internet.</li>
+<li>Prefer SSH tunneling for initial access.</li>
+<li>Restrict inbound network access.</li>
+<li>Keep API credentials outside source code.</li>
+<li>Apply least-privilege permissions.</li>
+<li>Avoid unnecessary root privileges.</li>
+<li>Use separate credentials for the laboratory.</li>
+<li>Establish resource and spending limits where supported.</li>
+</ul>
+<h4 id="expected-outcome">Expected outcome</h4>
+<p>A functional OpenClaw instance that can be administered securely from the maintainer&#39;s Mac.</p>
+<hr>
+<h3 id="5-phase-2-interfaces-remote-access">5. Phase 2 — Interfaces &amp; Remote Access</h3>
+<p><strong>Objective:</strong> Explore the available ways to interact with OpenClaw.</p>
+<h4 id="interfaces-to-evaluate">Interfaces to evaluate</h4>
+<p><strong>Web Dashboard</strong></p>
+<ul>
+<li>Understand the built-in web interface.</li>
+<li>Access it securely through an SSH tunnel.</li>
+<li>Explore chat, sessions, configuration, and monitoring.</li>
+<li>Avoid exposing the administrative interface publicly.</li>
+</ul>
+<p><strong>Telegram</strong></p>
+<ul>
+<li>Investigate bot integration.</li>
+<li>Configure authorized users and access restrictions.</li>
+<li>Test conversational interactions.</li>
+<li>Evaluate whether Telegram improves day-to-day usability.</li>
+</ul>
+<p><strong>OpenClaw Application</strong></p>
+<ul>
+<li>Investigate the availability and capabilities of official desktop or mobile applications.</li>
+<li>Verify compatibility with the selected server deployment.</li>
+<li>Determine whether the application offers practical advantages over the web interface or Telegram.</li>
+</ul>
+<h4 id="expected-outcome-2">Expected outcome</h4>
+<p>Choose one primary interface and optionally one secondary interface for daily interaction.</p>
+<hr>
+<h3 id="6-phase-3-agent-fundamentals">6. Phase 3 — Agent Fundamentals</h3>
+<p><strong>Objective:</strong> Understand how agents operate internally.</p>
+<h4 id="topics-to-explore">Topics to explore</h4>
+<p><strong>Agent lifecycle</strong></p>
+<ul>
+<li>How an agent receives instructions.</li>
+<li>How it selects and invokes tools.</li>
+<li>How tool results are returned.</li>
+<li>How the agent determines that a task is complete.</li>
+</ul>
+<p><strong>Models</strong></p>
+<ul>
+<li>Configure OpenAI and Gemini.</li>
+<li>Compare model behavior.</li>
+<li>Understand token consumption.</li>
+<li>Evaluate tool-calling reliability.</li>
+<li>Configure model selection and fallback where supported.</li>
+</ul>
+<p><strong>Memory and context</strong></p>
+<ul>
+<li>Understand conversation context.</li>
+<li>Explore persistent memory.</li>
+<li>Understand storage and retrieval mechanisms.</li>
+<li>Learn how to manage and limit memory.</li>
+</ul>
+<p><strong>Tools and skills</strong></p>
+<ul>
+<li>Understand the difference between tools and skills.</li>
+<li>Explore built-in capabilities.</li>
+<li>Learn how custom integrations are created.</li>
+<li>Understand permission boundaries.</li>
+<li>Evaluate external skills before installation.</li>
+</ul>
+<h4 id="expected-outcome-3">Expected outcome</h4>
+<p>The maintainer understands the fundamental components of an AI agent and can configure a basic agent without relying exclusively on installation tutorials.</p>
+<hr>
+<h3 id="7-phase-4-specialized-agents-workflows">7. Phase 4 — Specialized Agents &amp; Workflows</h3>
+<p><strong>Objective:</strong> Learn how to configure agents with different responsibilities.</p>
+<h4 id="experiments">Experiments</h4>
+<p><strong>Research Agent</strong></p>
+<p>Investigate a technical topic using available sources and generate a structured report with verifiable references.</p>
+<p><strong>Content Agent</strong></p>
+<p>Transform a supplied research report into an article draft following an editorial structure.</p>
+<p><strong>Planning Agent</strong></p>
+<p>Organize a set of tasks, identify dependencies, and propose an execution plan.</p>
+<p><strong>Coordinator Agent</strong></p>
+<p>Explore how a primary agent can delegate or coordinate tasks with specialized agents.</p>
+<h4 id="topics-to-evaluate">Topics to evaluate</h4>
+<ul>
+<li>Agent-specific instructions.</li>
+<li>Model selection per agent.</li>
+<li>Tool permissions.</li>
+<li>Shared versus isolated context.</li>
+<li>Communication between agents.</li>
+<li>Task delegation.</li>
+<li>Execution monitoring.</li>
+<li>Failure handling.</li>
+</ul>
+<p>Multi-agent configurations will be introduced progressively rather than as a prerequisite for the first experiments.</p>
+<h4 id="expected-outcome-4">Expected outcome</h4>
+<p>A small collection of specialized agents capable of completing controlled tasks.</p>
+<hr>
+<h3 id="8-phase-5-automation-autonomy">8. Phase 5 — Automation &amp; Autonomy</h3>
+<p><strong>Objective:</strong> Explore how agents can execute recurring tasks without requiring manual interaction.</p>
+<h4 id="experiments-2">Experiments</h4>
+<ul>
+<li>Scheduled research tasks.</li>
+<li>Periodic reports.</li>
+<li>Automatic classification of information.</li>
+<li>Multi-step workflows.</li>
+<li>Notifications through the selected interface.</li>
+<li>Human approval before sensitive actions.</li>
+<li>Error recovery and task monitoring.</li>
+</ul>
+<h4 id="safety-considerations">Safety considerations</h4>
+<p>Autonomous execution must have clear operational boundaries.</p>
+<p>Initial experiments must not permit unrestricted system commands, destructive actions, financial transactions, or external publishing.</p>
+<p>The system should record relevant actions and provide sufficient information to audit failures.</p>
+<h4 id="expected-outcome-5">Expected outcome</h4>
+<p>At least one recurring automated workflow that produces a useful result without requiring manual initiation.</p>
+<hr>
+<h3 id="9-phase-6-future-business-use-case">9. Phase 6 — Future Business Use Case</h3>
+<h4 id="affiliate-research-content-automation">Affiliate Research &amp; Content Automation</h4>
+<p><strong>Status:</strong> Concept identified — implementation deferred until laboratory fundamentals are validated.</p>
+<p>The long-term commercial concept combines automated product research with SEO-oriented content production.</p>
+<p>The system would identify opportunities, research relevant products, prepare editorial content, and assist with WordPress publishing.</p>
+<h4 id="initial-testing-environment">Initial testing environment</h4>
+<p><strong>anjrot.com</strong></p>
+<p>The initial website for validating research quality, editorial workflows, SEO improvements, and affiliate monetization.</p>
+<h4 id="potential-affiliate-providers">Potential affiliate providers</h4>
+<ul>
+<li>Amazon Associates.</li>
+<li>Impact.com, primarily for software, VPNs, hosting, and other relevant services.</li>
+<li>Mercado Libre affiliate programs for a possible future website.</li>
+</ul>
+<p>Affiliate availability, program eligibility, tracking requirements, and permitted promotional methods must be verified before integration.</p>
+<h4 id="proposed-workflow">Proposed workflow</h4>
+<ol>
+<li>Research search trends and relevant topics.</li>
+<li>Analyze search intent and competing content.</li>
+<li>Identify appropriate products or services.</li>
+<li>Produce a research report.</li>
+<li>Present recommendations for human approval.</li>
+<li>Add verified affiliate links.</li>
+<li>Generate an editorial draft.</li>
+<li>Optimize on-page SEO and content structure.</li>
+<li>Create a WordPress draft.</li>
+<li>Review and approve publication.</li>
+<li>Monitor search performance and affiliate results.</li>
+<li>Recommend updates based on measurable outcomes.</li>
+</ol>
+<h4 id="editorial-requirements">Editorial requirements</h4>
+<ul>
+<li>Prioritize helpful, original, people-first content.</li>
+<li>Use verifiable sources.</li>
+<li>Avoid fabricated product testing and personal experience.</li>
+<li>Clearly disclose affiliate relationships.</li>
+<li>Do not publish mass-generated low-value articles.</li>
+<li>Follow Google Search policies and relevant affiliate program conditions.</li>
+<li>Keep publication under human approval during initial validation.</li>
+</ul>
+<h4 id="success-indicators">Success indicators</h4>
+<ul>
+<li>Indexed articles.</li>
+<li>Organic search impressions.</li>
+<li>Organic clicks.</li>
+<li>Search query growth.</li>
+<li>Affiliate link clicks.</li>
+<li>Approved affiliate commissions.</li>
+<li>Operational cost per published article.</li>
+</ul>
+<p>Organic traffic growth will be considered an early validation signal.</p>
+<p>Revenue and repeatable profitability will be evaluated over a longer period.</p>
+<hr>
+<h3 id="10-phase-7-replication-productization">10. Phase 7 — Replication &amp; Productization</h3>
+<p><strong>Status:</strong> Future possibility, not an initial development commitment.</p>
+<p>If the affiliate content automation workflow produces measurable results, the next experiment will be to reproduce it on a new website.</p>
+<p>The objective is to determine whether the results are repeatable without depending on the existing history or audience of anjrot.com.</p>
+<p>If successful, the solution may be converted into an installable product or managed implementation service.</p>
+<h4 id="potential-deliverables">Potential deliverables</h4>
+<ul>
+<li>Reusable OpenClaw configuration.</li>
+<li>Specialized agent definitions.</li>
+<li>Custom skills and integrations.</li>
+<li>WordPress publishing workflow.</li>
+<li>Research and content templates.</li>
+<li>Installation documentation.</li>
+<li>Security guidelines.</li>
+<li>Monitoring and maintenance procedures.</li>
+</ul>
+<p>Each customer deployment should have an appropriately isolated environment, credentials, data, and permissions.</p>
+<p>No multi-tenant SaaS architecture is planned at this stage.</p>
+<hr>
+<h3 id="11-cost-management">11. Cost Management</h3>
+<p>The laboratory should remain inexpensive enough to operate without requiring immediate revenue.</p>
+<h4 id="initial-cost-categories">Initial cost categories</h4>
+<ul>
+<li>Cloud server.</li>
+<li>OpenAI API consumption.</li>
+<li>Google Gemini API consumption.</li>
+<li>Optional third-party research tools.</li>
+<li>Storage and backup services.</li>
+</ul>
+<h4 id="principles">Principles</h4>
+<ul>
+<li>Prefer pay-as-you-go infrastructure while experimenting.</li>
+<li>Use existing personal API credits when possible.</li>
+<li>Define monthly spending budgets and effective consumption limits where available.</li>
+<li>Monitor token usage and tool execution costs.</li>
+<li>Avoid unnecessary always-on resources.</li>
+<li>Measure operational costs before attempting commercial deployment.</li>
+</ul>
+<p><strong>Initial financial objective:</strong> Keep the laboratory affordable and establish a future path toward covering its own operating costs.</p>
+<hr>
+<h3 id="12-project-boundaries">12. Project Boundaries</h3>
+<h4 id="in-scope">In scope</h4>
+<ul>
+<li>OpenClaw installation and configuration.</li>
+<li>Cloud infrastructure experiments.</li>
+<li>Agent architecture and learning.</li>
+<li>Model provider integration.</li>
+<li>Tools and skills.</li>
+<li>Memory and context management.</li>
+<li>Secure access.</li>
+<li>Automation experiments.</li>
+<li>Future affiliate research and content workflows.</li>
+</ul>
+<h4 id="out-of-scope-during-initial-phases">Out of scope during initial phases</h4>
+<ul>
+<li>Abidegen repositories or infrastructure.</li>
+<li>Production business credentials.</li>
+<li>Customer onboarding.</li>
+<li>SaaS development.</li>
+<li>Unrestricted autonomous publishing.</li>
+<li>Commercial deployment.</li>
+<li>Local LLM hosting.</li>
+<li>Revenue guarantees.</li>
+</ul>
+<hr>
+<h3 id="13-working-methodology">13. Working Methodology</h3>
+<p>The project will follow an incremental, learning-first approach.</p>
+<p>For each experiment:</p>
+<ol>
+<li>Define what we want to understand.</li>
+<li>Review the relevant concepts and documentation.</li>
+<li>Implement the smallest useful configuration.</li>
+<li>Execute a controlled test.</li>
+<li>Observe and analyze the results.</li>
+<li>Document what worked and what failed.</li>
+<li>Decide whether to keep, modify, or discard the experiment.</li>
+</ol>
+<p>Architecture should evolve from validated requirements rather than speculative complexity.</p>
+<p>Significant configuration changes should be documented to make the laboratory reproducible.</p>
+<hr>
+<h3 id="14-initial-roadmap">14. Initial Roadmap</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Phase</th>
+<th align="left">Description</th>
+<th align="left">Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Infrastructure and installation</td>
+<td align="left">Pending</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Interfaces and remote access</td>
+<td align="left">Pending</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Agent fundamentals</td>
+<td align="left">Pending</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">Specialized agents and workflows</td>
+<td align="left">Pending</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">Automation and autonomy</td>
+<td align="left">Pending</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">Affiliate research and content automation</td>
+<td align="left">Future</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">Replication and productization</td>
+<td align="left">Future</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="15-initial-decisions">15. Initial Decisions</h3>
+<ul>
+<li>OpenClaw is the selected platform for the first laboratory.</li>
+<li>AWS EC2 and DigitalOcean remain the hosting candidates.</li>
+<li>OpenAI and Google Gemini are the initial model providers.</li>
+<li>The first deployment will use external AI APIs rather than locally hosted models.</li>
+<li>Secure remote access is required.</li>
+<li>The first experiments will focus on learning the platform.</li>
+<li>The affiliate automation concept is retained as a potential business opportunity.</li>
+<li>WordPress will be the initial content publishing platform when the business workflow begins.</li>
+<li>anjrot.com will be the first validation website.</li>
+<li>Human approval will be required for commercial and publishing actions.</li>
+<li>Abidegen remains completely outside the project.</li>
+</ul>
+<hr>
+<h3 id="16-next-milestone">16. Next Milestone</h3>
+<p><strong>Milestone 001 — First Secure OpenClaw Deployment</strong></p>
+<p>The first milestone will be completed when:</p>
+<ul>
+<li>A cloud provider has been selected.</li>
+<li>OpenClaw is installed and running.</li>
+<li>Secure remote access is working.</li>
+<li>One AI provider is configured.</li>
+<li>The maintainer can interact with the agent.</li>
+<li>Basic logs and resource consumption can be inspected.</li>
+<li>The deployment steps have been documented.</li>
+</ul>
+<p>No business automation or affiliate integration is required to complete this milestone.</p>
+<hr>
+<p><strong>Project philosophy:</strong> Build knowledge through experimentation, turn useful discoveries into repeatable workflows, and pursue commercialization only after demonstrating measurable value.</p>
+
+</main>
+</div>
+</body>
+</html>

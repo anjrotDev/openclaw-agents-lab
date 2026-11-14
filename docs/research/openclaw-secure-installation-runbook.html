@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposed secure installation runbook · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../../index.html#reference">← Lab library</a></nav>
+<h1>Proposed secure installation runbook</h1>
+<p><a href="openclaw-secure-installation-runbook.md">Source Markdown</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#openclaw-secure-installation-runbook">OpenClaw Secure Installation Runbook</a></li><li class="subsection"><a href="#1-purpose-and-scope">1. Purpose and Scope</a></li><li class="subsection"><a href="#2-architecture-overview">2. Architecture Overview</a></li><li class="subsection"><a href="#3-prerequisites">3. Prerequisites</a></li><li class="subsection"><a href="#4-aws-infrastructure-configuration">4. AWS Infrastructure Configuration</a></li><li class="subsection"><a href="#5-ubuntu-initial-preparation">5. Ubuntu Initial Preparation</a></li><li class="subsection"><a href="#6-dedicated-linux-user">6. Dedicated Linux User</a></li><li class="subsection"><a href="#7-docker-installation-and-security">7. Docker Installation and Security</a></li><li class="subsection"><a href="#8-openclaw-installation">8. OpenClaw Installation</a></li><li class="subsection"><a href="#9-gateway-and-systemd-configuration">9. Gateway and systemd Configuration</a></li><li class="subsection"><a href="#10-agent-workspace-initialization">10. Agent Workspace Initialization</a></li><li class="subsection"><a href="#11-docker-sandbox-configuration">11. Docker Sandbox Configuration</a></li><li class="subsection"><a href="#12-tool-permissions-and-execution-approvals">12. Tool Permissions and Execution Approvals</a></li><li class="subsection"><a href="#13-secure-dashboard-access">13. Secure Dashboard Access</a></li><li class="subsection"><a href="#14-ai-provider-configuration">14. AI Provider Configuration</a></li><li class="subsection"><a href="#15-agent-identity-templates">15. Agent Identity Templates</a></li><li class="subsection"><a href="#16-security-validation">16. Security Validation</a></li><li class="subsection"><a href="#17-functional-verification">17. Functional Verification</a></li><li class="subsection"><a href="#18-troubleshooting">18. Troubleshooting</a></li><li class="subsection"><a href="#19-backup-and-recovery">19. Backup and Recovery</a></li><li class="subsection"><a href="#20-rollback-procedures">20. Rollback Procedures</a></li><li class="subsection"><a href="#21-operational-maintenance">21. Operational Maintenance</a></li><li class="subsection"><a href="#22-acceptance-criteria">22. Acceptance Criteria</a></li><li class="subsection"><a href="#23-references-and-sources">23. References and Sources</a></li></ul></nav>
+<main>
+<h2 id="openclaw-secure-installation-runbook">OpenClaw Secure Installation Runbook</h2>
+<p><strong>Target:</strong> a NEW AWS EC2 instance, Ubuntu Server 24.04 LTS, t3.medium (2 vCPU, 4 GiB RAM), OpenClaw 2026.11.2.</p>
+<p><strong>Prepared:</strong> 2026-11-08. <strong>Status: complete review draft; execution blocked by the explicit gates below.</strong></p>
+<p>This document was completed from evidence already collected during the laboratory investigation. At the owner&#39;s request, no further searches were performed to finish it. Creating this document does not authorize installation or infrastructure changes. No procedure below was executed on a new instance; no installation command was tested by drafting this document.</p>
+<h3 id="1-purpose-and-scope">1. Purpose and Scope</h3>
+<p><strong>Objective:</strong> define a secure, reproducible and testable deployment, while distinguishing proven product behavior from a proposed architecture and unresolved implementation details.</p>
+<p><strong>Actors:</strong> the human operator uses the Mac and AWS console; Linux user <code>ubuntu</code> administers the NEW server; Linux user <code>openclaw</code> owns and runs the application without sudo or privileged groups. Commands labelled “agent sandbox” must be requested through an actual agent turn, not substituted with a host terminal command.</p>
+<p><strong>Evidence labels</strong></p>
+<ul>
+<li><strong>VERIFIED-READ:</strong> command or behavior observed in the existing laboratory or retrieved official documentation/source. This is not an installation test.</li>
+<li><strong>PROPOSED:</strong> conventional operating-system command or design for the new host. Review it before execution; it has not been tested here.</li>
+<li><strong>GATE:</strong> version-sensitive syntax, missing evidence or compatibility that must be resolved before that stage. No fabricated command is supplied to fill a gap.</li>
+</ul>
+<p>All shell blocks are proposed future operations unless identified as previously observed diagnostics. A shell block is not a script to execute end-to-end. Check the actor, prerequisites and expected result before each block. Never paste the complete document into a shell.</p>
+<p><strong>Out of scope:</strong> migration of the current installation, changes to its users or services, actual provisioning, real-secret penetration tests, public Dashboard access, multiple agents, external channels, scheduled automations and additional integrations.</p>
+<p><strong>Execution release gates:</strong> exact artifact provenance; pinned Node and Docker packages; rootless Docker startup and user mapping; exact 2026.11.2 onboarding/configuration schema; host-execution denial; provider-secret setup; persisted systemd environment; and all acceptance tests. A pending gate means STOP, not “use an insecure fallback.”</p>
+<p><strong>Expected result / verification:</strong> a reviewed procedure with an evidence ledger and acceptance record. <strong>Recovery:</strong> revise the document; do not compensate for missing documentation with administrative experiments on the current server.</p>
+<h3 id="2-architecture-overview">2. Architecture Overview</h3>
+<p><strong>Objective:</strong> separate human administration, Gateway orchestration and sandboxed tool execution.</p>
+<pre><code class="language-text">Mac browser -&gt; localhost:18789 -&gt; SSH tunnel -&gt; EC2 127.0.0.1:18789
+Mac SSH ------------------------------------&gt; ubuntu (human administrator)
+AWS Security Group: SSH from the approved administrative source only
+
+EC2 Ubuntu 24.04
+  ubuntu: administrative account; not the agent&#39;s execution identity
+  openclaw: dedicated unprivileged Linux account
+    systemd user manager with lingering
+      rootless Docker daemon -&gt; private user Unix socket
+      OpenClaw Gateway -&gt; loopback only, authenticated
+        API requests -&gt; OpenAI / Google Gemini
+        one main agent -&gt; Docker sandbox, mode all
+          persistent authorized workspace: rw
+          root filesystem: read-only
+          network: none
+          no Docker socket, provider keys or host home mount
+</code></pre>
+<p>The Gateway remains on the host; enabling tool sandboxing does not move the entire application into Docker. Workspace files remain host-backed and persist across disposable container replacement. [OC-SANDBOX, OC-DOCKER, OC-WORKSPACE]</p>
+<p><strong>Design decision:</strong> rootless Docker, not membership in the rootful <code>docker</code> group. The Gateway must reach its rootless daemon, but sandbox processes must not receive that socket or its parent runtime directory. Rootless Docker still grants authority over data accessible to its owning Linux user. A compromised Gateway can therefore affect that user&#39;s application state and credentials. This architecture does not isolate the Gateway from itself. [D-ROOTLESS]</p>
+<p><strong>Proposed paths</strong></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Location</th>
+<th>Sandbox visibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dedicated home</td>
+<td>/home/openclaw</td>
+<td>Not mounted wholesale</td>
+</tr>
+<tr>
+<td>OpenClaw state and configuration</td>
+<td>/home/openclaw/.openclaw</td>
+<td>Not mounted wholesale</td>
+</tr>
+<tr>
+<td>Persistent workspace</td>
+<td>/home/openclaw/.openclaw/workspace</td>
+<td>Only this subtree, rw</td>
+</tr>
+<tr>
+<td>Rootless Docker socket</td>
+<td>/run/user/DEDICATED_UID/docker.sock</td>
+<td>Never mounted</td>
+</tr>
+<tr>
+<td>Package binaries/source and image build inputs</td>
+<td>Outside workspace</td>
+<td>Not writable through workspace mount</td>
+</tr>
+<tr>
+<td>Provider credentials</td>
+<td>Supported host-side store outside workspace</td>
+<td>Never mounted or injected into tool environment</td>
+</tr>
+<tr>
+<td>Backups</td>
+<td>Protected administrator-controlled destination</td>
+<td>Never mounted</td>
+</tr>
+</tbody></table></div>
+<p><strong>Actor:</strong> technical reviewer. <strong>Commands:</strong> none at design stage. <strong>Verification:</strong> inspect actual mounts and process identities after deployment. <strong>Risk:</strong> rw workspace permits deletion and modification of its real files, including identity instructions. <strong>Recovery:</strong> versioned workspace backups, not an assumption that a disposable container protects mounted data.</p>
+<h3 id="3-prerequisites">3. Prerequisites</h3>
+<p><strong>Objective:</strong> resolve environmental and version assumptions before provisioning. <strong>Actor:</strong> human administrator.</p>
+<p>Required: AWS administrative access limited to this deployment; an SSH key managed on macOS; trusted Ubuntu 24.04 amd64 AMI; EBS capacity for Node, application, Docker image layers, logs and backups; API accounts with billing controls; and an independent recovery path.</p>
+<p>The inspected local package declares version <code>2026.11.2</code> and Node engines <code>&gt;=24.16.0 &lt;25 || &gt;=26.1.0</code>. Use a pinned supported Node 24 release, not an assumed Ubuntu package or a floating “latest”. The locally inspected package did not provide a gitHead establishing its upstream build provenance. [OC-LOCAL]</p>
+<p><strong>GATE P1 — reproducibility manifest:</strong> record the approved AMI ID/region, architecture, Node version and checksum, npm package version and integrity, Docker package versions, image source commit, base-image digest and final image ID/digest. Do not claim bit-for-bit reproducibility from a versioned script that still downloads mutable packages.</p>
+<p>Proposed checks on the NEW instance:</p>
+<pre><code class="language-bash"># ubuntu; read-only
+cat /etc/os-release
+uname -m
+free -h
+df -h /
+</code></pre>
+<p><strong>Expected:</strong> Ubuntu 24.04, x86_64, planned memory/disk. <strong>Risk:</strong> 4 GiB is the requested starting capacity, not a guarantee for concurrent agents or large builds. <strong>Recovery:</strong> stop, adjust sizing or build images separately; do not remove isolation to reduce resource usage.</p>
+<h3 id="4-aws-infrastructure-configuration">4. AWS Infrastructure Configuration</h3>
+<p><strong>Objective:</strong> provision a non-public Gateway while preserving administrative access. <strong>Actor:</strong> human AWS operator; use the console or separately reviewed infrastructure-as-code. No AWS CLI provisioning command is asserted as verified here.</p>
+<ol>
+<li>Launch the approved Ubuntu 24.04 amd64 AMI on t3.medium.</li>
+<li>Encrypt the EBS volume; define retention and snapshot policy explicitly. Do not create a recurring schedule as part of this document&#39;s execution without separate authorization.</li>
+<li>Permit inbound TCP 22 only from the administrator&#39;s current public IPv4 /32. If IPv6 is used, define equally narrow IPv6 rules; do not leave ::/0 open accidentally.</li>
+<li>Do not add inbound rules for 18789, Docker API ports or container ports.</li>
+<li>Require IMDSv2. Prefer no instance IAM role initially; if a role becomes necessary, scope it narrowly. IMDSv2 alone is not proof that host processes cannot acquire role credentials.</li>
+<li>Review outbound access: the host needs approved package registries, DNS, time and provider HTTPS. Sandbox network none is separate from host egress. Do not pretend that basic Security Group rules provide domain-aware provider filtering.</li>
+<li>Record network/VPC/route choices, administrator recovery method and cost controls, including burstable CPU credit behavior.</li>
+</ol>
+<p><strong>Verification:</strong> inspect AWS rules and instance metadata settings in the console; verify no public Gateway rule. Later combine this with host listener inspection and an external connectivity check. <strong>Risks:</strong> a changing home IP can lock out SSH; t3 burst capacity and image storage can add cost. <strong>Recovery:</strong> use an authorized AWS administrative path to repair the source rule; never open SSH globally as the default workaround.</p>
+<p><strong>GATE P2:</strong> AWS settings above are design requirements, not AWS controls inspected on the future instance. Official AWS pages in the references are review targets, not claimed as consulted evidence.</p>
+<h3 id="5-ubuntu-initial-preparation">5. Ubuntu Initial Preparation</h3>
+<p><strong>Objective:</strong> establish a maintained host before service installation. <strong>Actor:</strong> ubuntu, using sudo only for human-approved host preparation.</p>
+<pre><code class="language-bash"># ubuntu; PROPOSED; NEW instance only
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install ca-certificates curl git uidmap dbus-user-session
+</code></pre>
+<p>Review the package transaction rather than applying an unattended generic hardening script. Install the approved Node distribution using a verified release and checksum procedure: <strong>GATE P3</strong>, exact acquisition and verification steps not recovered sufficiently to prescribe here. Do not use curl-pipe-shell as a substitute.</p>
+<p>After a separately authorized reboot, if required, re-establish SSH and repeat OS/resource checks. Reconnect before proceeding with account changes. Review SSH key authentication and password-login policy without blindly replacing sshd configuration. Keep the existing administrative session open when testing changes.</p>
+<p><strong>Expected:</strong> patched host with required prerequisites and known Node version. <strong>Verification:</strong> <code>node --version</code> and <code>npm --version</code> after approved Node installation. <strong>Risks:</strong> package updates can require a reboot; shell PATH and service PATH can differ. <strong>Recovery:</strong> use the recorded image/snapshot and administrative session; do not downgrade packages randomly.</p>
+<h3 id="6-dedicated-linux-user">6. Dedicated Linux User</h3>
+<p><strong>Objective:</strong> create a separate service identity without administrative rights. <strong>Actor:</strong> ubuntu.</p>
+<pre><code class="language-bash"># ubuntu; PROPOSED; stop if this account already exists
+getent passwd openclaw
+# A returned account requires inspection, not recreation or deletion.
+# Only after confirming the account is absent:
+sudo adduser --disabled-password --gecos &#39;&#39; openclaw
+sudo chmod 0700 /home/openclaw
+id openclaw
+sudo loginctl enable-linger openclaw
+loginctl show-user openclaw -p Linger
+</code></pre>
+<p>A disabled password is not the same as denying every login mechanism. Do not install an SSH authorized key for the service account by default. Human administration remains through ubuntu. Do not add openclaw to sudo, docker, lxd or equivalent privileged groups. Check existing sudoers rules, not just group membership.</p>
+<p>To enter a service-account shell for approved setup:</p>
+<pre><code class="language-bash"># ubuntu; PROPOSED handoff to the dedicated identity
+sudo -iu openclaw
+# now openclaw
+id
+printf &#39;%s
+&#39; &quot;$HOME&quot;
+</code></pre>
+<p><strong>Expected:</strong> openclaw identity, /home/openclaw home, no privileged groups, lingering enabled. <strong>GATE P4:</strong> verify the systemd user manager and /run/user/UID are available in the chosen session mechanism. A sudo login shell does not automatically prove that the user bus is available.</p>
+<p><strong>Recovery:</strong> retain ubuntu access and stop setup if account ownership or pre-existing data is unexpected. Do not delete a populated account as rollback. Lingering permits user services to remain active after logout and start at boot; prove both in section 17.</p>
+<h3 id="7-docker-installation-and-security">7. Docker Installation and Security</h3>
+<p><strong>Objective:</strong> provide Docker management without giving the service account root-equivalent rootful Docker access. <strong>Actors:</strong> ubuntu installs approved packages; openclaw owns its rootless daemon.</p>
+<p><strong>Selected architecture:</strong> Docker rootless. No rootful daemon socket access, no docker group membership, no chmod 666 on a socket, no TCP Docker API, no socket mount inside agent containers.</p>
+<p><strong>GATE D1 — package installation:</strong> use Docker&#39;s official Ubuntu repository procedure with verified signing-key handling and pinned versions. The exact repository and package installation block was not fully recovered in this research; do not substitute an unverified command. Include the supported rootless extras and prerequisites. Check whether the package transaction starts a rootful daemon; do not leave it as an accidental alternate backend. Review any action to stop/disable that daemon separately on the NEW instance. [D-UBUNTU, D-ROOTLESS]</p>
+<p><strong>GATE D2 — Ubuntu 24.04:</strong> verify the package-supplied RootlessKit AppArmor integration and subordinate UID/GID allocation before initialization. Do not disable AppArmor globally or set a host-wide unprivileged-user-namespace workaround merely to make a test pass. RootlessKit host permissions and container AppArmor support are different questions. [D-TROUBLE]</p>
+<p>Proposed diagnostic block after package installation:</p>
+<pre><code class="language-bash"># openclaw; read-only
+id
+command -v docker
+command -v dockerd-rootless-setuptool.sh
+grep &#39;^openclaw:&#39; /etc/subuid /etc/subgid
+printf &#39;%s
+&#39; &quot;$XDG_RUNTIME_DIR&quot;
+systemctl --user is-system-running
+</code></pre>
+<p><strong>GATE D3 — daemon initialization:</strong> use the rootless setup tool&#39;s documented installation flow for the pinned Docker release; its full initialization sequence must be confirmed before execution. Then verify the user service and private socket, rather than assuming the active Docker context is safe.</p>
+<pre><code class="language-bash"># openclaw; PROPOSED checks after successful rootless setup
+export XDG_RUNTIME_DIR=&quot;/run/user/$(id -u)&quot;
+export DOCKER_HOST=&quot;unix://$XDG_RUNTIME_DIR/docker.sock&quot;
+unset DOCKER_CONTEXT
+systemctl --user status docker.service
+stat -c &#39;%U %G %a %n&#39; &quot;$XDG_RUNTIME_DIR/docker.sock&quot;
+docker info --format &#39;{{json .SecurityOptions}}&#39;
+id -nG
+</code></pre>
+<p><strong>Expected:</strong> rootless security option, dedicated-user socket, no privileged groups. OpenClaw documentation states that its Docker CLI uses the Gateway process environment; set only one of DOCKER_HOST or DOCKER_CONTEXT. There is no invented sandbox.docker daemon-selection key. [OC-DOCKER]</p>
+<p><strong>Rootless UID/GID trap:</strong> container UID 0 maps to the daemon&#39;s unprivileged host UID. Nonzero container UIDs map into subordinate IDs. Retrieved OpenClaw source auto-selects workspace host UID/GID unless docker.user is explicit; applying that raw number inside rootless Docker may make a private workspace unwritable. [D-MAPPING, OC-USER-SOURCE]</p>
+<p><strong>Proposed resolution, GATE D4:</strong> explicitly evaluate container user 0:0 under the proven rootless daemon, with dropped capabilities, read-only root and no-new-privileges. This is namespaced container root, not host root. Verify file ownership and rw behavior with synthetic files before adopting it. Do not chmod 777 the workspace or change it to subordinate ownership without a reviewed design.</p>
+<p><strong>Recovery:</strong> repair the dedicated user&#39;s rootless service/environment; never fall back to the rootful socket or grant sudo. Container/image recreation may discard ephemeral state; workspace data requires its own backup.</p>
+<h3 id="8-openclaw-installation">8. OpenClaw Installation</h3>
+<p><strong>Objective:</strong> install the exact application version as openclaw, not root. <strong>Actor:</strong> openclaw, after P1/P3 and Docker gates.</p>
+<p>Proposed user-local package installation on the NEW instance:</p>
+<pre><code class="language-bash"># openclaw; PROPOSED, not executed in this laboratory
+mkdir -p &quot;$HOME/.local&quot;
+npm install --global --prefix &quot;$HOME/.local&quot; openclaw@2026.11.2
+export PATH=&quot;$HOME/.local/bin:$PATH&quot;
+node --version
+npm --version
+openclaw --version
+</code></pre>
+<p>Verify the package&#39;s registry provenance and integrity BEFORE approving installation, including package lifecycle scripts. Do not install under ubuntu and then recursively transfer that account&#39;s entire application state. Pin a concrete Node binary path in the eventual service environment.</p>
+<p>The retrieved version-specific source used commit <code>b556fdf457b026574bf0f1e7b4914b15f3f179ce</code> for the Docker-user resolver. <strong>GATE P1 remains:</strong> independently establish the relationship between that source, release v2026.11.2 and the published npm artifact. The local package version string alone does not prove byte-identical provenance.</p>
+<p><strong>Expected:</strong> binaries and application package owned by openclaw; no global root installation. <strong>Verification:</strong> <code>command -v openclaw</code>, version checks and ownership inspection. <strong>Risk:</strong> npm lifecycle code runs with the installer&#39;s privileges; the service user still owns sensitive state. <strong>Recovery:</strong> retain pinned artifacts and manifests; do not overwrite a live installation without an approved rollback plan.</p>
+<h3 id="9-gateway-and-systemd-configuration">9. Gateway and systemd Configuration</h3>
+<p><strong>Objective:</strong> a persistent user service with a private rootless Docker connection and loopback-only authenticated Gateway. <strong>Actors:</strong> openclaw configures application/user service; ubuntu supplies only necessary host/user-manager preparation.</p>
+<p><strong>GATE G1:</strong> confirm the 2026.11.2 single-agent onboarding command and service-install flags. Exact setup syntax was not recovered sufficiently to prescribe a runnable command. Use the documented service generator instead of inventing an ExecStart or copying a unit from another version. Do not start normal agent conversations until section 12 controls are effective.</p>
+<p>Required effective configuration:</p>
+<ul>
+<li>Exactly one main agent and a workspace under /home/openclaw/.openclaw/workspace.</li>
+<li>Gateway bound to 127.0.0.1:18789 with authentication enabled.</li>
+<li>A systemd USER service running under openclaw; persistent after logout and boot.</li>
+<li>A private runtime environment with the absolute application/Node/Docker executable locations and rootless daemon endpoint.</li>
+<li>No rootful Docker context inherited from the administrator.</li>
+</ul>
+<p>Illustrative systemd user-service drop-in, <strong>PROPOSED; apply only after the actual generated unit is identified</strong>:</p>
+<pre><code class="language-ini">[Service]
+Environment=DOCKER_HOST=unix://%t/docker.sock
+UnsetEnvironment=DOCKER_CONTEXT
+</code></pre>
+<p>Here %t must resolve to the dedicated user&#39;s runtime directory. Verify the final environment without dumping API keys or tokens. Shell exports do not configure an already-running systemd service. PATH must include the actual pinned Node and Docker locations; do not guess a path in a copied unit.</p>
+<p>Do not apply a generic systemd hardening block to both Gateway and rootless Docker: namespace and helper requirements differ. Restrictions such as NoNewPrivileges/ProtectSystem need compatibility tests and may break rootless setup if indiscriminately placed on the daemon.</p>
+<p><strong>VERIFIED-READ diagnostics available in the laboratory:</strong></p>
+<pre><code class="language-bash"># openclaw; diagnostic commands after installation
+openclaw status
+openclaw gateway status --deep
+</code></pre>
+<p><strong>Expected:</strong> dedicated identity, loopback listener, authenticated Gateway and reachable rootless daemon. <strong>Recovery:</strong> restore the reviewed user-service drop-in/configuration and restart only the new host&#39;s affected service after approval. Preserve SSH access. Never compensate by binding the Gateway publicly.</p>
+<h3 id="10-agent-workspace-initialization">10. Agent Workspace Initialization</h3>
+<p><strong>Objective:</strong> initialize one main agent with persistent, limited writable storage. <strong>Actor:</strong> openclaw.</p>
+<pre><code class="language-bash"># openclaw; PROPOSED on a new dedicated home
+umask 077
+mkdir -p &quot;$HOME/.openclaw/workspace&quot;
+chmod 0700 &quot;$HOME/.openclaw&quot; &quot;$HOME/.openclaw/workspace&quot;
+</code></pre>
+<p><strong>GATE W1:</strong> use verified 2026.11.2 onboarding to initialize the single agent; record its actual agent ID instead of assuming the ID is main or nexus. Do not create a second agent just to assign the display name Nexus.</p>
+<p>The documented bootstrap seeds AGENTS.md, SOUL.md, IDENTITY.md, USER.md and BOOTSTRAP.md. Customizing identity/preferences can cause bootstrap cleanup automatically. Review that behavior before replacing templates; do not run bootstrap recommendations as permission to install plugins. No avatar generation is required for this baseline. [OC-BOOTSTRAP]</p>
+<p>Keep configuration, provider auth, logs, sessions databases, SSH keys, package installation and backups outside the mounted workspace. Do not mount /home/openclaw or the entire .openclaw tree. Review symlinks and nested mounts rather than considering a path prefix sufficient proof of confinement.</p>
+<p><strong>Verification:</strong> workspace ownership, private parent directories, one agent in the agent listing, actual sandbox mount inspection later. <strong>Risk:</strong> writable identity files allow persistent instruction changes; this is deliberate user-authorized autonomy, not immutable policy. <strong>Recovery:</strong> restore reviewed files individually from backup without restoring secrets into the workspace.</p>
+<h3 id="11-docker-sandbox-configuration">11. Docker Sandbox Configuration</h3>
+<p><strong>Objective:</strong> sandbox normal tool execution for the MAIN agent, not only child sessions. <strong>Actor:</strong> openclaw during human-controlled setup, not an autonomous agent editing its own restrictions.</p>
+<p>The following JSON fragment uses fields observed in the retrieved official sandbox documentation; it is a fragment to merge, not a replacement for the complete configuration. Validate against the installed 2026.11.2 schema before use. [OC-SANDBOX, OC-DOCKER]</p>
+<pre><code class="language-json">{
+  &quot;agents&quot;: {
+    &quot;defaults&quot;: {
+      &quot;sandbox&quot;: {
+        &quot;mode&quot;: &quot;all&quot;,
+        &quot;backend&quot;: &quot;docker&quot;,
+        &quot;scope&quot;: &quot;session&quot;,
+        &quot;workspaceAccess&quot;: &quot;rw&quot;,
+        &quot;docker&quot;: {
+          &quot;image&quot;: &quot;openclaw-sandbox:REVIEWED-LOCAL-TAG&quot;,
+          &quot;user&quot;: &quot;0:0&quot;,
+          &quot;readOnlyRoot&quot;: true,
+          &quot;tmpfs&quot;: [&quot;/tmp&quot;, &quot;/var/tmp&quot;, &quot;/run&quot;],
+          &quot;network&quot;: &quot;none&quot;,
+          &quot;capDrop&quot;: [&quot;ALL&quot;]
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>REVIEWED-LOCAL-TAG is deliberately a placeholder: do not paste this fragment into production unchanged. The user 0:0 decision is conditional on rootless verification in D4. Scope session keeps runtime environments separated; it does not create separate copies of a shared rw workspace.</p>
+<p><strong>Modes:</strong> mode all is necessary for this main-agent requirement; non-main can leave the main session unsandboxed. Tool policy remains a separate layer. [OC-SANDBOX]</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Workspace option</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>none</td>
+<td>A separate sandbox workspace, not access to the main workspace. It does not mean “all filesystem access disabled.”</td>
+</tr>
+<tr>
+<td>ro</td>
+<td>Main workspace accessible read-only; scratch paths can still be writable.</td>
+</tr>
+<tr>
+<td>rw</td>
+<td>Authorized main workspace is writable and host-persistent. Changes affect the real host-backed files.</td>
+</tr>
+</tbody></table></div>
+<p><strong>GATE I1 — image/source discrepancy:</strong> retrieved current Docker-backend documentation names openclaw-sandbox:trixie-slim, while the locally inspected 2026.11.2 distribution contains a special missing-image path for openclaw-sandbox:bookworm-slim and refers to scripts/sandbox-setup.sh. This does not establish which image should be selected for every build. Resolve the exact version&#39;s default, Dockerfile and build context before building. Do not blindly mix current docs with the installed bundle or substitute bare Debian. The inspected error path explicitly requires Python helpers for write/edit operations.</p>
+<p>Base tool, common-tool and browser-image variants must be checked against the chosen source revision. The baseline needs only the tool image; browser sandbox and additional integrations are out of scope. Image-build scripts were not found at the inspected npm package root; do not assume npm ships all repository build inputs. [OC-IMAGES]</p>
+<p>Build/pull into the SAME rootless daemon used by the Gateway. Pin the base image digest and dependencies for stronger reproducibility; record the resulting image ID. No external bind mounts, host networking, privileged mode, Docker socket, provider secrets or dangerous mount-validation overrides.</p>
+<p><strong>VERIFIED-READ:</strong></p>
+<pre><code class="language-bash"># openclaw; use the actual agent ID
+openclaw sandbox explain --agent ACTUAL_AGENT_ID
+openclaw sandbox list
+</code></pre>
+<p><strong>Expected:</strong> active Docker sandbox policy for main agent; rw workspace only, none network, read-only root, dropped capabilities and no-new-privileges. <strong>Recovery:</strong> retain sandbox all; fix image/permission/environment issues or stop the agent. Do not turn sandbox off as a repair shortcut. Scoped recreation discards ephemeral container state and must be reviewed before use.</p>
+<h3 id="12-tool-permissions-and-execution-approvals">12. Tool Permissions and Execution Approvals</h3>
+<p><strong>Objective:</strong> eliminate alternate host-execution and administration routes while retaining workspace work. <strong>Actor:</strong> human operator configuring openclaw before normal agent use.</p>
+<p>Verified documentation exposes this elevated-tool control:</p>
+<pre><code class="language-json">{
+  &quot;tools&quot;: {
+    &quot;elevated&quot;: {
+      &quot;enabled&quot;: false
+    }
+  }
+}
+</code></pre>
+<p>Elevated execution is an explicit sandbox escape route; disabling it is necessary but is not proof that all other host paths are blocked. It also does not remove Linux sudo rights from an account that has them. [OC-POLICY]</p>
+<p><strong>GATE T1 — exact tool policy:</strong> validate the 2026.11.2 schema and runtime tool names, then produce a minimal allowlist. Intended permitted capabilities: sandbox-backed file read/write/edit, sandbox exec/process and conversation response. Deny unneeded Gateway/config administration, node/desktop control, host execution, package/plugin management, external messaging, recurring automation and cross-agent administration. Do not invent a list of tool identifiers or assume an unavailable tool name is a working deny rule.</p>
+<p><strong>GATE T2 — execution routes:</strong> explicitly bind normal execution to the sandbox using version-verified policy. A request for host/gateway/node execution and elevated execution must fail. Saved previews may omit session overrides; check the live session and actual tool behavior. Do not grant broad shell/interpreter allowlists for host execution.</p>
+<p><strong>GATE T3 — approvals:</strong> independently set conservative host-execution approvals (deny unless explicitly authorized, with fail-closed fallback), even though normal work must remain sandboxed. The exact configuration-writing command/schema is pending. Approval settings and tool availability are distinct. A fallback deny with ask off and full security is not an ordinary approval barrier.</p>
+<p>Diagnostics observed in the laboratory:</p>
+<pre><code class="language-bash"># openclaw; inspection, not policy setters
+openclaw exec-policy show
+openclaw approvals get --gateway
+# Substitute the actual session key; preview is not live execution proof.
+openclaw exec-policy show --session ACTUAL_SESSION_KEY
+</code></pre>
+<p>A workspace-only file-tool restriction is useful defense in depth, but cannot substitute for shell confinement or OS permissions. Sandbox network none does not automatically disable host-side web tools or provider calls. No channels/plugins/schedules should be enabled by onboarding defaults without review.</p>
+<p><strong>Expected / verification:</strong> synthetic host and elevated requests are denied while ordinary sandbox file work succeeds. <strong>Recovery:</strong> stop normal agent use if any host route succeeds; repair policy and retest. Never expose the rootless socket to let the agent “repair Docker.”</p>
+<h3 id="13-secure-dashboard-access">13. Secure Dashboard Access</h3>
+<p><strong>Objective:</strong> reach an authenticated loopback-only Dashboard from macOS. <strong>Actor:</strong> human on Mac.</p>
+<pre><code class="language-bash"># Mac; PROPOSED; replace both explicit placeholders
+ssh -N -T \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=30 \
+  -L 127.0.0.1:18789:127.0.0.1:18789 \
+  -i &quot;$HOME/.ssh/APPROVED_KEY&quot; \
+  ubuntu@EC2_HOST
+</code></pre>
+<p>Verify the server host-key fingerprint through a trusted path on first connection. Do not disable host-key checking. Open <a href="http://localhost:18789">http://localhost:18789</a> on the Mac; complete the documented authentication flow without placing a token in shared URLs, screenshots or this runbook. A tunnel is transport, not a replacement for Gateway authentication.</p>
+<p><strong>Expected:</strong> Dashboard works through the tunnel; Gateway is not reachable directly from the Internet. <strong>Verification:</strong> section 16 combines host listeners, AWS rules and external checks. <strong>Risk:</strong> loopback-only forwarding still allows processes on the Mac to reach the local endpoint; retain authentication. <strong>Recovery:</strong> resolve occupied local port or SSH access; do not expose Gateway publicly. If using another local port, change only the local side deliberately.</p>
+<h3 id="14-ai-provider-configuration">14. AI Provider Configuration</h3>
+<p><strong>Objective:</strong> configure OpenAI and Google Gemini API access without exposing credentials to the sandbox. <strong>Actor:</strong> human operator using the supported OpenClaw secure setup surface under the dedicated identity.</p>
+<p><strong>GATE A1:</strong> the exact 2026.11.2 provider authentication commands, provider identifiers, secret-store references and model IDs were not recovered sufficiently to print verified configuration. Complete this gate using that version&#39;s schema and official provider docs before execution. No invented API key command or assumed model alias is supplied.</p>
+<p>Required workflow:</p>
+<ol>
+<li>Create separately scoped provider API keys with appropriate account/project budget controls.</li>
+<li>Use a supported masked prompt or verified secret-reference mechanism; do not type real keys into shell command arguments, chat or the document.</li>
+<li>Store credentials only in a supported host-side location outside the workspace and image build context, readable only as necessary by the dedicated Gateway identity.</li>
+<li>Configure one explicit default model and the second provider for a separately controlled test. Automatic fallback is not assumed or required.</li>
+<li>Confirm neither provider key appears in sandbox mounts or container environment. Gateway-side HTTPS must work while sandbox egress remains disabled.</li>
+<li>Make one minimal synthetic request per provider after approval of possible API charges. Never use real documents for the first test.</li>
+</ol>
+<p><strong>Expected:</strong> both APIs usable through Gateway orchestration without secrets in tool execution. <strong>Verification:</strong> successful synthetic responses and metadata-only secret checks; never print full environment/config/log contents. <strong>Risks:</strong> dedicated-user processes can access their own credentials; provider usage incurs costs and sends prompts off-host. <strong>Recovery:</strong> revoke/rotate affected keys via provider controls, update the supported host secret store and verify again. Do not copy keys into the sandbox to fix authentication.</p>
+<h3 id="15-agent-identity-templates">15. Agent Identity Templates</h3>
+<p><strong>Objective:</strong> apply reviewed repository templates to one agent without importing permissions or integrations unintentionally. <strong>Actor:</strong> human operator as openclaw during setup.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Intended role and verified limits</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDENTITY.md</td>
+<td>Name, creature, vibe, emoji and optional avatar. Supported visible identity synchronization is separate from merely writing this file.</td>
+</tr>
+<tr>
+<td>SOUL.md</td>
+<td>Personality and behavioral principles supplied as agent context.</td>
+</tr>
+<tr>
+<td>USER.md</td>
+<td>Stable preferences and user/project directives. Keep concise; local template documents a 4,000-character budget in this installation. Revalidate for the new build.</td>
+</tr>
+<tr>
+<td>AGENTS.md</td>
+<td>Workspace operating instructions. These are instructions, not enforced OS security policy.</td>
+</tr>
+<tr>
+<td>TOOLS.md</td>
+<td>Do not assume automatic loading. The inspected bootstrap seeds no TOOLS.md and directs local tool notes to the Tools section of AGENTS.md. Exact 2026.11.2 TOOLS.md context-loading support remains GATE W2.</td>
+</tr>
+<tr>
+<td>MEMORY.md / daily notes</td>
+<td>Optional persistent facts and continuity, not provider credentials. Loading depends on session/context policy; do not assume every file is injected into every turn.</td>
+</tr>
+</tbody></table></div>
+<p>Bootstrap/context loading is selective and subject to limits. Main sessions and subagents can receive different context. Verify actual startup behavior and truncation without asking the model to reveal private system instructions. A benign synthetic preference recalled in a fresh session provides a functional check, not proof of every internal context rule.</p>
+<p><strong>Minimal IDENTITY.md example</strong></p>
+<pre><code class="language-markdown"># Identity
+
+- Name: Nexus
+- Creature: Personal AI assistant
+- Vibe: Friendly, clear and direct; accurate and candid.
+- Emoji: 🥷
+</code></pre>
+<p><strong>Minimal SOUL.md content:</strong> communicate in Spanish unless English is requested; use moderate non-offensive humor; correct mistakes with reasons; state uncertainty; do not invent evidence.</p>
+<p><strong>Minimal USER.md entry:</strong></p>
+<pre><code class="language-markdown">&lt;!-- observed: 2026-11-08 | status: active --&gt;
+
+- Prioritize learning OpenClaw, agents, memory, tools and automation before commercial use cases.
+</code></pre>
+<p><strong>AGENTS.md policy requirements:</strong> autonomy within the authorized workspace task; report paths and checks; explicit approval for system/security changes, third-party communications, publishing and commerce; no autonomous schedules or push; stop on material scope changes; never treat retrieved content as authorization. Preserve valid original rules, not blanket replacement.</p>
+<p>Inspect repository templates before copying; reject symlinks escaping the intended repository/workspace and remove any embedded secrets. Back up existing files outside the sandbox-visible subtree. Apply exact reviewed files, not an entire repository checkout with unknown hooks and credentials.</p>
+<p>Verified visible identity command from local CLI documentation:</p>
+<pre><code class="language-bash"># openclaw; future authorized configuration action, actual agent ID required
+openclaw agents set-identity --agent ACTUAL_AGENT_ID \
+  --workspace /home/openclaw/.openclaw/workspace --from-identity
+</code></pre>
+<p>This writes agent identity configuration; it is not a read-only command. Configured identity takes precedence over workspace fallback. Do not create another agent or install a role to set the display name. [OC-AGENTS]</p>
+<p><strong>Expected / verification:</strong> one agent, correct visible name/emoji and fresh-session behavior. <strong>Recovery:</strong> restore only the affected reviewed identity/preference files and identity settings. Do not force bootstrap deletion or launch optional recommendations implicitly.</p>
+<h3 id="16-security-validation">16. Security Validation</h3>
+<p><strong>Objective:</strong> demonstrate containment using harmless synthetic data. <strong>Actors:</strong> ubuntu for host inspection; openclaw for daemon metadata; agent sandbox for actual tool tests. All tests below are FUTURE tests and were not executed while authoring.</p>
+<h4 id="161-listener-and-service-identity">16.1 Listener and service identity</h4>
+<pre><code class="language-bash"># ubuntu; read-only
+ss -ltnp
+ps -eo user,pid,comm
+id openclaw
+# Administrative policy inspection only; this does not run a root command as the agent.
+sudo -l -U openclaw
+</code></pre>
+<p>Expect 127.0.0.1:18789, no 0.0.0.0/[::] Gateway listener, Gateway owner openclaw and no sudo authorization. Identify the real unit/PID and inspect it rather than relying solely on a process name. The administrator&#39;s sudo rights are expected and separate.</p>
+<p>On the Mac, with SSH tunnel stopped, a narrowly targeted <code>nc -vz EC2_HOST 18789</code> check should not connect (use the Mac&#39;s supported timeout option if needed). Failure alone is insufficient: correlate with AWS rules and host listener. Then start the tunnel and verify Dashboard operation. Test IPv6 separately if enabled.</p>
+<h4 id="162-synthetic-host-only-canary">16.2 Synthetic host-only canary</h4>
+<p>Prepare a dedicated-user-readable, unmounted canary so a successful denial tests mount isolation rather than only host file permissions:</p>
+<pre><code class="language-bash"># openclaw HOST shell; synthetic data only; retain printed directory for the test
+umask 077
+CANARY_DIR=$(mktemp -d &quot;$HOME/openclaw-host-canary.XXXXXX&quot;)
+printf &#39;SYNTHETIC-NONSECRET-HOST-CANARY
+&#39; &gt; &quot;$CANARY_DIR/marker.txt&quot;
+printf &#39;%s
+&#39; &quot;$CANARY_DIR&quot;
+</code></pre>
+<p>Give the agent only the resulting absolute path. Through an ordinary agent tool turn, request reading that exact file and creating a marker in that host-only directory. Both must fail through file tools AND sandbox exec. Do not ask for real config, SSH keys, provider keys or metadata credentials. Afterward, the human verifies the host canary is unchanged and no extra file was created.</p>
+<h4 id="163-workspace-write-and-rootless-mapping">16.3 Workspace write and rootless mapping</h4>
+<p>Through a normal agent turn, ask it to execute these commands inside its observed sandbox workspace, not a guessed host path:</p>
+<pre><code class="language-bash"># AGENT SANDBOX; synthetic test, current directory must be the authorized workspace
+pwd
+id
+TEST_DIR=$(mktemp -d ./sandbox-check.XXXXXX)
+printf &#39;SYNTHETIC-WORKSPACE-CHECK
+&#39; &gt; &quot;$TEST_DIR/marker.txt&quot;
+cat &quot;$TEST_DIR/marker.txt&quot;
+printf &#39;%s
+&#39; &quot;$TEST_DIR&quot;
+</code></pre>
+<p>The human confirms the file exists in the corresponding host workspace and has acceptable ownership. If using the proposed rootless user 0:0, inside id may show root while host ownership remains openclaw. Require daemon rootless proof before interpreting this as acceptable. Retest after scoped container replacement to prove persistence, only after approval to discard ephemeral state.</p>
+<h4 id="164-container-metadata-and-sockets">16.4 Container metadata and sockets</h4>
+<p>Select the exact container from the sandbox listing; never operate on all Docker containers indiscriminately.</p>
+<pre><code class="language-bash"># openclaw HOST; replace SANDBOX_CONTAINER_ID with the inspected ID
+# Output only selected metadata, never the full container environment.
+docker inspect --format &#39;{{json .Mounts}}&#39; SANDBOX_CONTAINER_ID
+docker inspect --format &#39;{{.Config.User}} {{.HostConfig.NetworkMode}} {{.HostConfig.ReadonlyRootfs}} {{.HostConfig.Privileged}}&#39; SANDBOX_CONTAINER_ID
+docker inspect --format &#39;{{json .HostConfig.CapDrop}} {{json .HostConfig.SecurityOpt}}&#39; SANDBOX_CONTAINER_ID
+</code></pre>
+<p>Expect approved workspace and any explicitly reviewed Gateway-managed read-only resource mounts only; no home/state root, Docker socket, runtime parent directory, credentials or unrelated host directories. Network none, read-only root true, privileged false, capabilities dropped and no-new-privileges must be present. Review managed mounts rather than claiming there will always be exactly one mount.</p>
+<p>Through sandbox exec, test for /var/run/docker.sock and the actual /run/user/DEDICATED_UID/docker.sock path; both must be unavailable. Also inspect actual mount metadata: absence of a familiar socket filename alone does not exclude an alternate mounted path. Do not probe a socket with administrative Docker API requests.</p>
+<h4 id="165-execution-escape-and-external-tools">16.5 Execution escape and external tools</h4>
+<p>In an actual agent turn request a harmless <code>id</code> using explicit host/gateway execution, then elevated execution. Expected outcome: policy denial, not successful host execution with an innocuous result. Confirm there is no unintended node execution path. If a test unexpectedly succeeds, stop agent use and record the finding; do not continue to destructive commands.</p>
+<p>Verify unavailable external messaging, scheduling and administrative tools against the effective tool list. A model declining verbally is not sufficient evidence of an enforced denial. Pair runtime policy inspection with an actual harmless rejected request where supported.</p>
+<h4 id="166-credential-isolation">16.6 Credential isolation</h4>
+<p>Inspect container environment VARIABLE NAMES only through a redacting local parser; do not output full docker inspect/config/environment. Confirm no provider-key or Gateway-token variable is forwarded. Review mount sources and build inputs. For leakage-detection workflow tests, use a synthetic sentinel in a designated host-only test file, never a real credential. Check only the specifically generated test logs/artifacts with a tool that reports match counts rather than content.</p>
+<p><strong>GATE V1:</strong> prepare and review the redacting parser and version-appropriate live-tool test method before executing this subsection. They are deliberately not replaced with an unsafe blanket env/log dump.</p>
+<p><strong>Recovery for all tests:</strong> keep the Gateway stopped or normal agent use disabled after a failed containment test, preserve sanitized evidence and fix one control at a time. Remove only the exact synthetic files/directories recorded by the test after human review; no recursive wildcard cleanup. Never declare acceptance based on “0 critical” audit count alone.</p>
+<h3 id="17-functional-verification">17. Functional Verification</h3>
+<p><strong>Objective:</strong> prove useful functionality without weakening the accepted controls. <strong>Actors:</strong> human operator, openclaw diagnostics and sandbox agent.</p>
+<ol>
+<li>Confirm Dashboard authentication through the Mac SSH tunnel.</li>
+<li>Send a minimal synthetic request to each configured provider, with explicit awareness of API charges.</li>
+<li>Ask the main agent to read and modify a synthetic workspace document; confirm persistence and correct ownership.</li>
+<li>Close the administrative/login shells. Confirm the Dashboard and service remain usable via a newly established tunnel.</li>
+<li>After a separately approved reboot, reconnect and verify user-manager lingering, rootless Docker, Gateway and workspace persistence.</li>
+<li>Open a fresh session and check the benign identity/preference templates. Confirm one agent and no external channels or scheduled jobs.</li>
+<li>Review resource use while running one ordinary task; do not infer adequate capacity from idle memory alone.</li>
+</ol>
+<p><strong>Expected:</strong> all functions work without any host execution granted to the agent. <strong>Verification:</strong> timestamped pass/fail record without secrets. <strong>Recovery:</strong> use section 18; never disable sandbox, authentication or approvals to obtain a green test.</p>
+<h3 id="18-troubleshooting">18. Troubleshooting</h3>
+<p><strong>Objective:</strong> diagnose failures without expanding authority. <strong>Actor:</strong> ubuntu or openclaw according to the failing layer, not the sandbox agent administering its host.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Safe investigation</th>
+<th>Do not do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Docker socket unreachable</td>
+<td>Check user daemon, DOCKER_HOST, user runtime dir and Gateway service environment</td>
+<td>chmod socket globally; add docker group; switch rootful socket</td>
+</tr>
+<tr>
+<td>Workspace permission denied</td>
+<td>Check rootless UID mapping and actual container user, bind ownership</td>
+<td>chmod 777; disable sandbox</td>
+</tr>
+<tr>
+<td>Image missing</td>
+<td>Verify selected daemon and approved version-specific image build inputs</td>
+<td>Substitute bare Debian or an unreviewed public image</td>
+</tr>
+<tr>
+<td>systemctl --user cannot connect</td>
+<td>Check lingering, user manager, runtime dir and session bus setup</td>
+<td>Run the Gateway as root to bypass it</td>
+</tr>
+<tr>
+<td>AppArmor/user namespace denial</td>
+<td>Inspect sanitized relevant events and package-supplied RootlessKit profile</td>
+<td>Disable AppArmor system-wide</td>
+</tr>
+<tr>
+<td>Dashboard unavailable</td>
+<td>Check SSH tunnel, authentication and loopback listener</td>
+<td>Publish 18789 to the Internet</td>
+</tr>
+<tr>
+<td>Provider auth fails</td>
+<td>Check host-side supported secret configuration and provider status</td>
+<td>Print secrets or copy them into sandbox env</td>
+</tr>
+<tr>
+<td>Tool denied</td>
+<td>Inspect intended allowlist and session policy</td>
+<td>Enable full tools/elevated to make the error disappear</td>
+</tr>
+<tr>
+<td>Source/docs disagree</td>
+<td>Pin revision and examine exact version schema/source</td>
+<td>Quietly use floating current examples</td>
+</tr>
+</tbody></table></div>
+<p>Previously observed diagnostic commands:</p>
+<pre><code class="language-bash"># openclaw; read-only diagnostics, sanitized review of output
+openclaw status
+openclaw sandbox explain --agent ACTUAL_AGENT_ID
+openclaw exec-policy show
+openclaw security audit --deep
+</code></pre>
+<p>Only <code>openclaw doctor --lint</code> is appropriate when a read-only doctor check is intended. Ordinary doctor or repair modes can mutate/migrate state; do not equate them with inspection. Review logs locally with redaction rather than attaching full logs.</p>
+<p><strong>Expected:</strong> identify the layer causing failure. <strong>Recovery:</strong> return to last approved configuration/artifact; leave unsafe features off. Record unresolved compatibility instead of making a broad bypass.</p>
+<h3 id="19-backup-and-recovery">19. Backup and Recovery</h3>
+<p><strong>Objective:</strong> preserve identity, workspace and application state with consistent protected backups. <strong>Actors:</strong> ubuntu for protected storage and recovery access; openclaw for application-aware lifecycle steps.</p>
+<p>Back up workspace, reviewed configuration, required application state and protected credentials as separate sensitivity classes. Record package/image manifests and user/service setup metadata. Do not put state archives or credentials inside the workspace, source repository or image build context.</p>
+<p><strong>GATE B1:</strong> verify the exact version&#39;s persistence format and supported consistent-backup method. Do not assume copying a live SQLite file alone captures WAL state or a coherent application snapshot. A conservative approved window stops the Gateway cleanly, verifies it has exited, backs up its state consistently with ownership/modes preserved, then restarts and checks health. Exact unit commands depend on the service name verified in G1.</p>
+<p>Encrypt backups, restrict access, define retention and test restoration on a separate controlled target. Protect encryption keys separately. An EBS snapshot is not automatically application-consistent, and a snapshot&#39;s existence is not a restore test.</p>
+<p><strong>Expected / verification:</strong> a recoverable backup with integrity checks, recorded versions and no publicly accessible secret material. <strong>Recovery:</strong> restore to a dedicated account on an isolated target, restore ownership/permissions, verify rootless socket configuration and disable unintended outbound integrations before bringing it online. Never restore account-wide privileged memberships from a generic old-host image blindly.</p>
+<h3 id="20-rollback-procedures">20. Rollback Procedures</h3>
+<p><strong>Objective:</strong> revert a failed installation or upgrade without losing administrative access or silently removing isolation. <strong>Actor:</strong> human administrator.</p>
+<ul>
+<li>Before provisioning: abandon the design or adjust approved infrastructure; no current laboratory rollback is needed because it was not changed.</li>
+<li>Before first successful service start: keep the new Gateway stopped; preserve logs and workspace; correct the failing gate. Do not destroy the instance until needed evidence/data are secured.</li>
+<li>After configuration change: restore the specific previously approved config/drop-in, restart the identified service in an approved window and repeat safety tests.</li>
+<li>After application upgrade: restore both a compatible pinned package and the pre-upgrade consistent state backup if schema migration occurred. Package-only downgrade may be unsafe.</li>
+<li>After sandbox-image change: restore the approved image and recreate only the affected sandbox after preserving necessary workspace data; transient container files are not guaranteed recoverable.</li>
+<li>If rootless integration fails: STOP deployment. Rootful Docker, docker-group access and disabling sandbox are not rollback alternatives.</li>
+<li>Before cloud decommissioning: obtain explicit authorization, preserve required backups and confirm no data or dependent resources are needed. No destructive deletion commands are included here.</li>
+</ul>
+<p><strong>Verification:</strong> previous accepted state, authenticated tunnel access and all security acceptance checks. <strong>Risk:</strong> changing UID or subordinate-ID mappings can invalidate stored ownership. <strong>Recovery:</strong> use documented identity/mapping manifests; do not recursively chown all application and container state without review.</p>
+<h3 id="21-operational-maintenance">21. Operational Maintenance</h3>
+<p><strong>Objective:</strong> keep a known-safe deployment without background changes that were not authorized. <strong>Actors:</strong> human administrator for host/runtime updates; dedicated account for approved application maintenance.</p>
+<ul>
+<li>Review OS, Node, Docker and OpenClaw security updates; choose explicit versions and an approved maintenance window.</li>
+<li>Back up first; revalidate image source, schema, rootless mapping and tool policy after upgrades.</li>
+<li>Inspect resource growth, disk usage, image layers, logs and API billing. Do not prune all containers/images or delete logs automatically.</li>
+<li>Recheck paired administrative devices, SSH sources, unused credentials and the absence of channels/automations.</li>
+<li>Rotate credentials through supported secret-management flows and test with synthetic requests.</li>
+<li>Review template changes as code; do not interpret agent-edited instructions as permission to expand technical privileges.</li>
+<li>Keep source provenance and acceptance evidence with the operational record, without secrets.</li>
+</ul>
+<p>No recurring automation, cron job, timer or automatic update schedule is created by this runbook. If requested later, design and authorize that schedule separately.</p>
+<p><strong>Verification:</strong> periodic checks performed on request, with dated results rather than permanent security claims. <strong>Recovery:</strong> section 20 and the last known-good artifact/state set. A non-sudo user and Docker are defense layers, not standalone guarantees against kernel bugs, Gateway compromise or malicious approved tools.</p>
+<h3 id="22-acceptance-criteria">22. Acceptance Criteria</h3>
+<p><strong>Objective:</strong> define a clear release decision. <strong>Actor:</strong> human technical reviewer. No criterion is marked passed merely because this document describes it.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Criterion</th>
+<th>Required evidence</th>
+<th>Current status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A01</td>
+<td>Version/provenance pinned</td>
+<td>AMI, Node, npm integrity, source revision and image manifest</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A02</td>
+<td>Correct host size/OS</td>
+<td>Ubuntu 24.04, t3.medium, resource review</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A03</td>
+<td>Dedicated non-admin identity</td>
+<td>Process UID, group and sudo-policy inspection</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A04</td>
+<td>Persistent services</td>
+<td>Verified logout/reboot recovery of user Docker and Gateway</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A05</td>
+<td>Gateway private/authenticated</td>
+<td>Loopback listener + AWS rules + external check + tunnel login</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A06</td>
+<td>Rootless Docker only</td>
+<td>Daemon security metadata, private socket, no privileged group</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A07</td>
+<td>Main agent sandboxed</td>
+<td>Effective all mode and actual normal-tool container execution</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A08</td>
+<td>Workspace usable/persistent</td>
+<td>Synthetic read/write, ownership and replacement test</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A09</td>
+<td>Host unmounted data inaccessible</td>
+<td>Synthetic canary denied via file tools and exec</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A10</td>
+<td>No socket access from sandbox</td>
+<td>Mount review and socket-path negative tests</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A11</td>
+<td>No host/elevated execution</td>
+<td>Enforced harmless negative tests, not verbal refusal</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A12</td>
+<td>Runtime restrictions enforced</td>
+<td>None network, read-only root, cap drop, no-new-privileges</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A13</td>
+<td>Secrets excluded</td>
+<td>Redacted env/mount/build-input review and synthetic checks</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A14</td>
+<td>Both APIs functional</td>
+<td>Approved minimal synthetic requests</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A15</td>
+<td>Single agent and reviewed identity</td>
+<td>Agent count, identity sync, fresh-session preference test</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A16</td>
+<td>No extra channels/integrations/schedules</td>
+<td>Effective configuration and inventory review</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A17</td>
+<td>Backup and rollback demonstrated</td>
+<td>Consistent backup and separate restore test</td>
+<td>PENDING</td>
+</tr>
+<tr>
+<td>A18</td>
+<td>Version-sensitive gaps resolved</td>
+<td>P1-P4, D1-D4, G1, W1-W2, I1, T1-T3, A1, V1, B1</td>
+<td>PENDING</td>
+</tr>
+</tbody></table></div>
+<p><strong>Release decision:</strong> NOT APPROVED FOR EXECUTION yet. This is a complete review draft, not a fully validated deployment recipe. Missing installation/provider/policy syntax is intentionally visible rather than guessed. Record the approver, date, exact versions and residual risks before execution.</p>
+<p>Residual risks include shared kernel/container isolation limits, Gateway authority over its own credentials and rootless daemon, writable instruction files, provider data disclosure/cost, host-side tool egress, mutable upstream artifacts and limited initial instance capacity.</p>
+<h3 id="23-references-and-sources">23. References and Sources</h3>
+<p><strong>Objective:</strong> make provenance and uncertainty auditable. <strong>Actor:</strong> reviewer. No additional retrieval was performed when finishing this document after the owner&#39;s “no more searches” instruction.</p>
+<h4 id="evidence-actually-available-from-the-prior-investigation">Evidence actually available from the prior investigation</h4>
+<ul>
+<li><strong>OC-LOCAL:</strong> installed /home/ubuntu/.npm-global/lib/node_modules/openclaw/package.json: version 2026.11.2, Node engines &gt;=24.16.0 &lt;25 || &gt;=26.1.0; no gitHead recorded in the inspected output. Local compiled source includes dist/docker-CtRxN_p0.mjs (container create arguments and bookworm-slim missing-image branch) and dist/podman-runtime-qXIoqlCL.mjs (Docker CLI invocation). Bundle filenames are installation-specific, not stable APIs.</li>
+<li><strong>OC-USER-SOURCE:</strong> retrieved source <a href="https://raw.githubusercontent.com/openclaw/openclaw/b556fdf457b026574bf0f1e7b4914b15f3f179ce/src/agents/sandbox/docker-user.ts">https://raw.githubusercontent.com/openclaw/openclaw/b556fdf457b026574bf0f1e7b4914b15f3f179ce/src/agents/sandbox/docker-user.ts</a> — explicit docker.user overrides host workspace UID/GID auto-selection. Release-to-package provenance still requires P1.</li>
+<li><strong>OC-DOCKER:</strong> <a href="https://docs.openclaw.ai/gateway/sandboxing/docker-backend">https://docs.openclaw.ai/gateway/sandboxing/docker-backend</a> — prior retrieval covers rootless DOCKER_HOST selection, restricted defaults, container user behavior and managed mounts. Current documentation is not an immutable 2026.11.2 reference.</li>
+<li><strong>D-MAPPING:</strong> <a href="https://docs.docker.com/engine/security/rootless/uid-gid-mapping.md">https://docs.docker.com/engine/security/rootless/uid-gid-mapping.md</a> — prior retrieval explains UID 0 to host daemon-user mapping and subordinate-ID behavior.</li>
+<li><strong>OC-SANDBOX:</strong> local docs/gateway/sandboxing.md under the installed package; official counterpart <a href="https://docs.openclaw.ai/gateway/sandboxing">https://docs.openclaw.ai/gateway/sandboxing</a> — host Gateway versus sandbox tools, mode/scope and escape routes.</li>
+<li><strong>OC-POLICY:</strong> local docs/gateway/config-tools/tool-policy.md, especially tools.elevated; local docs/tools/exec-approvals.md and docs/cli/approvals.md. Official entry points <a href="https://docs.openclaw.ai/tools/exec-approvals">https://docs.openclaw.ai/tools/exec-approvals</a> and <a href="https://docs.openclaw.ai/gateway/sandbox-vs-tool-policy-vs-elevated">https://docs.openclaw.ai/gateway/sandbox-vs-tool-policy-vs-elevated</a>.</li>
+<li><strong>OC-AGENTS:</strong> local docs/cli/agents.md; <a href="https://docs.openclaw.ai/cli/agents">https://docs.openclaw.ai/cli/agents</a> — identity files and set-identity semantics.</li>
+<li><strong>OC-BOOTSTRAP:</strong> local docs/start/bootstrapping.md; <a href="https://docs.openclaw.ai/start/bootstrapping">https://docs.openclaw.ai/start/bootstrapping</a> — initial files and configured-workspace cleanup behavior.</li>
+<li>Existing laboratory record: /home/ubuntu/.openclaw/workspace/docs/laboratorio-acceso-seguridad.md. It describes the OLD host and is not evidence that the new installation passes these tests.</li>
+</ul>
+<h4 id="identified-official-references-requiring-final-version-specific-review">Identified official references requiring final version-specific review</h4>
+<p>These are review targets; listing them does not claim that every page or command was inspected before this draft was completed.</p>
+<ul>
+<li><strong>OC-WORKSPACE:</strong> <a href="https://docs.openclaw.ai/gateway/sandboxing/workspace-access">https://docs.openclaw.ai/gateway/sandboxing/workspace-access</a></li>
+<li><strong>OC-IMAGES:</strong> <a href="https://docs.openclaw.ai/gateway/sandboxing/images-and-setup">https://docs.openclaw.ai/gateway/sandboxing/images-and-setup</a></li>
+<li>Release/source: <a href="https://github.com/openclaw/openclaw/releases/tag/v2026.11.2">https://github.com/openclaw/openclaw/releases/tag/v2026.11.2</a> and <a href="https://github.com/openclaw/openclaw">https://github.com/openclaw/openclaw</a></li>
+<li><strong>D-UBUNTU:</strong> <a href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></li>
+<li><strong>D-ROOTLESS:</strong> <a href="https://docs.docker.com/engine/security/rootless/">https://docs.docker.com/engine/security/rootless/</a></li>
+<li><strong>D-TROUBLE:</strong> <a href="https://docs.docker.com/engine/security/rootless/troubleshoot/">https://docs.docker.com/engine/security/rootless/troubleshoot/</a></li>
+<li>Rootless operating tips: <a href="https://docs.docker.com/engine/security/rootless/tips/">https://docs.docker.com/engine/security/rootless/tips/</a></li>
+<li>AWS EC2 documentation: <a href="https://docs.aws.amazon.com/ec2/">https://docs.aws.amazon.com/ec2/</a></li>
+<li>Node release verification: <a href="https://nodejs.org/en/download">https://nodejs.org/en/download</a></li>
+<li>systemd user persistence: loginctl(1) and systemd.exec(5) manuals for the installed Ubuntu release.</li>
+<li>OpenAI API documentation: <a href="https://platform.openai.com/docs/">https://platform.openai.com/docs/</a></li>
+<li>Google Gemini API documentation: <a href="https://ai.google.dev/gemini-api/docs">https://ai.google.dev/gemini-api/docs</a></li>
+</ul>
+<p><strong>Review rule:</strong> prefer exact-version source/schema over floating examples; resolve contradictions explicitly. Do not transform a reference link into an assertion that an untested command is verified. Once gates are resolved, record execution evidence separately from documentary verification.</p>
+
+</main>
+</div>
+</body>
+</html>

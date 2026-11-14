@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experiment 001 · Agent fundamentals · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../../index.html#reference">← Lab library</a></nav>
+<h1>Experiment 001 · Agent fundamentals</h1>
+<p><a href="README.md">Source Markdown</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#experiment-001-agent-fundamentals">Experiment 001 — Agent Fundamentals</a></li><li class="subsection"><a href="#1-objective">1. Objective</a></li><li class="subsection"><a href="#2-environment">2. Environment</a></li><li class="subsection"><a href="#3-experiments-performed">3. Experiments Performed</a></li><li class="subsection"><a href="#4-key-findings">4. Key Findings</a></li><li class="subsection"><a href="#5-limitations">5. Limitations</a></li><li class="subsection"><a href="#6-lessons-learned">6. Lessons Learned</a></li><li class="subsection"><a href="#7-completion-criteria">7. Completion Criteria</a></li><li class="subsection"><a href="#8-related-documentation">8. Related Documentation</a></li></ul></nav>
+<main>
+<h2 id="experiment-001-agent-fundamentals">Experiment 001 — Agent Fundamentals</h2>
+<p><strong>Project:</strong> OpenClaw Agents Lab<br><strong>Experiment ID:</strong> 001<br><strong>Status:</strong> Completed — Initial Fundamentals<br><strong>Date:</strong> November 8, 2026<br><strong>Platform:</strong> OpenClaw 2026.11.2<br><strong>Primary Agent:</strong> Nexus 🥷</p>
+<hr>
+<h3 id="1-objective">1. Objective</h3>
+<p>Understand how OpenClaw initializes, configures, and operates an AI agent.</p>
+<p>The experiment focuses on agent identity, persistent instructions, workspace organization, session management, and basic agent execution.</p>
+<p>The objective is to establish foundational knowledge before experimenting with specialized agents, external integrations, and autonomous workflows.</p>
+<hr>
+<h3 id="2-environment">2. Environment</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Infrastructure</td>
+<td>AWS EC2</td>
+</tr>
+<tr>
+<td>Operating system</td>
+<td>Ubuntu 24.04 LTS</td>
+</tr>
+<tr>
+<td>Instance</td>
+<td><code>t3.medium</code></td>
+</tr>
+<tr>
+<td>OpenClaw</td>
+<td>2026.11.2</td>
+</tr>
+<tr>
+<td>Primary agent</td>
+<td><code>nexus</code></td>
+</tr>
+<tr>
+<td>Agent configuration</td>
+<td>Single-agent setup</td>
+</tr>
+<tr>
+<td>AI provider</td>
+<td>OpenAI API</td>
+</tr>
+<tr>
+<td>Models tested</td>
+<td>GPT-6 Astra, GPT-5.6 Sol</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td>Loopback</td>
+</tr>
+<tr>
+<td>Dashboard access</td>
+<td>SSH tunnel</td>
+</tr>
+<tr>
+<td>Execution</td>
+<td>Direct host execution</td>
+</tr>
+<tr>
+<td>Sandbox</td>
+<td>Disabled</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="3-experiments-performed">3. Experiments Performed</h3>
+<h4 id="31-agent-initialization">3.1 Agent Initialization</h4>
+<p>OpenClaw was installed using its official installation script.</p>
+<p>During onboarding, the single-agent option was selected.</p>
+<p>The primary agent was assigned the name:</p>
+<pre><code class="language-text">nexus
+</code></pre>
+<p>The initial bootstrap interaction was completed through OpenClaw&#39;s Terminal User Interface (TUI).</p>
+<p><strong>Result:</strong> A functional agent was created and connected to the configured AI provider.</p>
+<h4 id="32-agent-identity">3.2 Agent Identity</h4>
+<p>Nexus was configured with a custom identity.</p>
+<p><strong>Name:</strong> Nexus<br><strong>Emoji:</strong> 🥷<br><strong>Language:</strong> Spanish by default, English on request.</p>
+<p>Communication preferences:</p>
+<ul>
+<li>Friendly, clear, and direct.</li>
+<li>Humor and moderate sarcasm when appropriate.</li>
+<li>Avoid unnecessary praise.</li>
+<li>Correct inaccurate assumptions with explanations.</li>
+<li>Acknowledge uncertainty.</li>
+<li>Prioritize understanding before automation.</li>
+</ul>
+<p><strong>Result:</strong> Nexus reported saving these preferences in its persistent workspace files.</p>
+<h4 id="33-workspace-inspection">3.3 Workspace Inspection</h4>
+<p>Nexus performed an authorized read-only inspection of its workspace.</p>
+<p>The following files were identified:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>IDENTITY.md</code></td>
+<td>Agent name, identity, emoji, and presentation</td>
+</tr>
+<tr>
+<td><code>SOUL.md</code></td>
+<td>Personality and behavioral principles</td>
+</tr>
+<tr>
+<td><code>USER.md</code></td>
+<td>User preferences and project context</td>
+</tr>
+<tr>
+<td><code>AGENTS.md</code></td>
+<td>Operational instructions</td>
+</tr>
+<tr>
+<td><code>BOOTSTRAP.md</code></td>
+<td>Initial agent bootstrap</td>
+</tr>
+</tbody></table></div>
+<p>Additional potential memory files:</p>
+<ul>
+<li><code>MEMORY.md</code></li>
+<li><code>memory/</code></li>
+</ul>
+<p>These memory files were not initially present.</p>
+<h4 id="34-persistent-configuration">3.4 Persistent Configuration</h4>
+<p>Nexus was authorized to update its identity and preference files.</p>
+<p>The agent reported modifying:</p>
+<pre><code class="language-text">/home/ubuntu/.openclaw/workspace/IDENTITY.md
+/home/ubuntu/.openclaw/workspace/USER.md
+/home/ubuntu/.openclaw/workspace/SOUL.md
+/home/ubuntu/.openclaw/workspace/AGENTS.md
+</code></pre>
+<p>The updates were intended to preserve compatible OpenClaw defaults while adding the agreed preferences.</p>
+<p>Nexus reported:</p>
+<ul>
+<li>Successful file modifications.</li>
+<li>Verification by rereading the files.</li>
+<li>A local Git commit.</li>
+<li>Automatic removal of <code>BOOTSTRAP.md</code>.</li>
+</ul>
+<p><strong>Verification limitation:</strong> These results were reported by the agent; the full file diff was not independently reviewed during this experiment.</p>
+<h4 id="35-autonomy-policy">3.5 Autonomy Policy</h4>
+<p>An initial policy requiring authorization before every tool invocation proved overly restrictive for routine agent operations.</p>
+<p>The policy was revised to permit autonomous work within authorized tasks.</p>
+<p>Permitted routine activities include:</p>
+<ul>
+<li>Reading workspace files.</li>
+<li>Maintaining internal documentation.</li>
+<li>Updating preferences and memory.</li>
+<li>Researching public information.</li>
+<li>Creating artifacts within the workspace.</li>
+</ul>
+<p>Sensitive activities require explicit authorization, including system configuration changes, credential access, software installation, external publication, and financial operations.</p>
+<p>The agent must report modified files and their absolute paths.</p>
+<p><strong>Finding:</strong> Behavioral instructions provide guidance but do not enforce operating-system security boundaries.</p>
+<h4 id="36-terminal-and-dashboard-interaction">3.6 Terminal and Dashboard Interaction</h4>
+<p>Nexus was accessed through:</p>
+<ul>
+<li>OpenClaw TUI.</li>
+<li>OpenClaw Web Dashboard.</li>
+</ul>
+<p>The Dashboard was connected through an SSH tunnel to the Gateway.</p>
+<p>The agent&#39;s conversation was accessible through both interfaces.</p>
+<p>The Dashboard was also used to switch between AI models.</p>
+<p><strong>Result:</strong> Both interfaces operated successfully with the primary agent.</p>
+<h4 id="37-model-comparison">3.7 Model Comparison</h4>
+<p>The initial configuration used GPT-6 Astra.</p>
+<p>GPT-5.6 Sol was subsequently selected for a technical inspection and documentation task.</p>
+<p>Sol generated a structured security assessment describing:</p>
+<ul>
+<li>Host execution capabilities.</li>
+<li>Workspace access.</li>
+<li>Linux privileges.</li>
+<li>Administrative access.</li>
+<li>Security limitations.</li>
+<li>Possible future hardening measures.</li>
+</ul>
+<p><strong>Finding:</strong> A less expensive model was capable of producing useful technical documentation for this specific task.</p>
+<p>No controlled benchmark comparing both models has been completed.</p>
+<hr>
+<h3 id="4-key-findings">4. Key Findings</h3>
+<h4 id="identity-is-persistent-configuration">Identity Is Persistent Configuration</h4>
+<p>An agent&#39;s identity is not defined exclusively by its conversational context.</p>
+<p>OpenClaw uses workspace files to persist identity, preferences, and operational instructions.</p>
+<h4 id="agent-instructions-are-not-security-controls">Agent Instructions Are Not Security Controls</h4>
+<p>Instructions can specify what an agent should or should not do.</p>
+<p>However, they do not prevent operations that remain technically permitted by the execution environment.</p>
+<h4 id="agent-workspaces-are-not-automatically-sandboxes">Agent Workspaces Are Not Automatically Sandboxes</h4>
+<p>The workspace defines where the agent works.</p>
+<p>Without additional isolation, the agent may access other files permitted to its operating-system user.</p>
+<h4 id="the-agent-can-maintain-its-own-documentation">The Agent Can Maintain Its Own Documentation</h4>
+<p>With appropriate authorization, Nexus demonstrated a workflow for updating its own identity and instruction files and reporting the results.</p>
+<h4 id="agents-may-use-different-models">Agents May Use Different Models</h4>
+<p>The primary agent can be configured to use different model providers and models.</p>
+<p>Model quality and execution cost should be evaluated according to task requirements.</p>
+<h4 id="agent-claims-require-verification">Agent Claims Require Verification</h4>
+<p>Self-reported changes, successful tool execution, and declared capabilities should be distinguished from independently verified evidence.</p>
+<hr>
+<h3 id="5-limitations">5. Limitations</h3>
+<p>This experiment did not fully investigate:</p>
+<ul>
+<li>Tool permission enforcement.</li>
+<li>Execution approvals.</li>
+<li>Sandbox isolation.</li>
+<li>Multi-agent delegation.</li>
+<li>Persistent memory retrieval.</li>
+<li>Semantic search.</li>
+<li>Browser automation.</li>
+<li>External communication channels.</li>
+<li>Autonomous scheduling.</li>
+<li>Agent-to-agent communication.</li>
+</ul>
+<p>These topics are covered by subsequent roadmap phases.</p>
+<hr>
+<h3 id="6-lessons-learned">6. Lessons Learned</h3>
+<ol>
+<li>Onboarding decisions can significantly change the initial agent architecture.</li>
+<li>Repeating installation and onboarding improves understanding.</li>
+<li>A single-agent configuration is a useful starting point.</li>
+<li>Identity, preferences, and operational rules have different responsibilities.</li>
+<li>Allowing routine workspace operations reduces unnecessary approval cycles.</li>
+<li>Technical restrictions must be evaluated independently from behavioral instructions.</li>
+<li>Model selection should account for quality and cost.</li>
+<li>File modifications should be traceable and reviewable.</li>
+<li>A disposable laboratory is useful for learning but does not eliminate external security or billing risks.</li>
+</ol>
+<hr>
+<h3 id="7-completion-criteria">7. Completion Criteria</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> OpenClaw installed and operational.</li>
+<li><input checked="" disabled="" type="checkbox"> Single-agent onboarding completed.</li>
+<li><input checked="" disabled="" type="checkbox"> Primary agent created.</li>
+<li><input checked="" disabled="" type="checkbox"> Initial agent response verified.</li>
+<li><input checked="" disabled="" type="checkbox"> Workspace structure inspected.</li>
+<li><input checked="" disabled="" type="checkbox"> Identity and preferences configured.</li>
+<li><input checked="" disabled="" type="checkbox"> Persistent instruction files updated according to the agent&#39;s report.</li>
+<li><input checked="" disabled="" type="checkbox"> TUI and Dashboard access verified.</li>
+<li><input checked="" disabled="" type="checkbox"> More than one model tested.</li>
+<li><input disabled="" type="checkbox"> Independently inspect the identity-file diff and current configuration.</li>
+</ul>
+<p><strong>Conclusion:</strong> The initial fundamentals experiment achieved its primary learning objectives. Independent verification and deeper security assessment remain separate follow-up activities.</p>
+<hr>
+<h3 id="8-related-documentation">8. Related Documentation</h3>
+<ul>
+<li><a href="../../docs/project-overview.html">Project Overview</a></li>
+<li><a href="../../docs/roadmap.html">Project Roadmap</a></li>
+<li><a href="../004-reproducible-openclaw-installation/index.html#ec2-record">Installation Guide</a></li>
+</ul>
+<hr>
+<p><strong>Experiment 001 — Completed with follow-up verification pending.</strong></p>
+
+</main>
+</div>
+</body>
+</html>

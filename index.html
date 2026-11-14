@@ -298,7 +298,7 @@
   <header>
     <div class="shell">
       <a href="./index.html">OpenClaw Agents Lab</a>
-      <nav aria-label="Main navigation"><a href="#routes">Learning routes</a><a href="#reference">Reference</a><a
+      <nav aria-label="Main navigation"><a href="#routes">Learning routes</a><a href="#reference">Lab library</a><a
           href="#about">About the lab</a></nav>
     </div>
   </header>
@@ -331,10 +331,10 @@
       <p id="results" role="status" hidden></p>
       <div id="route-list" class="grid">
         <article class="card" data-status="documented">
-          <span class="label">Experiment 001 · Markdown</span>
+          <span class="label">Experiment 001 · HTML</span>
           <h3>Agent fundamentals</h3>
           <p>Meet Nexus and explore identity, workspace instructions, sessions, and model selection.</p>
-          <a href="experiments/001-agent-fundamentals/README.md">Read the experiment</a>
+          <a href="experiments/001-agent-fundamentals/index.html">Read the experiment</a>
         </article>
         <article class="card" data-status="documented">
           <span class="label">Experiment 003 · HTML</span>
@@ -366,16 +366,50 @@
       </div>
     </section>
     <section id="reference" aria-labelledby="reference-title">
-      <h2 id="reference-title">Reference</h2>
-      <ul>
-        <li><a href="docs/project-overview.md">Project overview</a> · goals, scope, and working principles</li>
-        <li><a href="docs/architecture/index.html">Architecture</a> · components, execution model, and security boundaries</li>
-        <li><a href="docs/roadmap.md">Roadmap</a> · milestones and planned experiments</li>
-        <li><a href="docs/installation/aws-ec2-openclaw.md">Original EC2 installation notes</a> · direct installation
-          and early findings</li>
-        <li><a href="docs/design/index.html">HTML design conventions</a> · palette, navigation, and reusable components</li>
-        <li><a href="README.md">Repository README</a> · project introduction and source links</li>
-      </ul>
+      <h2 id="reference-title">Lab library</h2>
+      <div class="grid">
+      <div class="card">
+        <h3>Project and architecture</h3>
+        <ul>
+          <li><a href="docs/project-overview.html">Project overview</a></li>
+          <li><a href="docs/roadmap.html">Project roadmap</a></li>
+          <li><a href="docs/architecture/index.html">System architecture</a></li>
+          <li><a href="AGENTS.html">Repository authoring instructions</a></li>
+          <li><a href="docs/design/index.html">HTML design conventions</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Experiments and installation</h3>
+        <ul>
+          <li><a href="experiments/001-agent-fundamentals/index.html">Experiment 001 · Agent fundamentals</a></li>
+          <li><a href="experiments/002-tools-and-skills/index.html">Experiment 002 · Tools and skills</a></li>
+          <li><a href="experiments/003-docker-sandbox/index.html">Experiment 003 · Security and isolation</a></li>
+          <li><a href="experiments/004-reproducible-openclaw-installation/index.html">Experiment 004 · Ansible installation guide</a></li>
+          <li><a href="experiments/004-reproducible-openclaw-installation/index.html#ec2-record">Original EC2 installation record</a></li>
+          <li><a href="experiments/005-multi-agent/index.html">Experiment 005 · Multi-agent systems</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Research and proposals</h3>
+        <ul>
+          <li><a href="docs/research/openclaw-ai-agents-lab.html">OpenClaw AI agents research</a></li>
+          <li><a href="docs/research/laboratorio-acceso-seguridad.html">Historical access and security audit</a></li>
+          <li><a href="docs/research/openclaw-secure-installation-runbook.html">Proposed secure installation runbook</a></li>
+          <li><a href="docs/research/product-requirements.html">Product requirements and feature inventory</a></li>
+          <li><a href="docs/research/openclaws-prompts.html">Assistant prompt examples</a></li>
+          <li><a href="docs/research/Identity.html">Research identity example</a></li>
+          <li><a href="docs/research/soul.html">Research behavior example</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Nexus templates</h3>
+        <ul>
+          <li><a href="templates/nexus/AGENTS.html">Nexus operating instructions</a></li>
+          <li><a href="templates/nexus/IDENTITY.html">Nexus identity</a></li>
+          <li><a href="templates/nexus/USER.html">Nexus maintainer preferences</a></li>
+        </ul>
+      </div>
+      </div>
     </section>
     <section id="about" aria-labelledby="about-title">
       <h2 id="about-title">About the lab</h2>

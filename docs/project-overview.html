@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project overview · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../index.html#reference">← Lab library</a></nav>
+<h1>Project overview</h1>
+<p><a href="project-overview.md">Source Markdown</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#openclaw-agents-lab">OpenClaw Agents Lab</a></li><li class="subsection"><a href="#project-overview">Project Overview</a></li><li class="subsection"><a href="#1-project-vision">1. Project Vision</a></li><li class="subsection"><a href="#2-project-background">2. Project Background</a></li><li class="subsection"><a href="#3-primary-objectives">3. Primary Objectives</a></li><li class="subsection"><a href="#4-working-principles">4. Working Principles</a></li><li class="subsection"><a href="#5-initial-architecture">5. Initial Architecture</a></li><li class="subsection"><a href="#6-security-model">6. Security Model</a></li><li class="subsection"><a href="#7-memory-and-context-research">7. Memory and Context Research</a></li><li class="subsection"><a href="#8-agent-tools-and-skills">8. Agent Tools and Skills</a></li><li class="subsection"><a href="#9-multi-agent-research">9. Multi-Agent Research</a></li><li class="subsection"><a href="#10-automation-and-background-execution">10. Automation and Background Execution</a></li><li class="subsection"><a href="#11-potential-business-application">11. Potential Business Application</a></li><li class="subsection"><a href="#12-future-productization-strategy">12. Future Productization Strategy</a></li><li class="subsection"><a href="#13-project-boundaries">13. Project Boundaries</a></li><li class="subsection"><a href="#14-documentation-strategy">14. Documentation Strategy</a></li><li class="subsection"><a href="#15-current-project-state">15. Current Project State</a></li><li class="subsection"><a href="#16-project-success-criteria">16. Project Success Criteria</a></li><li class="subsection"><a href="#17-final-principle">17. Final Principle</a></li></ul></nav>
+<main>
+<h2 id="openclaw-agents-lab">OpenClaw Agents Lab</h2>
+<h3 id="project-overview">Project Overview</h3>
+<p><strong>Project:</strong> OpenClaw Agents Lab<br><strong>Repository:</strong> <code>openclaw-agents-lab</code><br><strong>Document:</strong> <code>docs/project-overview.md</code><br><strong>Version:</strong> 0.1<br><strong>Status:</strong> Active — Learning &amp; Experimentation<br><strong>Started:</strong> November 2026<br><strong>Maintainer:</strong> Anjrot</p>
+<hr>
+<h3 id="1-project-vision">1. Project Vision</h3>
+<p>OpenClaw Agents Lab is a personal research and development initiative focused on understanding, experimenting with, and building autonomous AI agent systems.</p>
+<p>The project aims to explore how AI agents can use language models, tools, memory, external services, and specialized agents to perform useful tasks with varying degrees of autonomy.</p>
+<p>Unlike a traditional software product, the initial objective is not to deliver a commercial application.</p>
+<p>The primary objective is to <strong>develop practical knowledge through experimentation</strong>, establish reproducible agent architectures, and identify opportunities for useful automation.</p>
+<p>The laboratory may eventually evolve into a commercially viable solution, but product development will follow demonstrated technical capabilities and measurable value.</p>
+<p><strong>Guiding principle: Learn first, validate second, productize third.</strong></p>
+<hr>
+<h3 id="2-project-background">2. Project Background</h3>
+<p>The project originated from an exploration of locally hosted language models using Ollama and Open WebUI.</p>
+<p>That experiment demonstrated how to:</p>
+<ul>
+<li>Download and execute language models locally.</li>
+<li>Understand model parameters, quantization, and context windows.</li>
+<li>Compare models based on response quality and performance.</li>
+<li>Expose models through local APIs.</li>
+<li>Access a locally hosted chat interface over a private network.</li>
+<li>Configure reverse proxies and local DNS.</li>
+</ul>
+<p>The experiment also revealed limitations when executing language models on CPU-only hardware.</p>
+<p>This motivated a transition toward cloud-hosted AI agents that use external model APIs while maintaining control over the agent execution environment.</p>
+<p>OpenClaw was selected as the initial platform because it provides tools, memory, automation, multi-agent capabilities, and multiple interfaces for interacting with agents.</p>
+<hr>
+<h3 id="3-primary-objectives">3. Primary Objectives</h3>
+<p>The laboratory has the following objectives:</p>
+<ol>
+<li>Understand the OpenClaw architecture and execution model.</li>
+<li>Deploy and administer OpenClaw on cloud infrastructure.</li>
+<li>Explore agent identity, instructions, workspace organization, and persistent memory.</li>
+<li>Understand how tools and skills are discovered, configured, authorized, and executed.</li>
+<li>Experiment with different AI model providers and configurations.</li>
+<li>Compare models based on cost, quality, reliability, and tool-calling capabilities.</li>
+<li>Explore agent orchestration, delegation, and specialization.</li>
+<li>Understand scheduling, background execution, and autonomous workflows.</li>
+<li>Evaluate security boundaries and permission models.</li>
+<li>Document experiments, discoveries, limitations, and architectural decisions.</li>
+<li>Identify practical applications that can eventually become reusable products or services.</li>
+</ol>
+<p>The laboratory prioritizes understanding the technology rather than accumulating features.</p>
+<hr>
+<h3 id="4-working-principles">4. Working Principles</h3>
+<h4 id="41-learning-through-repetition">4.1 Learning Through Repetition</h4>
+<p>The environment is intentionally designed to be reproducible and disposable.</p>
+<p>Installations may be repeated, configurations reset, and cloud instances terminated when doing so improves understanding.</p>
+<p>The objective is to learn how the system works, not simply preserve a functioning installation.</p>
+<p>Documentation must retain the knowledge necessary to reproduce validated experiments.</p>
+<h4 id="42-incremental-experimentation">4.2 Incremental Experimentation</h4>
+<p>Each experiment should have:</p>
+<ul>
+<li>A clearly defined learning objective.</li>
+<li>An explanation of the relevant concepts.</li>
+<li>A minimal implementation.</li>
+<li>Observable results.</li>
+<li>A documented conclusion.</li>
+</ul>
+<p>Avoid introducing architectural complexity before it becomes necessary for the experiment.</p>
+<h4 id="43-controlled-autonomy">4.3 Controlled Autonomy</h4>
+<p>Agents should have sufficient autonomy to complete authorized tasks without requiring approval for every internal operation.</p>
+<p>Routine activities may include:</p>
+<ul>
+<li>Reading and organizing workspace files.</li>
+<li>Maintaining internal documentation.</li>
+<li>Updating memory and preferences.</li>
+<li>Researching public information.</li>
+<li>Creating artifacts within an authorized workspace.</li>
+</ul>
+<p>However, sensitive operations must require explicit authorization, including:</p>
+<ul>
+<li>Modifying system configuration or permissions.</li>
+<li>Installing software.</li>
+<li>Accessing sensitive credentials.</li>
+<li>Publishing external content.</li>
+<li>Sending communications to third parties.</li>
+<li>Performing financial transactions.</li>
+<li>Accessing production systems.</li>
+</ul>
+<p>Agents should report relevant file modifications, including absolute file paths.</p>
+<p>Behavioral instructions are not security boundaries. Technical access controls must be evaluated separately.</p>
+<h4 id="44-evidence-based-evaluation">4.4 Evidence-Based Evaluation</h4>
+<p>Agent responses and self-reported actions are not automatically considered verified facts.</p>
+<p>Important findings should distinguish:</p>
+<ul>
+<li>Observed behavior.</li>
+<li>Tool-generated evidence.</li>
+<li>Agent-reported actions.</li>
+<li>Documentation-based assumptions.</li>
+<li>Unverified hypotheses.</li>
+</ul>
+<p>A successful agent response does not necessarily prove that every declared capability is operational.</p>
+<h4 id="45-cost-awareness">4.5 Cost Awareness</h4>
+<p>The laboratory uses paid cloud infrastructure and AI APIs.</p>
+<p>Experiments should account for:</p>
+<ul>
+<li>Cloud compute and storage.</li>
+<li>Input and output tokens.</li>
+<li>Cached tokens.</li>
+<li>Embedding generation.</li>
+<li>Background tasks.</li>
+<li>External tools and services.</li>
+</ul>
+<p>Cost optimization should not compromise learning objectives or response quality.</p>
+<p>More capable models may be used when appropriate, while economical alternatives should be evaluated for routine operations.</p>
+<hr>
+<h3 id="5-initial-architecture">5. Initial Architecture</h3>
+<p>The initial environment is hosted on AWS EC2.</p>
+<pre><code class="language-text">Maintainer&#39;s Mac
+       |
+       | SSH
+       |
+       v
+AWS EC2 — Ubuntu Linux
+       |
+       +-- OpenClaw Gateway
+       |       |
+       |       +-- Agent Runtime
+       |       |
+       |       +-- Tools and Skills
+       |       |
+       |       +-- Memory
+       |       |
+       |       +-- Automations
+       |       |
+       |       +-- Agent Sessions
+       |
+       +-- Persistent Workspace
+       |
+       +-- Local CLI / TUI
+       |
+       +-- Dashboard (loopback)
+                 ^
+                 |
+             SSH Tunnel
+
+External services:
+       |
+       +-- OpenAI API
+       +-- Google Gemini API (planned)
+       +-- Other integrations (future)
+</code></pre>
+<h4 id="51-infrastructure">5.1 Infrastructure</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Initial Selection</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cloud provider</td>
+<td>AWS EC2</td>
+</tr>
+<tr>
+<td>Instance type</td>
+<td><code>t3.medium</code></td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>2 vCPU</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>4 GiB</td>
+</tr>
+<tr>
+<td>Operating system</td>
+<td>Ubuntu Server 24.04 LTS</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>30 GiB encrypted EBS gp3</td>
+</tr>
+<tr>
+<td>Administration</td>
+<td>SSH</td>
+</tr>
+<tr>
+<td>Web access</td>
+<td>SSH tunnel</td>
+</tr>
+<tr>
+<td>Gateway network binding</td>
+<td>Loopback</td>
+</tr>
+<tr>
+<td>Agent execution</td>
+<td>Direct host execution</td>
+</tr>
+<tr>
+<td>Sandbox</td>
+<td>Disabled during initial exploration</td>
+</tr>
+<tr>
+<td>Containerization</td>
+<td>Not installed initially</td>
+</tr>
+</tbody></table></div>
+<p>Infrastructure may change as experiments require additional capabilities.</p>
+<h4 id="52-ai-providers">5.2 AI Providers</h4>
+<p>The laboratory initially uses OpenAI models through the API.</p>
+<p>Google Gemini is planned as a secondary provider.</p>
+<p>Model selection is an operational decision and may vary by agent or task.</p>
+<p>The initial deployment used GPT-6 Astra for configuration and subsequently began testing GPT-5.6 Sol for routine technical tasks.</p>
+<h4 id="53-agent-architecture">5.3 Agent Architecture</h4>
+<p>The first controlled installation uses a single primary agent:</p>
+<p><strong>Nexus 🥷</strong></p>
+<p>Nexus is the personal assistant and initial coordinator for laboratory experiments.</p>
+<p>Its responsibilities include:</p>
+<ul>
+<li>Research and analysis.</li>
+<li>Planning and organization.</li>
+<li>Technical experimentation.</li>
+<li>Documentation.</li>
+<li>Reporting findings.</li>
+<li>Future coordination of specialized agents.</li>
+</ul>
+<p>Specialized agents will be introduced only after understanding how OpenClaw manages agent identity, sessions, delegation, tools, and permissions.</p>
+<hr>
+<h3 id="6-security-model">6. Security Model</h3>
+<p>The laboratory is isolated from production projects and infrastructure.</p>
+<p>The current deployment intentionally retains broad local execution capabilities to support exploration.</p>
+<p>This is an accepted laboratory risk, not a recommended production configuration.</p>
+<h4 id="61-current-security-characteristics">6.1 Current Security Characteristics</h4>
+<ul>
+<li>Dedicated EC2 instance.</li>
+<li>Dedicated AWS Security Group.</li>
+<li>SSH restricted to the maintainer&#39;s public IP.</li>
+<li>OpenClaw Gateway bound to loopback.</li>
+<li>Dashboard accessed through an SSH tunnel.</li>
+<li>No public OpenClaw Gateway port.</li>
+<li>No EC2 IAM role initially assigned.</li>
+<li>Agent running under the Ubuntu system user.</li>
+<li>Direct execution without an active sandbox.</li>
+<li>Broad execution tools available.</li>
+<li>The Ubuntu user has passwordless sudo privileges.</li>
+</ul>
+<p>The last three characteristics create a significant security risk.</p>
+<p>The laboratory must not contain production credentials or sensitive business data.</p>
+<h4 id="62-future-security-experiments">6.2 Future Security Experiments</h4>
+<p>The project will explore:</p>
+<ul>
+<li>Docker-based tool sandboxing.</li>
+<li>Workspace access restrictions.</li>
+<li>Tool policies.</li>
+<li>Execution approvals.</li>
+<li>Dedicated Linux users without sudo privileges.</li>
+<li>Filesystem isolation.</li>
+<li>Service hardening.</li>
+<li>Network restrictions.</li>
+<li>Agent-to-agent permissions.</li>
+<li>Session visibility.</li>
+<li>Secure credential management.</li>
+</ul>
+<p>The laboratory will compare security mechanisms before selecting a recommended architecture for future deployments.</p>
+<h4 id="63-disposable-infrastructure">6.3 Disposable Infrastructure</h4>
+<p>Cloud instances may be terminated and recreated.</p>
+<p>However, terminating an instance does not reverse external actions, leaked credentials, API usage, financial charges, or communications already sent.</p>
+<p>These risks must remain controlled even in disposable environments.</p>
+<hr>
+<h3 id="7-memory-and-context-research">7. Memory and Context Research</h3>
+<p>Memory is a major area of experimentation.</p>
+<p>The project will investigate:</p>
+<ul>
+<li>Conversation context windows.</li>
+<li>Persistent workspace memory.</li>
+<li>Markdown-based memory files.</li>
+<li>Semantic search.</li>
+<li>Embeddings.</li>
+<li>Memory indexing.</li>
+<li>Memory consolidation.</li>
+<li>Context compaction.</li>
+<li>Retrieval quality.</li>
+</ul>
+<h4 id="71-hybrid-ai-architecture">7.1 Hybrid AI Architecture</h4>
+<p>The laboratory will evaluate the use of local models for auxiliary tasks while keeping powerful cloud models for reasoning and orchestration.</p>
+<p>Potential responsibilities include:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Responsibility</th>
+<th>Candidate Execution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Main agent reasoning</td>
+<td>OpenAI or Gemini API</td>
+</tr>
+<tr>
+<td>Complex research and orchestration</td>
+<td>Cloud LLM</td>
+</tr>
+<tr>
+<td>Semantic memory embeddings</td>
+<td>Local model</td>
+</tr>
+<tr>
+<td>Memory search</td>
+<td>Local vector index</td>
+</tr>
+<tr>
+<td>Document classification</td>
+<td>Local or economical cloud model</td>
+</tr>
+<tr>
+<td>Specialized routine tasks</td>
+<td>Task-specific model</td>
+</tr>
+</tbody></table></div>
+<p>Ollama, LM Studio, and llama.cpp are candidate local inference technologies.</p>
+<p>The initial hybrid experiment will focus on local memory embeddings.</p>
+<p>The objective is to understand the architecture, privacy implications, resource consumption, and retrieval quality.</p>
+<p>Cost savings are a secondary consideration because embedding APIs are already relatively inexpensive.</p>
+<hr>
+<h3 id="8-agent-tools-and-skills">8. Agent Tools and Skills</h3>
+<p>The project will investigate how OpenClaw extends agent capabilities through tools and skills.</p>
+<p>Topics include:</p>
+<ul>
+<li>Built-in tools.</li>
+<li>Tool schemas.</li>
+<li>Tool execution.</li>
+<li>Tool permissions.</li>
+<li>Skills discovery.</li>
+<li>Custom skills.</li>
+<li>External integrations.</li>
+<li>Tool execution logs.</li>
+<li>Failure handling.</li>
+<li>Human approval.</li>
+<li>Untrusted tool output.</li>
+</ul>
+<p>The distinction between an agent&#39;s declared capabilities and its actual permissions is a central learning objective.</p>
+<p>Third-party skills must be reviewed before installation.</p>
+<hr>
+<h3 id="9-multi-agent-research">9. Multi-Agent Research</h3>
+<p>The initial environment uses a single agent.</p>
+<p>Future experiments may introduce specialized agents with distinct roles, models, permissions, and workspaces.</p>
+<p>Potential specialists include:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research Agent</td>
+<td>Investigate topics and produce source-backed reports</td>
+</tr>
+<tr>
+<td>Content Agent</td>
+<td>Transform research into editorial drafts</td>
+</tr>
+<tr>
+<td>Planning Agent</td>
+<td>Organize objectives, tasks, and dependencies</td>
+</tr>
+<tr>
+<td>Analyst Agent</td>
+<td>Evaluate information and produce structured findings</td>
+</tr>
+<tr>
+<td>Coordinator Agent</td>
+<td>Delegate work and consolidate results</td>
+</tr>
+</tbody></table></div>
+<p>Research topics include:</p>
+<ul>
+<li>Agent creation and configuration.</li>
+<li>Agent-specific instructions.</li>
+<li>Tool access per agent.</li>
+<li>Shared versus isolated memory.</li>
+<li>Delegation mechanisms.</li>
+<li>Agent-to-agent communication.</li>
+<li>Session management.</li>
+<li>Execution monitoring.</li>
+<li>Cost allocation by agent.</li>
+</ul>
+<p>The laboratory will not assume that every task requires multiple agents.</p>
+<hr>
+<h3 id="10-automation-and-background-execution">10. Automation and Background Execution</h3>
+<p>OpenClaw supports scheduled and autonomous operations.</p>
+<p>The project will explore:</p>
+<ul>
+<li>Heartbeat.</li>
+<li>Cron jobs.</li>
+<li>Background execution.</li>
+<li>Scheduled research.</li>
+<li>Periodic reports.</li>
+<li>Notifications.</li>
+<li>Task monitoring.</li>
+<li>Retry and error handling.</li>
+</ul>
+<p>During initial setup, the automatically configured heartbeat and memory dreaming tasks were disabled to avoid unnecessary API consumption.</p>
+<p>These mechanisms will be reintroduced during dedicated experiments.</p>
+<p>Autonomous operations must have a defined purpose, execution scope, and cost considerations.</p>
+<hr>
+<h3 id="11-potential-business-application">11. Potential Business Application</h3>
+<h4 id="affiliate-research-content-automation">Affiliate Research &amp; Content Automation</h4>
+<p>The first potential business application combines AI-powered market research, affiliate opportunity discovery, and SEO-oriented content production.</p>
+<p>The objective is to create a system that helps website owners identify opportunities and prepare useful commercial content.</p>
+<h4 id="111-initial-validation-website">11.1 Initial Validation Website</h4>
+<p><strong>anjrot.com</strong></p>
+<p>The existing website will serve as the initial validation environment.</p>
+<h4 id="112-potential-affiliate-sources">11.2 Potential Affiliate Sources</h4>
+<ul>
+<li>Amazon Associates for relevant physical products.</li>
+<li>Impact.com for software, hosting, VPN services, and other eligible offers.</li>
+<li>Mercado Libre for a possible future content website.</li>
+</ul>
+<p>Affiliate links will initially be selected and verified manually.</p>
+<h4 id="113-proposed-workflow">11.3 Proposed Workflow</h4>
+<pre><code class="language-text">Market and Keyword Research
+          |
+          v
+Search Intent Analysis
+          |
+          v
+Competitor Research
+          |
+          v
+Product / Service Selection
+          |
+          v
+Human Approval
+          |
+          v
+SEO Content Research
+          |
+          v
+Editorial Draft
+          |
+          v
+WordPress Draft
+          |
+          v
+Human Review and Publication
+          |
+          v
+Performance Measurement
+</code></pre>
+<h4 id="114-content-principles">11.4 Content Principles</h4>
+<p>Content must:</p>
+<ul>
+<li>Provide genuine value to readers.</li>
+<li>Address identifiable search intent.</li>
+<li>Use verifiable sources.</li>
+<li>Avoid fabricated reviews or product testing.</li>
+<li>Clearly disclose affiliate relationships.</li>
+<li>Follow applicable affiliate program rules.</li>
+<li>Avoid mass-generated low-value content.</li>
+<li>Maintain editorial quality.</li>
+<li>Include human approval before publication.</li>
+</ul>
+<h4 id="115-initial-success-indicators">11.5 Initial Success Indicators</h4>
+<p>Early validation will focus on:</p>
+<ul>
+<li>Search indexing.</li>
+<li>Organic impressions.</li>
+<li>Search query growth.</li>
+<li>Organic traffic.</li>
+<li>Affiliate link clicks.</li>
+<li>Content production costs.</li>
+<li>Editorial quality.</li>
+</ul>
+<p>Longer-term validation will include approved commissions and profitability.</p>
+<p>The project does not assume that organic traffic or affiliate revenue will grow immediately.</p>
+<hr>
+<h3 id="12-future-productization-strategy">12. Future Productization Strategy</h3>
+<p>The project does not initially intend to build a traditional multi-tenant SaaS.</p>
+<p>Instead, a successful workflow may be packaged as an installable AI agent solution.</p>
+<p>The possible commercial offering would include:</p>
+<ul>
+<li>Preconfigured specialized agents.</li>
+<li>Custom tools and skills.</li>
+<li>Affiliate research workflows.</li>
+<li>SEO content workflows.</li>
+<li>WordPress integrations.</li>
+<li>Deployment documentation.</li>
+<li>Security recommendations.</li>
+<li>Monitoring and maintenance procedures.</li>
+</ul>
+<p>Each customer would operate in an appropriately isolated environment with separate credentials, data, and permissions.</p>
+<h4 id="validation-sequence">Validation Sequence</h4>
+<ol>
+<li>Learn the platform.</li>
+<li>Build a useful workflow.</li>
+<li>Validate it on an existing website.</li>
+<li>Measure organic traffic and commercial signals.</li>
+<li>Improve the system using real data.</li>
+<li>Repeat the experiment on a new website.</li>
+<li>Evaluate productization only after demonstrating repeatable value.</li>
+</ol>
+<p><strong>Commercialization is a potential outcome, not a requirement for the initial laboratory.</strong></p>
+<hr>
+<h3 id="13-project-boundaries">13. Project Boundaries</h3>
+<h4 id="in-scope">In Scope</h4>
+<ul>
+<li>OpenClaw infrastructure and deployment.</li>
+<li>Agent configuration and architecture.</li>
+<li>Tools and skills.</li>
+<li>Memory and embeddings.</li>
+<li>AI model integration.</li>
+<li>Security and permissions.</li>
+<li>Automation and scheduling.</li>
+<li>Multi-agent experimentation.</li>
+<li>Technical documentation.</li>
+<li>Future affiliate content automation research.</li>
+</ul>
+<h4 id="out-of-scope">Out of Scope</h4>
+<ul>
+<li>Abidegen infrastructure and repositories.</li>
+<li>Production business credentials.</li>
+<li>Customer onboarding during the learning phase.</li>
+<li>Multi-tenant SaaS development.</li>
+<li>Automatic commercial publishing during initial experiments.</li>
+<li>Unrestricted agent autonomy.</li>
+<li>Revenue guarantees.</li>
+</ul>
+<hr>
+<h3 id="14-documentation-strategy">14. Documentation Strategy</h3>
+<p>The laboratory will maintain independent documentation covering:</p>
+<ul>
+<li>Project overview.</li>
+<li>Roadmap.</li>
+<li>System architecture.</li>
+<li>Installation procedures.</li>
+<li>Security findings.</li>
+<li>Experiments.</li>
+<li>Technical decisions.</li>
+<li>Lessons learned.</li>
+</ul>
+<p>Proposed repository structure:</p>
+<pre><code class="language-text">openclaw-agents-lab/
+├── README.md
+├── docs/
+│   ├── project-overview.md
+│   ├── roadmap.md
+│   ├── architecture.md
+│   └── installation/
+│       └── aws-ec2-openclaw.md
+└── experiments/
+    ├── 001-agent-fundamentals/
+    ├── 002-tools-and-skills/
+    ├── 003-docker-sandbox/
+    ├── 004-reproducible-openclaw-installation/
+    └── 005-multi-agent/
+</code></pre>
+<p>Documentation should not contain API keys, authentication tokens, private SSH keys, or sensitive configuration values.</p>
+<p>Only reviewed and sanitized configurations should be committed to Git.</p>
+<hr>
+<h3 id="15-current-project-state">15. Current Project State</h3>
+<p>As of November 8, 2026:</p>
+<ul>
+<li>AWS EC2 infrastructure is running.</li>
+<li>Ubuntu 24.04 LTS has been configured.</li>
+<li>OpenClaw has been installed successfully.</li>
+<li>Nexus has been initialized.</li>
+<li>OpenAI API integration is functional.</li>
+<li>The Dashboard is accessible through a private SSH tunnel.</li>
+<li>Initial identity and behavior files have been configured.</li>
+<li>Initial security audits have been performed.</li>
+<li>Broad host execution permissions have been identified.</li>
+<li>Heartbeat and memory dreaming were disabled during the initial experiments.</li>
+<li>GPT-5.6 Sol has been tested as an alternative to GPT-6 Astra.</li>
+<li>The project is evaluating memory, tools, skills, security, and local embeddings.</li>
+</ul>
+<p>The laboratory remains in the experimentation phase.</p>
+<hr>
+<h3 id="16-project-success-criteria">16. Project Success Criteria</h3>
+<p>The learning phase will be considered successful when the maintainer can:</p>
+<ol>
+<li>Deploy OpenClaw from a clean server.</li>
+<li>Understand the role of the Gateway and agent runtime.</li>
+<li>Configure agents and their persistent instructions.</li>
+<li>Explain and control agent tools and permissions.</li>
+<li>Configure more than one AI model provider.</li>
+<li>Understand memory, context, and embeddings.</li>
+<li>Create and test specialized agents.</li>
+<li>Configure safe automated workflows.</li>
+<li>Reproduce validated configurations from documentation.</li>
+<li>Identify at least one useful real-world automation.</li>
+</ol>
+<p>The future business phase will define separate technical and commercial success criteria.</p>
+<hr>
+<h3 id="17-final-principle">17. Final Principle</h3>
+<p><strong>The laboratory exists to transform curiosity into practical knowledge, practical knowledge into useful automation, and validated automation into potential business opportunities.</strong></p>
+<p>The project should remain flexible, reproducible, observable, and inexpensive enough to support continuous experimentation.</p>
+
+</main>
+</div>
+</body>
+</html>

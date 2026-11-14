@@ -1,0 +1,1302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project roadmap · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../index.html#reference">← Lab library</a></nav>
+<h1>Project roadmap</h1>
+<p><a href="roadmap.md">Source Markdown</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#openclaw-agents-lab">OpenClaw Agents Lab</a></li><li class="subsection"><a href="#project-roadmap">Project Roadmap</a></li><li class="subsection"><a href="#1-roadmap-purpose">1. Roadmap Purpose</a></li><li class="subsection"><a href="#2-roadmap-overview">2. Roadmap Overview</a></li><li><a href="#phase-001-cloud-infrastructure-openclaw-installation">Phase 001 — Cloud Infrastructure &amp; OpenClaw Installation</a></li><li class="subsection"><a href="#objective">Objective</a></li><li class="subsection"><a href="#completed-activities">Completed Activities</a></li><li class="subsection"><a href="#findings">Findings</a></li><li class="subsection"><a href="#acceptance-criteria">Acceptance Criteria</a></li><li class="subsection"><a href="#documentation">Documentation</a></li><li><a href="#phase-002-agent-identity-workspace-configuration">Phase 002 — Agent Identity, Workspace &amp; Configuration</a></li><li class="subsection"><a href="#objective-2">Objective</a></li><li class="subsection"><a href="#completed-activities-2">Completed Activities</a></li><li class="subsection"><a href="#files-investigated">Files Investigated</a></li><li class="subsection"><a href="#findings-2">Findings</a></li><li class="subsection"><a href="#acceptance-criteria-2">Acceptance Criteria</a></li><li class="subsection"><a href="#follow-up-research">Follow-up Research</a></li><li><a href="#phase-003-security-permissions-execution-model">Phase 003 — Security, Permissions &amp; Execution Model</a></li><li class="subsection"><a href="#objective-3">Objective</a></li><li class="subsection"><a href="#completed-activities-3">Completed Activities</a></li><li class="subsection"><a href="#confirmed-or-reported-findings">Confirmed or Reported Findings</a></li><li class="subsection"><a href="#experiments">Experiments</a></li><li class="subsection"><a href="#acceptance-criteria-3">Acceptance Criteria</a></li><li><a href="#phase-004-tools-skills-agent-capabilities">Phase 004 — Tools, Skills &amp; Agent Capabilities</a></li><li class="subsection"><a href="#objective-4">Objective</a></li><li class="subsection"><a href="#planned-experiments">Planned Experiments</a></li><li class="subsection"><a href="#acceptance-criteria-4">Acceptance Criteria</a></li><li><a href="#phase-005-ai-models-providers-cost-optimization">Phase 005 — AI Models, Providers &amp; Cost Optimization</a></li><li class="subsection"><a href="#objective-5">Objective</a></li><li class="subsection"><a href="#completed-activities-4">Completed Activities</a></li><li class="subsection"><a href="#planned-experiments-2">Planned Experiments</a></li><li class="subsection"><a href="#acceptance-criteria-5">Acceptance Criteria</a></li><li><a href="#phase-006-memory-context-local-embeddings">Phase 006 — Memory, Context &amp; Local Embeddings</a></li><li class="subsection"><a href="#objective-6">Objective</a></li><li class="subsection"><a href="#planned-experiments-3">Planned Experiments</a></li><li class="subsection"><a href="#acceptance-criteria-6">Acceptance Criteria</a></li><li><a href="#phase-007-multi-agent-architecture-delegation">Phase 007 — Multi-Agent Architecture &amp; Delegation</a></li><li class="subsection"><a href="#objective-7">Objective</a></li><li class="subsection"><a href="#planned-experiments-4">Planned Experiments</a></li><li class="subsection"><a href="#acceptance-criteria-7">Acceptance Criteria</a></li><li><a href="#phase-008-automation-scheduling-background-tasks">Phase 008 — Automation, Scheduling &amp; Background Tasks</a></li><li class="subsection"><a href="#objective-8">Objective</a></li><li class="subsection"><a href="#initial-findings">Initial Findings</a></li><li class="subsection"><a href="#planned-experiments-5">Planned Experiments</a></li><li class="subsection"><a href="#acceptance-criteria-8">Acceptance Criteria</a></li><li><a href="#phase-009-interfaces-channels-remote-access">Phase 009 — Interfaces, Channels &amp; Remote Access</a></li><li class="subsection"><a href="#objective-9">Objective</a></li><li class="subsection"><a href="#completed-activities-5">Completed Activities</a></li><li class="subsection"><a href="#planned-experiments-6">Planned Experiments</a></li><li class="subsection"><a href="#acceptance-criteria-9">Acceptance Criteria</a></li><li><a href="#phase-010-reproducible-hardened-deployment">Phase 010 — Reproducible &amp; Hardened Deployment</a></li><li class="subsection"><a href="#objective-10">Objective</a></li><li class="subsection"><a href="#research-completed">Research Completed</a></li><li class="subsection"><a href="#target-architecture">Target Architecture</a></li><li class="subsection"><a href="#planned-activities">Planned Activities</a></li><li class="subsection"><a href="#acceptance-criteria-10">Acceptance Criteria</a></li><li class="subsection"><a href="#references">References</a></li><li><a href="#phase-011-affiliate-research-content-automation">Phase 011 — Affiliate Research &amp; Content Automation</a></li><li class="subsection"><a href="#objective-11">Objective</a></li><li class="subsection"><a href="#initial-environment">Initial Environment</a></li><li class="subsection"><a href="#planned-capabilities">Planned Capabilities</a></li><li class="subsection"><a href="#publishing-policy">Publishing Policy</a></li><li class="subsection"><a href="#acceptance-criteria-11">Acceptance Criteria</a></li><li><a href="#phase-012-replication-productization">Phase 012 — Replication &amp; Productization</a></li><li class="subsection"><a href="#objective-12">Objective</a></li><li class="subsection"><a href="#planned-validation">Planned Validation</a></li><li class="subsection"><a href="#potential-commercial-model">Potential Commercial Model</a></li><li class="subsection"><a href="#acceptance-criteria-12">Acceptance Criteria</a></li><li><a href="#current-priorities">Current Priorities</a></li><li><a href="#roadmap-maintenance-rules">Roadmap Maintenance Rules</a></li><li class="subsection"><a href="#final-note">Final Note</a></li></ul></nav>
+<main>
+<h2 id="openclaw-agents-lab">OpenClaw Agents Lab</h2>
+<h3 id="project-roadmap">Project Roadmap</h3>
+<p><strong>Project:</strong> OpenClaw Agents Lab<br><strong>Repository:</strong> <code>openclaw-agents-lab</code><br><strong>Document:</strong> <code>docs/roadmap.md</code><br><strong>Version:</strong> 0.1<br><strong>Last Updated:</strong> November 8, 2026<br><strong>Status:</strong> Active — Learning &amp; Experimentation</p>
+<hr>
+<h3 id="1-roadmap-purpose">1. Roadmap Purpose</h3>
+<p>This roadmap defines the learning phases, technical experiments, validation milestones, and potential future business initiatives of the OpenClaw Agents Lab.</p>
+<p>The project follows an incremental, experimentation-driven approach.</p>
+<p>The roadmap is not a fixed implementation schedule. Experiments may be reordered, repeated, postponed, or discarded based on discoveries made during the laboratory.</p>
+<p><strong>Guiding principle: Learn first, validate second, productize third.</strong></p>
+<h4 id="status-definitions">Status Definitions</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Completed</td>
+<td>Experiment executed and primary objective achieved</td>
+</tr>
+<tr>
+<td>In Progress</td>
+<td>Experiment currently being investigated</td>
+</tr>
+<tr>
+<td>Pending</td>
+<td>Planned but not started</td>
+</tr>
+<tr>
+<td>Deferred</td>
+<td>Intentionally postponed</td>
+</tr>
+<tr>
+<td>Future</td>
+<td>Potential initiative outside the current learning scope</td>
+</tr>
+</tbody></table></div>
+<p>Completion applies to the stated learning objective, not necessarily to production readiness.</p>
+<hr>
+<h3 id="2-roadmap-overview">2. Roadmap Overview</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>001</td>
+<td>Cloud Infrastructure &amp; OpenClaw Installation</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Agent Identity, Workspace &amp; Configuration</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Security, Permissions &amp; Execution Model</td>
+<td>In Progress</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Tools, Skills &amp; Agent Capabilities</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>005</td>
+<td>AI Models, Providers &amp; Cost Optimization</td>
+<td>In Progress</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Memory, Context &amp; Local Embeddings</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>007</td>
+<td>Multi-Agent Architecture &amp; Delegation</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>008</td>
+<td>Automation, Scheduling &amp; Background Tasks</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>009</td>
+<td>Interfaces, Channels &amp; Remote Access</td>
+<td>In Progress</td>
+</tr>
+<tr>
+<td>010</td>
+<td>Reproducible &amp; Hardened Deployment</td>
+<td>In Progress</td>
+</tr>
+<tr>
+<td>011</td>
+<td>Affiliate Research &amp; Content Automation</td>
+<td>Future</td>
+</tr>
+<tr>
+<td>012</td>
+<td>Replication &amp; Productization</td>
+<td>Future</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2 id="phase-001-cloud-infrastructure-openclaw-installation">Phase 001 — Cloud Infrastructure &amp; OpenClaw Installation</h2>
+<p><strong>Status:</strong> Completed</p>
+<h3 id="objective">Objective</h3>
+<p>Deploy OpenClaw on an isolated cloud server and establish secure administrative access.</p>
+<h3 id="completed-activities">Completed Activities</h3>
+<ul>
+<li>Evaluated AWS EC2, DigitalOcean, and Hostinger VPS.</li>
+<li>Selected AWS EC2 for initial experimentation.</li>
+<li>Created an isolated EC2 instance.</li>
+<li>Selected Ubuntu Server 24.04 LTS.</li>
+<li>Configured a <code>t3.medium</code> instance with 2 vCPU and 4 GiB RAM.</li>
+<li>Configured 30 GiB encrypted EBS gp3 storage.</li>
+<li>Created a dedicated Security Group.</li>
+<li>Restricted inbound SSH access to the maintainer&#39;s public IP.</li>
+<li>Kept the OpenClaw Gateway port closed to the public internet.</li>
+<li>Configured SSH key authentication.</li>
+<li>Updated Ubuntu packages.</li>
+<li>Configured a 2 GiB swap file.</li>
+<li>Installed OpenClaw using its official installer.</li>
+<li>Verified the Node.js runtime.</li>
+<li>Resolved the npm global <code>PATH</code> issue.</li>
+<li>Installed and started the OpenClaw Gateway.</li>
+<li>Established access to the Dashboard through an SSH tunnel.</li>
+<li>Verified communication with the OpenAI API.</li>
+</ul>
+<h3 id="findings">Findings</h3>
+<ul>
+<li>OpenClaw can run on a relatively small EC2 instance when model inference is handled by an external API.</li>
+<li>The Gateway can remain accessible exclusively through loopback.</li>
+<li>SSH tunneling provides private Dashboard access without exposing its port.</li>
+<li>The installation process is reproducible.</li>
+<li>Repeating the onboarding process revealed configuration options overlooked during the initial installation.</li>
+</ul>
+<h3 id="acceptance-criteria">Acceptance Criteria</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> EC2 instance operational.</li>
+<li><input checked="" disabled="" type="checkbox"> SSH administration functional.</li>
+<li><input checked="" disabled="" type="checkbox"> OpenClaw installed.</li>
+<li><input checked="" disabled="" type="checkbox"> Gateway service running.</li>
+<li><input checked="" disabled="" type="checkbox"> Dashboard accessible privately.</li>
+<li><input checked="" disabled="" type="checkbox"> Initial agent response verified.</li>
+</ul>
+<h3 id="documentation">Documentation</h3>
+<p><code>docs/installation/aws-ec2-openclaw.md</code></p>
+<hr>
+<h2 id="phase-002-agent-identity-workspace-configuration">Phase 002 — Agent Identity, Workspace &amp; Configuration</h2>
+<p><strong>Status:</strong> Completed</p>
+<h3 id="objective-2">Objective</h3>
+<p>Understand how OpenClaw initializes an agent and stores its identity, preferences, and operational instructions.</p>
+<h3 id="completed-activities-2">Completed Activities</h3>
+<ul>
+<li>Explored Quick Start and Custom Setup.</li>
+<li>Identified the onboarding option for a single agent versus a team of specialists.</li>
+<li>Repeated onboarding using the single-agent option.</li>
+<li>Created the primary agent <code>nexus</code>.</li>
+<li>Investigated workspace structure.</li>
+<li>Inspected identity and instruction files.</li>
+<li>Configured Nexus&#39;s identity and communication preferences.</li>
+<li>Defined initial autonomy and approval policies.</li>
+<li>Allowed Nexus to update its workspace documentation.</li>
+<li>Reviewed the agent-generated change report.</li>
+</ul>
+<h3 id="files-investigated">Files Investigated</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>IDENTITY.md</code></td>
+<td>Agent identity, name, emoji, and presentation</td>
+</tr>
+<tr>
+<td><code>SOUL.md</code></td>
+<td>Personality and behavioral principles</td>
+</tr>
+<tr>
+<td><code>USER.md</code></td>
+<td>Maintainer preferences and context</td>
+</tr>
+<tr>
+<td><code>AGENTS.md</code></td>
+<td>Operational instructions and working rules</td>
+</tr>
+<tr>
+<td><code>BOOTSTRAP.md</code></td>
+<td>Initial identity bootstrap</td>
+</tr>
+<tr>
+<td><code>MEMORY.md</code></td>
+<td>Potential long-term memory</td>
+</tr>
+<tr>
+<td><code>memory/</code></td>
+<td>Potential persistent memory records</td>
+</tr>
+</tbody></table></div>
+<h3 id="findings-2">Findings</h3>
+<ul>
+<li>Agent identity can be stored in Markdown files.</li>
+<li>Onboarding can generate different agent structures depending on selected options.</li>
+<li>Instructions stored in conversation context are not equivalent to persistent configuration.</li>
+<li>Workspace files can be maintained directly by the agent.</li>
+<li>The agent reported completing its identity configuration and creating a local Git commit.</li>
+<li>Behavioral instructions do not constitute technical security restrictions.</li>
+</ul>
+<h3 id="acceptance-criteria-2">Acceptance Criteria</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> Single primary agent created.</li>
+<li><input checked="" disabled="" type="checkbox"> Workspace structure inspected.</li>
+<li><input checked="" disabled="" type="checkbox"> Identity configured.</li>
+<li><input checked="" disabled="" type="checkbox"> Communication preferences documented.</li>
+<li><input checked="" disabled="" type="checkbox"> Initial autonomy policy established.</li>
+<li><input checked="" disabled="" type="checkbox"> Agent-generated file changes reported.</li>
+</ul>
+<h3 id="follow-up-research">Follow-up Research</h3>
+<ul>
+<li>Verify identity presentation across interfaces.</li>
+<li>Understand when workspace instructions are loaded into context.</li>
+<li>Explore instruction precedence and configuration inheritance.</li>
+<li>Inspect workspace Git history and lifecycle.</li>
+</ul>
+<hr>
+<h2 id="phase-003-security-permissions-execution-model">Phase 003 — Security, Permissions &amp; Execution Model</h2>
+<p><strong>Status:</strong> In Progress</p>
+<h3 id="objective-3">Objective</h3>
+<p>Understand the security boundaries of OpenClaw, including tool permissions, host execution, sandboxing, and administrative access.</p>
+<h3 id="completed-activities-3">Completed Activities</h3>
+<ul>
+<li>Executed <code>openclaw security audit --deep</code>.</li>
+<li>Executed <code>openclaw sandbox explain --agent nexus</code>.</li>
+<li>Reviewed the Gateway network binding.</li>
+<li>Identified the absence of sandbox isolation.</li>
+<li>Inspected the default execution model.</li>
+<li>Investigated the Linux account used by the Gateway.</li>
+<li>Identified passwordless sudo privileges.</li>
+<li>Documented current architecture and risks using Nexus.</li>
+<li>Reviewed the distinction between sandbox isolation and tool policies.</li>
+</ul>
+<h3 id="confirmed-or-reported-findings">Confirmed or Reported Findings</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Initial Finding</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Gateway</td>
+<td>Bound to loopback</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>Accessed through SSH tunnel</td>
+</tr>
+<tr>
+<td>Sandbox runtime</td>
+<td>Direct</td>
+</tr>
+<tr>
+<td>Sandbox mode</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>Execution tools</td>
+<td>Broad permissions</td>
+</tr>
+<tr>
+<td>Host user</td>
+<td><code>ubuntu</code></td>
+</tr>
+<tr>
+<td>sudo</td>
+<td>Passwordless sudo reported</td>
+</tr>
+<tr>
+<td>Elevated tools</td>
+<td>Feature enabled; effective authorization depends on context</td>
+</tr>
+<tr>
+<td>Browser control</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>External messaging</td>
+<td>No configured channels observed</td>
+</tr>
+<tr>
+<td>Webhooks</td>
+<td>Disabled in initial audit</td>
+</tr>
+<tr>
+<td>Trusted proxies</td>
+<td>Not configured</td>
+</tr>
+</tbody></table></div>
+<p>Some findings were produced by previous inspections and must be revalidated before security-sensitive changes.</p>
+<h3 id="experiments">Experiments</h3>
+<h4 id="0031-tool-permission-inspection">003.1 — Tool Permission Inspection</h4>
+<p><strong>Status:</strong> In Progress</p>
+<p>Investigate:</p>
+<ul>
+<li>Effective tool permissions.</li>
+<li>Tool allowlists and denylists.</li>
+<li>Execution security profiles.</li>
+<li>Approval mechanisms.</li>
+<li>Host command execution.</li>
+<li>Workspace-only file access.</li>
+<li>Agent-specific restrictions.</li>
+</ul>
+<h4 id="0032-docker-tool-sandbox">003.2 — Docker Tool Sandbox</h4>
+<p><strong>Status:</strong> Pending</p>
+<p>Explore Docker sandboxing without moving the entire OpenClaw Gateway into a container.</p>
+<p>Topics:</p>
+<ul>
+<li>Sandbox backend.</li>
+<li>Container lifecycle.</li>
+<li>Workspace mounts.</li>
+<li><code>none</code>, <code>ro</code>, and <code>rw</code> access modes.</li>
+<li>Command execution isolation.</li>
+<li>Network restrictions.</li>
+<li>Filesystem boundaries.</li>
+<li>Sandbox escape and privilege limitations.</li>
+</ul>
+<p>The experiment should use disposable data and reversible configuration changes.</p>
+<h4 id="0033-dedicated-linux-user">003.3 — Dedicated Linux User</h4>
+<p><strong>Status:</strong> Deferred</p>
+<p>Evaluate running OpenClaw under a dedicated non-root Linux user without sudo permissions.</p>
+<p>Potential architecture:</p>
+<pre><code class="language-text">Ubuntu Host
+├── ubuntu
+│   └── Human administration
+│
+└── openclaw
+    ├── OpenClaw Gateway
+    ├── Agent Workspace
+    └── Agent Runtime
+</code></pre>
+<p>The dedicated account must not inherit privileged groups or access to administrative sockets.</p>
+<p>A dedicated user reduces host privileges but does not automatically create a complete sandbox.</p>
+<h4 id="0034-execution-approvals">003.4 — Execution Approvals</h4>
+<p><strong>Status:</strong> Pending</p>
+<p>Investigate:</p>
+<ul>
+<li>Approval policies.</li>
+<li>Interactive approvals.</li>
+<li>Safe command execution.</li>
+<li>Execution scope.</li>
+<li>Host versus sandbox execution.</li>
+<li>Failure and denial behavior.</li>
+</ul>
+<h3 id="acceptance-criteria-3">Acceptance Criteria</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> Initial security audit performed.</li>
+<li><input checked="" disabled="" type="checkbox"> Current execution model identified.</li>
+<li><input checked="" disabled="" type="checkbox"> Main privilege risks documented.</li>
+<li><input disabled="" type="checkbox"> Tool approval mechanisms understood.</li>
+<li><input disabled="" type="checkbox"> Controlled command execution experiment completed.</li>
+<li><input disabled="" type="checkbox"> Sandbox behavior evaluated.</li>
+<li><input disabled="" type="checkbox"> Dedicated-user deployment evaluated.</li>
+</ul>
+<hr>
+<h2 id="phase-004-tools-skills-agent-capabilities">Phase 004 — Tools, Skills &amp; Agent Capabilities</h2>
+<p><strong>Status:</strong> Pending</p>
+<h3 id="objective-4">Objective</h3>
+<p>Understand how OpenClaw extends agent capabilities and how tools differ from skills.</p>
+<h3 id="planned-experiments">Planned Experiments</h3>
+<h4 id="0041-built-in-tools">004.1 — Built-in Tools</h4>
+<ul>
+<li>Discover available tools.</li>
+<li>Inspect tool schemas.</li>
+<li>Understand tool selection.</li>
+<li>Observe tool execution.</li>
+<li>Analyze execution results and failures.</li>
+</ul>
+<h4 id="0042-skills">004.2 — Skills</h4>
+<ul>
+<li>Explore built-in skills.</li>
+<li>Understand skill instructions.</li>
+<li>Investigate skill loading.</li>
+<li>Review security implications.</li>
+<li>Evaluate third-party skills.</li>
+<li>Create a basic custom skill.</li>
+</ul>
+<h4 id="0043-filesystem-operations">004.3 — Filesystem Operations</h4>
+<ul>
+<li>Read files.</li>
+<li>Create documentation.</li>
+<li>Modify workspace files.</li>
+<li>Inspect changes.</li>
+<li>Evaluate access restrictions.</li>
+</ul>
+<h4 id="0044-web-research">004.4 — Web Research</h4>
+<ul>
+<li>Investigate public information.</li>
+<li>Retrieve web pages.</li>
+<li>Produce source-backed reports.</li>
+<li>Handle conflicting or incomplete information.</li>
+<li>Understand prompt injection risks.</li>
+</ul>
+<h4 id="0045-browser-automation">004.5 — Browser Automation</h4>
+<ul>
+<li>Explore browser control.</li>
+<li>Understand browser profiles.</li>
+<li>Test navigation in an isolated environment.</li>
+<li>Evaluate authenticated-session risks.</li>
+<li>Measure resource usage.</li>
+</ul>
+<h3 id="acceptance-criteria-4">Acceptance Criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Tool execution lifecycle understood.</li>
+<li><input disabled="" type="checkbox"> Built-in tools inspected.</li>
+<li><input disabled="" type="checkbox"> At least one custom skill implemented.</li>
+<li><input disabled="" type="checkbox"> Web research workflow verified.</li>
+<li><input disabled="" type="checkbox"> Browser automation tested safely.</li>
+<li><input disabled="" type="checkbox"> Tool permission boundaries documented.</li>
+</ul>
+<hr>
+<h2 id="phase-005-ai-models-providers-cost-optimization">Phase 005 — AI Models, Providers &amp; Cost Optimization</h2>
+<p><strong>Status:</strong> In Progress</p>
+<h3 id="objective-5">Objective</h3>
+<p>Understand how OpenClaw integrates multiple model providers and how model selection affects quality, reliability, and cost.</p>
+<h3 id="completed-activities-4">Completed Activities</h3>
+<ul>
+<li>Configured the OpenAI API.</li>
+<li>Tested GPT-6 Astra during onboarding and initial configuration.</li>
+<li>Tested GPT-5.6 Sol for technical analysis and documentation.</li>
+<li>Reviewed API usage metrics.</li>
+<li>Investigated input token consumption.</li>
+<li>Investigated embedding usage.</li>
+<li>Linked eligible ChatGPT Pro promotional API credits to the personal API organization.</li>
+</ul>
+<h3 id="planned-experiments-2">Planned Experiments</h3>
+<h4 id="0051-model-comparison">005.1 — Model Comparison</h4>
+<p>Compare equivalent tasks using different models.</p>
+<p>Evaluation criteria:</p>
+<ul>
+<li>Accuracy.</li>
+<li>Instruction following.</li>
+<li>Tool-calling reliability.</li>
+<li>Quality of technical analysis.</li>
+<li>Latency.</li>
+<li>Token consumption.</li>
+<li>Cost per task.</li>
+</ul>
+<h4 id="0052-gemini-integration">005.2 — Gemini Integration</h4>
+<p>Configure Google Gemini as a secondary provider.</p>
+<p>Evaluate:</p>
+<ul>
+<li>Authentication.</li>
+<li>Available models.</li>
+<li>Tool compatibility.</li>
+<li>Cost.</li>
+<li>Response quality.</li>
+<li>Fallback mechanisms.</li>
+</ul>
+<h4 id="0053-model-assignment-by-responsibility">005.3 — Model Assignment by Responsibility</h4>
+<p>Investigate using different models for:</p>
+<ul>
+<li>Main coordination.</li>
+<li>Research.</li>
+<li>Document generation.</li>
+<li>Classification.</li>
+<li>Routine operations.</li>
+<li>Complex analysis.</li>
+</ul>
+<h4 id="0054-cost-monitoring">005.4 — Cost Monitoring</h4>
+<ul>
+<li>Analyze input and output tokens.</li>
+<li>Understand cached token billing.</li>
+<li>Track API costs.</li>
+<li>Measure cost per experiment.</li>
+<li>Control background execution.</li>
+<li>Configure effective spending limits where supported.</li>
+</ul>
+<h3 id="acceptance-criteria-5">Acceptance Criteria</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> OpenAI integration operational.</li>
+<li><input checked="" disabled="" type="checkbox"> Two OpenAI models tested.</li>
+<li><input checked="" disabled="" type="checkbox"> Initial API usage inspected.</li>
+<li><input disabled="" type="checkbox"> Gemini integrated.</li>
+<li><input disabled="" type="checkbox"> Repeatable comparison methodology defined.</li>
+<li><input disabled="" type="checkbox"> Cost per representative task measured.</li>
+<li><input disabled="" type="checkbox"> Model selection strategy documented.</li>
+</ul>
+<hr>
+<h2 id="phase-006-memory-context-local-embeddings">Phase 006 — Memory, Context &amp; Local Embeddings</h2>
+<p><strong>Status:</strong> Pending</p>
+<h3 id="objective-6">Objective</h3>
+<p>Understand persistent memory, context management, semantic search, and hybrid AI architectures.</p>
+<h3 id="planned-experiments-3">Planned Experiments</h3>
+<h4 id="0061-context-management">006.1 — Context Management</h4>
+<ul>
+<li>Understand context windows.</li>
+<li>Inspect context usage.</li>
+<li>Explore conversation history.</li>
+<li>Investigate context compaction.</li>
+<li>Understand how tools and workspace files affect token usage.</li>
+</ul>
+<h4 id="0062-persistent-memory">006.2 — Persistent Memory</h4>
+<ul>
+<li>Explore Markdown memory files.</li>
+<li>Understand memory indexing.</li>
+<li>Test retrieval across sessions.</li>
+<li>Evaluate memory retention.</li>
+<li>Investigate memory consolidation.</li>
+</ul>
+<h4 id="0063-semantic-memory-search">006.3 — Semantic Memory Search</h4>
+<ul>
+<li>Inspect the current memory search configuration.</li>
+<li>Identify the embedding provider.</li>
+<li>Understand vector representations.</li>
+<li>Test semantic versus keyword retrieval.</li>
+<li>Evaluate index creation and updates.</li>
+</ul>
+<h4 id="0064-local-embeddings">006.4 — Local Embeddings</h4>
+<p><strong>Experiment:</strong> Hybrid AI Architecture — Local Memory Embeddings</p>
+<p>Evaluate:</p>
+<ul>
+<li>Ollama.</li>
+<li>LM Studio.</li>
+<li>llama.cpp.</li>
+<li>Small embedding models.</li>
+<li>Local indexing.</li>
+<li>Memory retrieval quality.</li>
+<li>CPU and RAM usage.</li>
+<li>API cost reduction.</li>
+</ul>
+<p>The experiment should not require replacing the main conversational model.</p>
+<h4 id="0065-memory-automation">006.5 — Memory Automation</h4>
+<ul>
+<li>Revisit Memory Dreaming.</li>
+<li>Understand scheduled memory maintenance.</li>
+<li>Evaluate model consumption.</li>
+<li>Analyze memory quality and retention.</li>
+</ul>
+<h3 id="acceptance-criteria-6">Acceptance Criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Memory architecture understood.</li>
+<li><input disabled="" type="checkbox"> Persistent memory tested.</li>
+<li><input disabled="" type="checkbox"> Semantic search verified.</li>
+<li><input disabled="" type="checkbox"> Local embedding model configured.</li>
+<li><input disabled="" type="checkbox"> Retrieval quality evaluated.</li>
+<li><input disabled="" type="checkbox"> Resource consumption measured.</li>
+<li><input disabled="" type="checkbox"> Hybrid architecture documented.</li>
+</ul>
+<hr>
+<h2 id="phase-007-multi-agent-architecture-delegation">Phase 007 — Multi-Agent Architecture &amp; Delegation</h2>
+<p><strong>Status:</strong> Pending</p>
+<h3 id="objective-7">Objective</h3>
+<p>Learn how OpenClaw creates, configures, and coordinates multiple specialized agents.</p>
+<h3 id="planned-experiments-4">Planned Experiments</h3>
+<h4 id="0071-agent-creation">007.1 — Agent Creation</h4>
+<ul>
+<li>Create a secondary agent.</li>
+<li>Configure identity.</li>
+<li>Assign a dedicated workspace.</li>
+<li>Select a model.</li>
+<li>Define permissions.</li>
+</ul>
+<h4 id="0072-agent-delegation">007.2 — Agent Delegation</h4>
+<ul>
+<li>Delegate a task from Nexus.</li>
+<li>Inspect subagent sessions.</li>
+<li>Retrieve results.</li>
+<li>Handle failures.</li>
+<li>Understand delegation limits.</li>
+</ul>
+<h4 id="0073-specialized-roles">007.3 — Specialized Roles</h4>
+<p>Candidate agents:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nexus</td>
+<td>Primary coordinator</td>
+</tr>
+<tr>
+<td>Research Agent</td>
+<td>Investigation and source analysis</td>
+</tr>
+<tr>
+<td>Content Agent</td>
+<td>Editorial drafting</td>
+</tr>
+<tr>
+<td>Planning Agent</td>
+<td>Task organization</td>
+</tr>
+<tr>
+<td>Analyst Agent</td>
+<td>Structured analysis</td>
+</tr>
+</tbody></table></div>
+<h4 id="0074-shared-and-isolated-context">007.4 — Shared and Isolated Context</h4>
+<ul>
+<li>Explore session visibility.</li>
+<li>Understand agent-to-agent communication.</li>
+<li>Evaluate shared memory.</li>
+<li>Evaluate isolated workspaces.</li>
+<li>Restrict cross-agent permissions.</li>
+</ul>
+<h3 id="acceptance-criteria-7">Acceptance Criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Secondary agent created.</li>
+<li><input disabled="" type="checkbox"> Delegation verified.</li>
+<li><input disabled="" type="checkbox"> Agent-specific permissions configured.</li>
+<li><input disabled="" type="checkbox"> Multiple models tested across agents.</li>
+<li><input disabled="" type="checkbox"> Shared versus isolated context documented.</li>
+</ul>
+<hr>
+<h2 id="phase-008-automation-scheduling-background-tasks">Phase 008 — Automation, Scheduling &amp; Background Tasks</h2>
+<p><strong>Status:</strong> Pending</p>
+<h3 id="objective-8">Objective</h3>
+<p>Learn how agents execute recurring work and report results without direct user interaction.</p>
+<h3 id="initial-findings">Initial Findings</h3>
+<p>The onboarding created scheduled background operations:</p>
+<ul>
+<li>Heartbeat.</li>
+<li>Memory Dreaming Promotion.</li>
+</ul>
+<p>Both were disabled during initial experimentation.</p>
+<h3 id="planned-experiments-5">Planned Experiments</h3>
+<h4 id="0081-heartbeat">008.1 — Heartbeat</h4>
+<ul>
+<li>Understand heartbeat execution.</li>
+<li>Inspect schedules.</li>
+<li>Configure intervals.</li>
+<li>Evaluate idle behavior.</li>
+<li>Monitor model usage.</li>
+</ul>
+<h4 id="0082-cron-jobs">008.2 — Cron Jobs</h4>
+<ul>
+<li>Create a scheduled task.</li>
+<li>Execute a task in an isolated session.</li>
+<li>Review task output.</li>
+<li>Inspect logs.</li>
+<li>Handle execution failures.</li>
+</ul>
+<h4 id="0083-notifications">008.3 — Notifications</h4>
+<ul>
+<li>Evaluate notification channels.</li>
+<li>Test safe notifications.</li>
+<li>Avoid unauthorized external communication.</li>
+</ul>
+<h4 id="0084-autonomous-research">008.4 — Autonomous Research</h4>
+<ul>
+<li>Schedule a research task.</li>
+<li>Generate a report.</li>
+<li>Store results.</li>
+<li>Request human review.</li>
+<li>Measure execution cost.</li>
+</ul>
+<h3 id="acceptance-criteria-8">Acceptance Criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Heartbeat behavior understood.</li>
+<li><input disabled="" type="checkbox"> Scheduled task executed successfully.</li>
+<li><input disabled="" type="checkbox"> Execution logs reviewed.</li>
+<li><input disabled="" type="checkbox"> Notification workflow tested.</li>
+<li><input disabled="" type="checkbox"> Cost of background execution measured.</li>
+</ul>
+<hr>
+<h2 id="phase-009-interfaces-channels-remote-access">Phase 009 — Interfaces, Channels &amp; Remote Access</h2>
+<p><strong>Status:</strong> In Progress</p>
+<h3 id="objective-9">Objective</h3>
+<p>Explore different ways to interact with and administer OpenClaw.</p>
+<h3 id="completed-activities-5">Completed Activities</h3>
+<ul>
+<li>Used OpenClaw CLI.</li>
+<li>Used OpenClaw TUI.</li>
+<li>Accessed Dashboard through SSH tunneling.</li>
+<li>Used the same primary agent from terminal and web interfaces.</li>
+<li>Changed the selected model from the Dashboard.</li>
+</ul>
+<h3 id="planned-experiments-6">Planned Experiments</h3>
+<h4 id="0091-dashboard">009.1 — Dashboard</h4>
+<ul>
+<li>Explore configuration pages.</li>
+<li>Inspect agents and sessions.</li>
+<li>Understand usage and activity information.</li>
+<li>Evaluate available administrative controls.</li>
+</ul>
+<h4 id="0092-telegram">009.2 — Telegram</h4>
+<h5 id="telegram-integration-initial-validation">Telegram Integration — Initial Validation</h5>
+<p><strong>Status:</strong> Initial functionality verified<br><strong>Date:</strong> November 9, 2026<br><strong>Environment:</strong> OpenClaw Lab 3 — AWS EC2</p>
+<p>The Telegram channel was configured and tested successfully using the existing OpenClaw Gateway and the primary Nexus agent.</p>
+<p><strong>Configuration:</strong></p>
+<ul>
+<li>Created a Telegram bot through BotFather.</li>
+<li>Configured the primary Telegram account using <code>openclaw channels add --channel telegram</code>.</li>
+<li>Registered the bot token through the interactive setup.</li>
+<li>Selected <code>dmPolicy: allowlist</code>.</li>
+<li>Authorized the maintainer&#39;s numeric Telegram user ID.</li>
+<li>Skipped chat-based administrative privileges.</li>
+<li>Retained the existing private Gateway configuration.</li>
+<li>No additional public inbound AWS ports were required.</li>
+</ul>
+<p><strong>Verified behavior:</strong></p>
+<ul>
+<li>Telegram successfully delivered messages to Nexus.</li>
+<li>Nexus replied through the Telegram bot.</li>
+<li>Nexus recognized the maintainer and responded in Spanish.</li>
+<li>The channel operated through the existing Gateway.</li>
+<li>Nexus reported <code>openai/gpt-5.6-sol</code> as its active model with medium reasoning.</li>
+</ul>
+<p><strong>Findings:</strong></p>
+<ul>
+<li>Telegram provides a convenient remote interface without requiring Dashboard access.</li>
+<li>A single Telegram bot may be reused across laboratory installations, provided simultaneous polling consumers are avoided.</li>
+<li>The bot token and authorized Telegram user IDs are separate configuration elements.</li>
+<li>Telegram DM access policies and chat administration privileges are independent.</li>
+<li>Model selection may be session-specific rather than global.</li>
+</ul>
+<p><strong>Pending validation:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Verify Telegram connectivity while the administrative SSH tunnel is closed.</li>
+<li><input disabled="" type="checkbox"> Inspect channel session isolation.</li>
+<li><input disabled="" type="checkbox"> Compare model selection between Dashboard and Telegram.</li>
+<li><input disabled="" type="checkbox"> Verify the effective model configuration.</li>
+<li><input disabled="" type="checkbox"> Validate service persistence after EC2 restart.</li>
+<li><input disabled="" type="checkbox"> Reassess channel permissions after security hardening.</li>
+</ul>
+<p><strong>Conclusion:</strong> Telegram integration is functional for private conversations with Nexus. Runtime isolation and administrative security require further validation.</p>
+<h5 id="telegram-and-dashboard-cross-channel-observation">Telegram and Dashboard — Cross-Channel Observation</h5>
+<p><strong>Status:</strong> Partially Verified<br><strong>Date:</strong> November 9, 2026<br><strong>Environment:</strong> OpenClaw Lab 3</p>
+<p><strong>Observed behavior:</strong></p>
+<ul>
+<li>Messages sent to Nexus through Telegram appeared in the OpenClaw Dashboard.</li>
+<li>Both incoming Telegram messages and Nexus&#39;s responses were visible.</li>
+<li>The Dashboard displayed the agent&#39;s operations performed while answering a Telegram message.</li>
+<li>Nexus reported using <code>openai/gpt-5.6-sol</code> with medium reasoning.</li>
+<li>The Dashboard remained open while these observations were made.</li>
+</ul>
+<p><strong>Findings:</strong></p>
+<p>The Dashboard provides visibility into interactions originating from Telegram, including the agent&#39;s responses and tool activity.</p>
+<p>However, displaying messages from both interfaces does not independently prove that they share the same internal session identifier or model override.</p>
+<p><strong>Pending experiments:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Close the Dashboard and SSH tunnel while keeping the EC2 instance running.</li>
+<li><input disabled="" type="checkbox"> Send a new Telegram message and verify that Nexus responds.</li>
+<li><input disabled="" type="checkbox"> Compare the internal session identifiers used by Telegram and Dashboard.</li>
+<li><input disabled="" type="checkbox"> Determine whether changing the model in one interface affects the other.</li>
+</ul>
+<p><strong>Expected outcome:</strong></p>
+<p>Telegram should continue functioning through the persistent Gateway service independently of the Dashboard and SSH tunnel.</p>
+<p>This expectation must be confirmed through the ongoing experiment.</p>
+<h4 id="0093-desktop-or-mobile-application">009.3 — Desktop or Mobile Application</h4>
+<ul>
+<li>Verify official application availability.</li>
+<li>Investigate supported platforms.</li>
+<li>Evaluate pairing and authentication.</li>
+<li>Compare capabilities with the Dashboard.</li>
+</ul>
+<h4 id="0094-private-remote-access">009.4 — Private Remote Access</h4>
+<ul>
+<li>Compare SSH tunneling and Tailscale.</li>
+<li>Evaluate usability.</li>
+<li>Review security implications.</li>
+<li>Avoid unnecessary public exposure.</li>
+</ul>
+<h3 id="acceptance-criteria-9">Acceptance Criteria</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> CLI and TUI operational.</li>
+<li><input checked="" disabled="" type="checkbox"> Dashboard operational.</li>
+<li><input checked="" disabled="" type="checkbox"> SSH tunnel verified.</li>
+<li><input disabled="" type="checkbox"> Telegram evaluated.</li>
+<li><input disabled="" type="checkbox"> Application availability verified.</li>
+<li><input disabled="" type="checkbox"> Preferred daily interface selected.</li>
+</ul>
+<hr>
+<h2 id="phase-010-reproducible-hardened-deployment">Phase 010 — Reproducible &amp; Hardened Deployment</h2>
+<p><strong>Status:</strong> In Progress — Research</p>
+<h3 id="objective-10">Objective</h3>
+<p>Design, implement, and validate a reproducible OpenClaw deployment with reduced privileges and sandboxed agent execution.</p>
+<p>The next installation will evaluate the official <code>openclaw-ansible</code> project as its primary deployment reference.</p>
+<p>The goal is to understand and adapt the reference implementation rather than develop a custom installation process from scratch.</p>
+<h3 id="research-completed">Research Completed</h3>
+<ul>
+<li>Identified the security limitations of the initial deployment.</li>
+<li>Evaluated the benefits of a dedicated Linux service account.</li>
+<li>Investigated Docker-based tool sandboxing.</li>
+<li>Distinguished Gateway execution from sandboxed tool execution.</li>
+<li>Reviewed the relationship between tool policies, execution approvals, and operating-system permissions.</li>
+<li>Identified the official <code>openclaw-ansible</code> deployment project.</li>
+<li>Confirmed conceptual alignment between our proposed architecture and documented OpenClaw deployment patterns.</li>
+</ul>
+<p>These findings validate the architectural direction, not the security of a deployed implementation.</p>
+<h3 id="target-architecture">Target Architecture</h3>
+<ul>
+<li>AWS EC2 running Ubuntu Server 24.04 LTS.</li>
+<li>Dedicated Linux service account without general administrative privileges.</li>
+<li>Human administration through a separate account.</li>
+<li>OpenClaw Gateway running under the dedicated account.</li>
+<li>Docker-based sandboxing for agent tool execution.</li>
+<li>Sandbox enabled for the primary agent.</li>
+<li>Controlled workspace mounts and filesystem access.</li>
+<li>Restricted tool permissions and elevated execution.</li>
+<li>Gateway bound to loopback with authentication.</li>
+<li>Dashboard accessible through SSH tunneling.</li>
+<li>External AI providers configured with protected credentials.</li>
+<li>Reproducible infrastructure configuration using Ansible.</li>
+</ul>
+<h3 id="planned-activities">Planned Activities</h3>
+<h4 id="0101-ansible-reference-implementation-review">010.1 — Ansible Reference Implementation Review</h4>
+<p><strong>Status:</strong> Pending</p>
+<ul>
+<li>Inspect the official <code>openclaw-ansible</code> repository.</li>
+<li>Understand its playbooks, roles, inventory, and variables.</li>
+<li>Review how it creates and manages Linux users.</li>
+<li>Examine Docker installation and sandbox integration.</li>
+<li>Understand its systemd configuration.</li>
+<li>Review its firewall, access, and credential-management approach.</li>
+<li>Identify differences between the reference architecture and our requirements.</li>
+</ul>
+<h4 id="0102-deployment-design">010.2 — Deployment Design</h4>
+<p><strong>Status:</strong> Pending</p>
+<ul>
+<li>Select the applicable Ansible components.</li>
+<li>Define the target EC2 configuration.</li>
+<li>Confirm the dedicated service-account permissions.</li>
+<li>Define the Docker daemon access model.</li>
+<li>Configure sandbox mode and workspace access.</li>
+<li>Establish tool execution and approval policies.</li>
+<li>Document any intentional differences from the reference implementation.</li>
+</ul>
+<h4 id="0103-reproducible-installation">010.3 — Reproducible Installation</h4>
+<p><strong>Status:</strong> Pending</p>
+<ul>
+<li>Provision a clean EC2 instance.</li>
+<li>Execute the reviewed Ansible installation process.</li>
+<li>Configure OpenClaw under the dedicated service account.</li>
+<li>Apply the reviewed agent identity templates.</li>
+<li>Establish secure Dashboard access.</li>
+<li>Verify service persistence and basic functionality.</li>
+</ul>
+<h4 id="0104-security-validation">010.4 — Security Validation</h4>
+<p><strong>Status:</strong> Pending</p>
+<ul>
+<li>Verify the effective Linux identity of the Gateway.</li>
+<li>Confirm the service account has no unnecessary administrative privileges.</li>
+<li>Verify tool execution occurs within the sandbox.</li>
+<li>Test authorized workspace access using synthetic files.</li>
+<li>Verify unauthorized host filesystem access is denied.</li>
+<li>Inspect Docker permissions and sandbox mounts.</li>
+<li>Confirm elevated execution cannot bypass intended restrictions.</li>
+<li>Review tool policies and execution approvals.</li>
+<li>Execute the OpenClaw security audit.</li>
+<li>Confirm Gateway network isolation.</li>
+</ul>
+<h4 id="0105-documentation-recovery">010.5 — Documentation &amp; Recovery</h4>
+<p><strong>Status:</strong> Pending</p>
+<ul>
+<li>Document the validated installation procedure.</li>
+<li>Record architectural decisions and deviations.</li>
+<li>Document troubleshooting findings.</li>
+<li>Define backup and recovery procedures.</li>
+<li>Verify reproducibility from a clean environment.</li>
+</ul>
+<h3 id="acceptance-criteria-10">Acceptance Criteria</h3>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> Initial security limitations identified.</li>
+<li><input checked="" disabled="" type="checkbox"> Target architecture conceptually validated.</li>
+<li><input checked="" disabled="" type="checkbox"> Official Ansible reference implementation identified.</li>
+<li><input disabled="" type="checkbox"> Ansible implementation reviewed.</li>
+<li><input disabled="" type="checkbox"> Dedicated Linux user configured and verified.</li>
+<li><input disabled="" type="checkbox"> OpenClaw Gateway operational under the dedicated account.</li>
+<li><input disabled="" type="checkbox"> Docker tool sandbox operational.</li>
+<li><input disabled="" type="checkbox"> Workspace isolation tested.</li>
+<li><input disabled="" type="checkbox"> Tool execution restrictions verified.</li>
+<li><input disabled="" type="checkbox"> Secure Dashboard access confirmed.</li>
+<li><input disabled="" type="checkbox"> Clean installation reproducible.</li>
+<li><input disabled="" type="checkbox"> Recovery procedure validated.</li>
+<li><input disabled="" type="checkbox"> Deployment documentation reviewed.</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/openclaw/openclaw-ansible">OpenClaw Ansible</a></li>
+<li><a href="https://docs.openclaw.ai/gateway/sandboxing">OpenClaw Sandbox Documentation</a></li>
+<li><a href="https://docs.openclaw.ai/gateway/sandboxing/docker-backend">OpenClaw Docker Backend</a></li>
+</ul>
+<p><strong>Current conclusion:</strong> The target architecture is conceptually supported by documented OpenClaw deployment practices. Implementation and effective security validation remain pending.</p>
+<hr>
+<h2 id="phase-011-affiliate-research-content-automation">Phase 011 — Affiliate Research &amp; Content Automation</h2>
+<p><strong>Status:</strong> Future</p>
+<h3 id="objective-11">Objective</h3>
+<p>Develop and validate an AI-assisted affiliate research and SEO content production workflow.</p>
+<h3 id="initial-environment">Initial Environment</h3>
+<p><strong>Website:</strong> anjrot.com</p>
+<h3 id="planned-capabilities">Planned Capabilities</h3>
+<h4 id="research">Research</h4>
+<ul>
+<li>Keyword discovery.</li>
+<li>Search intent analysis.</li>
+<li>Competitor analysis.</li>
+<li>Product and service research.</li>
+<li>Affiliate opportunity identification.</li>
+</ul>
+<h4 id="content">Content</h4>
+<ul>
+<li>Research-backed article planning.</li>
+<li>SEO-oriented editorial drafts.</li>
+<li>Internal linking recommendations.</li>
+<li>Source validation.</li>
+<li>WordPress draft generation.</li>
+</ul>
+<h4 id="affiliate-integration">Affiliate Integration</h4>
+<ul>
+<li>Amazon Associates.</li>
+<li>Impact.com.</li>
+<li>Future Mercado Libre integration.</li>
+</ul>
+<h4 id="performance-measurement">Performance Measurement</h4>
+<ul>
+<li>Search impressions.</li>
+<li>Organic clicks.</li>
+<li>Search query growth.</li>
+<li>Affiliate link clicks.</li>
+<li>Approved commissions.</li>
+<li>Operational cost per article.</li>
+</ul>
+<h3 id="publishing-policy">Publishing Policy</h3>
+<p>All commercial content requires human editorial approval during validation.</p>
+<p>The system must not fabricate product testing, reviews, prices, or claims of personal experience.</p>
+<h3 id="acceptance-criteria-11">Acceptance Criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Research workflow implemented.</li>
+<li><input disabled="" type="checkbox"> Affiliate opportunities identified.</li>
+<li><input disabled="" type="checkbox"> Initial articles produced.</li>
+<li><input disabled="" type="checkbox"> WordPress draft workflow tested.</li>
+<li><input disabled="" type="checkbox"> SEO measurement established.</li>
+<li><input disabled="" type="checkbox"> Early organic performance evaluated.</li>
+</ul>
+<hr>
+<h2 id="phase-012-replication-productization">Phase 012 — Replication &amp; Productization</h2>
+<p><strong>Status:</strong> Future</p>
+<h3 id="objective-12">Objective</h3>
+<p>Determine whether validated automation workflows can be reproduced and eventually offered to third parties.</p>
+<h3 id="planned-validation">Planned Validation</h3>
+<ol>
+<li>Validate the workflow on an existing website.</li>
+<li>Measure organic search improvements.</li>
+<li>Evaluate affiliate monetization.</li>
+<li>Replicate the process on a new website.</li>
+<li>Assess repeatability.</li>
+<li>Evaluate the cost of installation and maintenance.</li>
+<li>Investigate commercial packaging.</li>
+</ol>
+<h3 id="potential-commercial-model">Potential Commercial Model</h3>
+<p>An installable, customer-specific AI agent system.</p>
+<p>Potential components:</p>
+<ul>
+<li>Preconfigured agents.</li>
+<li>Reusable skills.</li>
+<li>Research workflows.</li>
+<li>Content generation workflows.</li>
+<li>WordPress integrations.</li>
+<li>Installation procedures.</li>
+<li>Monitoring and maintenance documentation.</li>
+</ul>
+<p>The project does not currently plan a multi-tenant SaaS.</p>
+<h3 id="acceptance-criteria-12">Acceptance Criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Initial website validation completed.</li>
+<li><input disabled="" type="checkbox"> Repeatability experiment completed.</li>
+<li><input disabled="" type="checkbox"> Operational costs understood.</li>
+<li><input disabled="" type="checkbox"> Commercial feasibility evaluated.</li>
+<li><input disabled="" type="checkbox"> Productization decision documented.</li>
+</ul>
+<hr>
+<h2 id="current-priorities">Current Priorities</h2>
+<p>As of November 8, 2026, the laboratory should focus on the following learning activities:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Experiment</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>OpenClaw Ansible reference review</td>
+<td>Understand the official deployment approach</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dedicated user and sandbox deployment</td>
+<td>Implement the target architecture</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Security validation</td>
+<td>Verify actual permissions and isolation</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Tools and skills</td>
+<td>Explore agent capabilities</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Model comparison and cost monitoring</td>
+<td>Control API consumption</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Memory and local embeddings</td>
+<td>Explore hybrid AI architecture</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Multi-agent delegation</td>
+<td>Learn specialized agent coordination</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Scheduled automation</td>
+<td>Explore autonomous execution</td>
+</tr>
+</tbody></table></div>
+<p>These priorities may change as new capabilities or technical findings are discovered.</p>
+<hr>
+<h2 id="roadmap-maintenance-rules">Roadmap Maintenance Rules</h2>
+<ol>
+<li>Update the roadmap after meaningful experiments or architectural decisions.</li>
+<li>Do not mark an experiment as completed solely because the agent reports success.</li>
+<li>Record observed evidence and important limitations.</li>
+<li>Keep security findings explicit.</li>
+<li>Separate learning objectives from commercial milestones.</li>
+<li>Do not treat future ideas as implementation commitments.</li>
+<li>Keep detailed procedures in dedicated documentation.</li>
+<li>Avoid storing credentials, tokens, private keys, or sensitive data.</li>
+<li>Preserve a reproducible record of important configuration changes.</li>
+<li>Reevaluate priorities based on what the laboratory teaches.</li>
+</ol>
+<hr>
+<h3 id="final-note">Final Note</h3>
+<p>This roadmap is a living document.</p>
+<p>The objective is not to complete every experiment as quickly as possible.</p>
+<p>The objective is to understand the technology deeply enough to build secure, useful, and reproducible AI agent systems.</p>
+<p><strong>Learn → Experiment → Validate → Document → Improve → Repeat.</strong></p>
+
+</main>
+</div>
+</body>
+</html>

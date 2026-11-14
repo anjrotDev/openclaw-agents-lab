@@ -1,0 +1,2715 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product requirements and feature inventory · OpenClaw Agents Lab</title>
+<style>
+    :root {
+      color-scheme: light;
+      --paper: #fff;
+      --panel: #edf5f6;
+      --ink: #182d39;
+      --muted: #466070;
+      --accent: #095d65;
+      --line: #ccd9de;
+      --deep: #142b36;
+      --on-deep: #eff8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 1rem/1.65 system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      max-width: 78rem;
+      margin: auto;
+      padding: clamp(1rem, 4vw, 3rem);
+    }
+
+    header p {
+      max-width: 68ch;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.23;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 19ch;
+      margin: .35em 0;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+    }
+
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: .4em;
+    }
+
+    h3 {
+      margin-top: 1.8em;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: clamp(1rem, 5vw, 4rem);
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .toc p {
+      font-weight: 700;
+    }
+
+    nav ol {
+      padding-left: 1.5rem;
+    }
+
+    nav li {
+      margin: .3em 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    main>h2:first-child {
+      margin-top: 0;
+    }
+
+    p,
+    li,
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    pre {
+      max-width: 100%;
+      overflow: auto;
+      background: var(--deep);
+      color: var(--on-deep);
+      border-radius: .45rem;
+      padding: 1rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    :not(pre)>code {
+      background: var(--panel);
+      padding: .1em .24em;
+      border-radius: .2em;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .94rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: .5rem .7rem;
+    }
+
+    th {
+      background: var(--panel);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: .45rem;
+      margin: .85rem 0;
+      padding: 1rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--line);
+      margin-left: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width:48rem) {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+        margin-bottom: 2rem;
+      }
+
+      th,
+      td {
+        padding: .4rem;
+      }
+    }
+
+    @media print {
+      .layout {
+        display: block;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        color: #000;
+        background: #eee;
+      }
+    }
+  
+.toc {max-height:calc(100vh - 2rem);overflow:auto;padding:.25rem .4rem}
+.toc .subsection {margin-left:1rem}
+.table-scroll {overflow:auto;margin-block:1rem}
+.table-scroll table {min-width:28rem}
+.table-scroll:focus-visible {outline:3px solid var(--accent)}
+main > p, main > ul, main > ol {max-width:78ch}
+@media(max-width:48rem){.toc{max-height:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Lab navigation"><a href="../../index.html#reference">← Lab library</a></nav>
+<h1>Product requirements and feature inventory</h1>
+<p><a href="product-requirements.md">Source Markdown</a></p>
+</div></header>
+<div class="wrap layout">
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#product-requirements-feature-inventory">Product Requirements &amp; Feature Inventory</a></li><li class="subsection"><a href="#table-of-contents">Table of Contents</a></li><li class="subsection"><a href="#architecture-overview">Architecture Overview</a></li><li class="subsection"><a href="#openclaw-platform-configuration">OpenClaw Platform Configuration</a></li><li class="subsection"><a href="#crm-system">CRM System</a></li><li class="subsection"><a href="#fathom-meeting-integration">Fathom Meeting Integration</a></li><li class="subsection"><a href="#skills">Skills</a></li><li class="subsection"><a href="#tools">Tools</a></li><li class="subsection"><a href="#shared-modules">Shared Modules</a></li><li class="subsection"><a href="#scripts-automations">Scripts &amp; Automations</a></li><li class="subsection"><a href="#cron-jobs">Cron Jobs</a></li><li class="subsection"><a href="#memory-system">Memory System</a></li><li class="subsection"><a href="#integrations">Integrations</a></li><li class="subsection"><a href="#databases">Databases</a></li><li class="subsection"><a href="#environment-variables">Environment Variables</a></li><li class="subsection"><a href="#test-infrastructure">Test Infrastructure</a></li><li class="subsection"><a href="#configuration-files">Configuration Files</a></li><li class="subsection"><a href="#other-directories">Other Directories</a></li></ul></nav>
+<main>
+<h2 id="product-requirements-feature-inventory">Product Requirements &amp; Feature Inventory</h2>
+<blockquote>
+<p>Everything built on top of the base OpenClaw platform. Canonical reference for what exists, where it lives, and how it works. Operational use cases and workflow playbooks live in <code>docs/USE-CASES-WORKFLOWS.md</code>.</p>
+</blockquote>
+<hr>
+<h3 id="table-of-contents">Table of Contents</h3>
+<ol>
+<li><a href="http://docs/USE-CASES-WORKFLOWS.md">Operational Use Cases &amp; Workflows</a></li>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#openclaw-platform-configuration">OpenClaw Platform Configuration</a></li>
+<li><a href="#crm-system">CRM System</a></li>
+<li><a href="#fathom-meeting-integration">Fathom Meeting Integration</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#tools">Tools</a></li>
+<li><a href="#shared-modules">Shared Modules</a></li>
+<li><a href="#scripts-automations">Scripts &amp; Automations</a></li>
+<li><a href="#cron-jobs">Cron Jobs</a></li>
+<li><a href="#memory-system">Memory System</a></li>
+<li><a href="#integrations">Integrations</a></li>
+<li><a href="#databases">Databases</a></li>
+<li><a href="#environment-variables">Environment Variables</a></li>
+<li><a href="#test-infrastructure">Test Infrastructure</a></li>
+<li><a href="#configuration-files">Configuration Files</a></li>
+<li><a href="#other-directories">Other Directories</a></li>
+</ol>
+<hr>
+<h3 id="architecture-overview">Architecture Overview</h3>
+<p>The workspace is a monorepo-style project layered on top of OpenClaw. The base platform provides the agent framework, gateway, and skill system. Everything below is custom.</p>
+<pre><code>clawd/
+├── crm/                  # Personal CRM (tracked directly inside this repo)
+├── data/                 # Workspace databases (cron-log, video-pitches, business-meta-analysis)
+├── docs/                 # Setup guides (Slack, workspace file organization)
+├── life/                 # (empty directory, reserved for future use)
+├── memory/               # Daily notes, state files, reference data
+├── reference/            # Static reference data (recycling, competitors)
+├── scripts/              # Shell automation scripts
+├── shared/               # Shared Node.js utility modules
+├── skills/               # OpenClaw skills (22 installed)
+├── skills-preview/       # Skills in development (2)
+├── state/                # Mutable runtime state files
+├── tests/                # Test suite (unit, integration, skill, tool, script tests)
+├── tools/                # Standalone utility scripts and databases
+├── youtube-analysis/     # YouTube competitor analysis and content strategy
+├── .learnings/           # Self-improvement corrections and learnings
+└── [Root .md files]      # Core config (AGENTS, TOOLS, MEMORY, SOUL, etc.)
+</code></pre>
+<p><strong>Key patterns:</strong></p>
+<ul>
+<li>SQLite for all persistent local data (WAL mode, foreign keys)</li>
+<li>Vector embeddings standardized on Google <code>gemini-embedding-001</code> (768-dim) across all stores (KB, CRM, business-meta-analysis, OpenClaw memory index)</li>
+<li>Telegram as the primary notification and interaction channel</li>
+<li>All cron jobs logged to a central database with Telegram notifications</li>
+<li>Shared modules (<code>shared/</code>) for common functionality across tools and skills</li>
+<li><code>gog</code> CLI for all Google Workspace access (Gmail, Calendar, Drive, etc.)</li>
+</ul>
+<hr>
+<h3 id="openclaw-platform-configuration">OpenClaw Platform Configuration</h3>
+<p><strong>Config location:</strong> <code>~/.openclaw/</code> <strong>Gateway launchd:</strong> <code>~/Library/LaunchAgents/ai.openclaw.gateway.plist</code> <strong>Version:</strong> 2026.2.15 (as of Feb 17, 2026)</p>
+<h4 id="gateway">Gateway</h4>
+<ul>
+<li><strong>Port:</strong> 18789</li>
+<li><strong>Mode:</strong> Local (loopback only, not exposed to network)</li>
+<li><strong>Auth:</strong> Token-based</li>
+<li><strong>Tailscale:</strong> Off</li>
+<li><strong>Logs:</strong> <code>~/.openclaw/logs/gateway.log</code> and <code>gateway.err.log</code></li>
+<li><strong>Binary:</strong> <code>/opt/homebrew/lib/node_modules/openclaw/dist/index.js</code></li>
+<li><strong>Launchd:</strong> RunAtLoad + KeepAlive (auto-restart)</li>
+</ul>
+<h4 id="model-providers">Model Providers</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Provider</th>
+<th align="left">Models</th>
+<th align="left">Context</th>
+<th align="left">Pricing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Anthropic</td>
+<td align="left">Opus 4.6 (primary), Sonnet 4.5, Haiku 4.5</td>
+<td align="left">200K (1M via API tier 4+)</td>
+<td align="left">Pay-per-token</td>
+</tr>
+<tr>
+<td align="left">Google</td>
+<td align="left">Gemini 3 Pro, Gemini 3 Flash</td>
+<td align="left">2M / 1M</td>
+<td align="left">Free</td>
+</tr>
+<tr>
+<td align="left">X.AI</td>
+<td align="left">Grok Beta</td>
+<td align="left">131K</td>
+<td align="left">$5/$15 per 1M tokens</td>
+</tr>
+</tbody></table></div>
+<p><strong>Model fallback chain:</strong></p>
+<ul>
+<li>Main: Opus → Sonnet → Gemini Pro → Gemini Flash → Haiku</li>
+<li>Subagents: Sonnet → Gemini Flash → Haiku → Gemini Pro</li>
+</ul>
+<h4 id="agent-settings">Agent Settings</h4>
+<ul>
+<li>Primary model: <code>anthropic/claude-opus-4-6</code></li>
+<li>Max concurrent agents: 4</li>
+<li>Max concurrent subagents: 8</li>
+<li>Subagent primary model: Sonnet 4.5</li>
+<li>Context pruning: cache-ttl mode, 1h TTL</li>
+<li>Heartbeat interval: 1 hour</li>
+<li>Memory backend: <code>builtin</code> (Gemini embeddings)</li>
+<li>CLI backend: Cursor agent at <code>~/.local/bin/agent</code></li>
+</ul>
+<h4 id="plugins">Plugins</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Plugin</th>
+<th align="left">Status</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>telegram</code></td>
+<td align="left">Enabled</td>
+<td align="left">Telegram channel integration</td>
+</tr>
+<tr>
+<td align="left"><code>slack</code></td>
+<td align="left">Enabled</td>
+<td align="left">Slack channel integration (socket mode)</td>
+</tr>
+<tr>
+<td align="left"><code>google-gemini-cli-auth</code></td>
+<td align="left">Enabled</td>
+<td align="left">Google Gemini CLI authentication</td>
+</tr>
+<tr>
+<td align="left"><code>memory-core</code></td>
+<td align="left">Enabled</td>
+<td align="left">Core memory backend</td>
+</tr>
+<tr>
+<td align="left"><code>memory-lancedb</code></td>
+<td align="left">Disabled</td>
+<td align="left">Alternative memory backend</td>
+</tr>
+</tbody></table></div>
+<h4 id="channels">Channels</h4>
+<ul>
+<li><strong>Telegram:</strong> DM policy &quot;pairing&quot;, group allowlist, partial stream mode</li>
+<li><strong>Slack:</strong> Socket mode, allowlist policy, history limit 50</li>
+</ul>
+<h4 id="skill-management">Skill Management</h4>
+<ul>
+<li>Skills installed via <code>clawdhub</code> CLI</li>
+<li>Install directory: <code>~/clawd/skills/</code></li>
+<li>Lock file: <code>~/clawd/.clawdhub/lock.json</code> (tracks installed versions)</li>
+<li>Skills discovered via <code>SKILL.md</code> files in skill directories</li>
+</ul>
+<hr>
+<h3 id="crm-system">CRM System</h3>
+<p><strong>Location:</strong> <code>crm/</code> (tracked directly in this repo) <strong>Database:</strong> <code>~/clawd/crm/data/contacts.db</code> <strong>Skill interface:</strong> <code>skills/crm-query/</code> <strong>Stats:</strong> ~1,174 contacts tracked</p>
+<h4 id="what-it-does">What It Does</h4>
+<p>A personal CRM that automatically discovers contacts from email and calendar, tracks relationships with vector-based semantic search, integrates with Box for document relevance, supports AI-assisted email drafting, and provides a natural language query interface via Telegram. Operational CRM workflows (querying, follow-ups, meeting processing, and drafting handoffs) are documented in <code>docs/USE-CASES-WORKFLOWS.md</code>.</p>
+<h4 id="contact-discovery">Contact Discovery</h4>
+<ul>
+<li>Scans Gmail and Google Calendar (last 365 days) via the <code>gog</code> CLI</li>
+<li>Filters out newsletters, automated senders, large meetings (&gt;10 people), internal domains (forwardfuture.ai)</li>
+<li>Learning system (<code>pattern-learner.js</code>): builds skip patterns from approve/reject decisions, suggests auto-add mode after 50 decisions</li>
+<li>Anti-injection security: sanitizes email content, blocks prompt injection patterns</li>
+</ul>
+<h4 id="database-schema">Database Schema</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Table</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>contacts</code></td>
+<td align="left">Core contact info (name, email, company, role, priority, relationship_score)</td>
+</tr>
+<tr>
+<td align="left"><code>interactions</code></td>
+<td align="left">Log of meetings, emails, calls, messages (includes <code>fathom_meeting_id</code> FK)</td>
+</tr>
+<tr>
+<td align="left"><code>follow_ups</code></td>
+<td align="left">Scheduled reminders with due dates, snoozing, status tracking</td>
+</tr>
+<tr>
+<td align="left"><code>contact_context</code></td>
+<td align="left">Timeline entries with 768-dim vector embeddings, direction, response time, topic tags</td>
+</tr>
+<tr>
+<td align="left"><code>contact_summaries</code></td>
+<td align="left">LLM-generated relationship summaries with embeddings</td>
+</tr>
+<tr>
+<td align="left"><code>meetings</code></td>
+<td align="left">Fathom meeting data (title, summary, transcript, attendees, action items)</td>
+</tr>
+<tr>
+<td align="left"><code>meeting_action_items</code></td>
+<td align="left">Structured action items with assignee, ownership flag, status, due date, Todoist link</td>
+</tr>
+<tr>
+<td align="left"><code>merge_suggestions</code></td>
+<td align="left">Duplicate contact detection with score, reasons, accept/decline workflow</td>
+</tr>
+<tr>
+<td align="left"><code>relationship_profiles</code></td>
+<td align="left">Structured relationship analysis (type, style, topics, sentiment trend, interaction counts)</td>
+</tr>
+<tr>
+<td align="left"><code>learning_patterns</code></td>
+<td align="left">Learned filtering patterns from approve/reject decisions</td>
+</tr>
+<tr>
+<td align="left"><code>rejected_contacts</code></td>
+<td align="left">Tracking rejected candidate contacts with rejection counts</td>
+</tr>
+<tr>
+<td align="left"><code>sources</code></td>
+<td align="left">Contact discovery source tracking</td>
+</tr>
+<tr>
+<td align="left"><code>meta</code></td>
+<td align="left">Key-value store for sync cursors, last-handled timestamps, etc.</td>
+</tr>
+<tr>
+<td align="left"><code>box_files</code></td>
+<td align="left">Box file metadata (name, path, extension, owner, etag, web URL, soft-delete flag)</td>
+</tr>
+<tr>
+<td align="left"><code>box_file_chunks</code></td>
+<td align="left">Extracted text chunks with embeddings for semantic search</td>
+</tr>
+<tr>
+<td align="left"><code>box_file_collaborators</code></td>
+<td align="left">Collaborator emails and roles per Box file</td>
+</tr>
+<tr>
+<td align="left"><code>contact_document_links</code></td>
+<td align="left">Cached relevance links between contacts and Box files</td>
+</tr>
+<tr>
+<td align="left"><code>box_sync_state</code></td>
+<td align="left">Box sync checkpoints</td>
+</tr>
+<tr>
+<td align="left"><code>email_draft_requests</code></td>
+<td align="left">Gmail draft proposals with approval workflow (proposed→approved→drafted)</td>
+</tr>
+<tr>
+<td align="left"><code>urgent_notifications</code></td>
+<td align="left">Urgent email notification tracking with feedback loop — stores each notification sent, dedup state, and natural language feedback for few-shot classifier learning</td>
+</tr>
+</tbody></table></div>
+<h4 id="architecture-handler-modules-crmsrchandlers">Architecture: Handler Modules (<code>crm/src/handlers/</code>)</h4>
+<p>The CRM query system is organized into modular handler files mixed into the main CRMService:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Handler</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>contacts.js</code></td>
+<td align="left">Contact lookup, company queries, merge operations, sync triggers, stats</td>
+</tr>
+<tr>
+<td align="left"><code>follow-ups.js</code></td>
+<td align="left">Follow-up creation, listing, marking done, snoozing</td>
+</tr>
+<tr>
+<td align="left"><code>interactions.js</code></td>
+<td align="left">Interaction logging from natural language, nudge generation</td>
+</tr>
+<tr>
+<td align="left"><code>topics.js</code></td>
+<td align="left">Semantic topic search across all contacts, source inspection (<code>show source #N</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>documents.js</code></td>
+<td align="left">Box document relevance queries per contact</td>
+</tr>
+</tbody></table></div>
+<h4 id="intent-detection-crmsrcintent-detectorjs">Intent Detection (<code>crm/src/intent-detector.js</code>)</h4>
+<p>Natural language intent detector supporting these query types:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Intent</th>
+<th align="left">Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>contact</code></td>
+<td align="left">&quot;Tell me about Mark&quot;, &quot;Who is Sarah?&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>topic</code></td>
+<td align="left">&quot;Who have I talked to about fundraising?&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>log_interaction</code></td>
+<td align="left">&quot;I met with John today about the project&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>create_follow_up</code></td>
+<td align="left">&quot;Follow up with Lisa in 2 weeks&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>list_follow_ups</code></td>
+<td align="left">&quot;Show my follow-ups&quot;, &quot;Follow-ups&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>mark_follow_up_done</code></td>
+<td align="left">&quot;Mark follow-up #3 done&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>snooze_follow_up</code></td>
+<td align="left">&quot;Snooze follow-up #2&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>nudges</code></td>
+<td align="left">&quot;Who needs attention?&quot;, &quot;Who should I reach out to?&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>contact_documents</code></td>
+<td align="left">&quot;Show docs for Mark&quot;, &quot;What files for Acme?&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>show_source</code></td>
+<td align="left">&quot;Show source #3&quot; (evidence inspection from last query)</td>
+</tr>
+<tr>
+<td align="left"><code>merge_suggestions</code></td>
+<td align="left">&quot;Show duplicates&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>merge_accept</code> / <code>merge_decline</code></td>
+<td align="left">&quot;Accept merge #5&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>merge</code></td>
+<td align="left">&quot;Merge John and Jonathan&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>company</code></td>
+<td align="left">&quot;Who do I know at Google?&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>sync</code></td>
+<td align="left">&quot;Scan for new contacts&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>stats</code></td>
+<td align="left">&quot;How many contacts?&quot;, &quot;Stats&quot;</td>
+</tr>
+</tbody></table></div>
+<h4 id="scripts">Scripts</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Script</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>sync.js</code></td>
+<td align="left">Manual contact discovery scan</td>
+</tr>
+<tr>
+<td align="left"><code>daily-sync.js</code></td>
+<td align="left">Automated daily sync (runs via OpenClaw cron at 2am PST)</td>
+</tr>
+<tr>
+<td align="left"><code>batch-scan.js</code></td>
+<td align="left">Batch contact scanning with rate limiting, classification, auto-approval, context updates, candidate export, Telegram notifications, incremental progress saving</td>
+</tr>
+<tr>
+<td align="left"><code>batch-scan-context.js</code></td>
+<td align="left">Phase 5: scans recent inbound emails, matches to existing contacts, extracts context entries via LLM, generates embeddings, updates relationship summaries</td>
+</tr>
+<tr>
+<td align="left"><code>batch-scan-helpers.js</code></td>
+<td align="left">Shared utilities for batch scanning (chunking, date parsing, email extraction, candidate classification, contact approval)</td>
+</tr>
+<tr>
+<td align="left"><code>process-context.js</code></td>
+<td align="left">Extract timeline entries from emails using LLM</td>
+</tr>
+<tr>
+<td align="left"><code>backfill-context.js</code></td>
+<td align="left">Full-history email backfill for all contacts, relationship profile generation</td>
+</tr>
+<tr>
+<td align="left"><code>box-sync.js</code></td>
+<td align="left">Box folder sync - indexes files, extracts content, generates embeddings, computes contact relevance. Flags: <code>--force</code>, <code>--max-files=N</code>, <code>--rebuild-links</code></td>
+</tr>
+<tr>
+<td align="left"><code>fathom-sync.js</code></td>
+<td align="left">Sync Fathom meetings - <code>--poll</code> and <code>--backfill</code> modes</td>
+</tr>
+<tr>
+<td align="left"><code>fathom-after-meetings.js</code></td>
+<td align="left">Calendar-aware Fathom polling - checks today&#39;s meetings, triggers poll after meeting end + buffer (default 20 min). Replaces static scheduling with dynamic, meeting-aware triggers.</td>
+</tr>
+<tr>
+<td align="left"><code>fathom-approve.js</code></td>
+<td align="left">Approve verified action items from Fathom, push to Todoist</td>
+</tr>
+<tr>
+<td align="left"><code>schedule-fathom-poll.js</code></td>
+<td align="left">Legacy: dynamically schedule Fathom polling via launchd (superseded by <code>fathom-after-meetings.js</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>merge-contacts.js</code></td>
+<td align="left">Merge duplicate contacts by ID or email</td>
+</tr>
+<tr>
+<td align="left"><code>query.js</code></td>
+<td align="left">CLI query interface for natural language queries</td>
+</tr>
+<tr>
+<td align="left"><code>verify-context-system.js</code></td>
+<td align="left">Verification script for context system</td>
+</tr>
+<tr>
+<td align="left"><code>urgent-email-check.js</code></td>
+<td align="left">Scan recently-ingested inbound emails for urgency. Pre-filters noise senders, classifies via LLM with few-shot learning from feedback, sends notifications to CRM topic 709. Gates on notification windows (weekdays 5-9pm, weekends 7am-9pm PST).</td>
+</tr>
+<tr>
+<td align="left"><code>health-check.js</code></td>
+<td align="left">CRM database health monitor. Checks integrity, detects contact count drops (&gt; 20% = alert), verifies key tables, monitors ingestion activity. Stores baseline in meta table. Runs after nightly ingestion.</td>
+</tr>
+<tr>
+<td align="left"><code>restore-from-backups.js</code></td>
+<td align="left">One-time recovery script that merges data from two partially-corrupt backups, picking the best available version of each table.</td>
+</tr>
+<tr>
+<td align="left"><code>urgent-feedback.js</code></td>
+<td align="left">Process natural language feedback on urgent notifications. Interprets Matt&#39;s reply via LLM to extract verdict (useful/noise) and generalized reasoning. Supports <code>--id &lt;N&gt;</code> or <code>--latest</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>migrate.js</code></td>
+<td align="left">General database migration runner - calls Schema to run all pending migrations</td>
+</tr>
+<tr>
+<td align="left"><code>migrate-context.js</code></td>
+<td align="left">Migration script for <code>contact_context</code> table and indexes</td>
+</tr>
+<tr>
+<td align="left"><code>seed-test-data.js</code></td>
+<td align="left">Seeds database with fake test data (contacts, interactions, follow-ups) for development</td>
+</tr>
+<tr>
+<td align="left"><code>fathom-poll-oneshot.sh</code></td>
+<td align="left">Ephemeral one-shot Fathom poll trigger - runs <code>fathom-sync.js --poll</code> then self-unloads its launchd plist</td>
+</tr>
+<tr>
+<td align="left"><code>run-context-tests.sh</code></td>
+<td align="left">Test runner for the context system - installs deps, runs migration, executes tests</td>
+</tr>
+</tbody></table></div>
+<h4 id="core-service-crmsrc">Core Service (<code>crm/src/</code>)</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>index.js</code></td>
+<td align="left">Main <code>CRMService</code> class - wires together all DB modules, intelligence, ingestion, context, handlers, Box, and Gmail. Singleton entry point.</td>
+</tr>
+<tr>
+<td align="left"><code>config.js</code></td>
+<td align="left">CRM configuration management - loads <code>.env</code>, resolves paths, provides defaults for all CRM settings</td>
+</tr>
+<tr>
+<td align="left"><code>intent-detector.js</code></td>
+<td align="left">Natural language intent detection - classifies queries into 16 intent types (contact, topic, follow-up, nudge, merge, sync, stats, documents, etc.)</td>
+</tr>
+<tr>
+<td align="left"><code>query-helpers.js</code></td>
+<td align="left">Shared query helper methods mixed into CRMService - contact resolution by email/name, date parsing, formatting</td>
+</tr>
+</tbody></table></div>
+<h4 id="database-access-layer-crmsrcdb">Database Access Layer (<code>crm/src/db/</code>)</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>schema.js</code></td>
+<td align="left">Database schema creation and all migrations (20 tables, indexes, column additions)</td>
+</tr>
+<tr>
+<td align="left"><code>contacts.js</code></td>
+<td align="left">Contact CRUD - search, create, update, delete, by-email/name lookup</td>
+</tr>
+<tr>
+<td align="left"><code>interactions.js</code></td>
+<td align="left">Interaction logging - create, query by contact/date/type</td>
+</tr>
+<tr>
+<td align="left"><code>followups.js</code></td>
+<td align="left">Follow-up CRUD - create, list pending/overdue, snooze, mark done</td>
+</tr>
+<tr>
+<td align="left"><code>merge-suggestions.js</code></td>
+<td align="left">Duplicate detection - suggest, accept, decline merge candidates</td>
+</tr>
+<tr>
+<td align="left"><code>learning.js</code></td>
+<td align="left">Pattern storage for learned contact filtering rules</td>
+</tr>
+<tr>
+<td align="left"><code>email-draft-requests.js</code></td>
+<td align="left">Email draft proposal lifecycle - propose, approve, mark drafted/cancelled/error</td>
+</tr>
+<tr>
+<td align="left"><code>meeting-action-items.js</code></td>
+<td align="left">Action item storage - create, query by meeting/contact/assignee, mark done, Todoist linking</td>
+</tr>
+<tr>
+<td align="left"><code>rejections.js</code></td>
+<td align="left">Rejected contact candidate tracking with counts</td>
+</tr>
+<tr>
+<td align="left"><code>meta.js</code></td>
+<td align="left">Key-value store for sync cursors, last-handled timestamps, and runtime state</td>
+</tr>
+</tbody></table></div>
+<h4 id="contact-ingestion-pipeline-crmsrcingestion">Contact Ingestion Pipeline (<code>crm/src/ingestion/</code>)</h4>
+<p>Discovers contacts from email and calendar, classifies them, and manages the approval workflow.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>email-scanner.js</code></td>
+<td align="left">Scans Gmail thread metadata via <code>gog</code> CLI to discover contact candidates</td>
+</tr>
+<tr>
+<td align="left"><code>calendar-scanner.js</code></td>
+<td align="left">Scans Google Calendar events via <code>gog</code> CLI to discover contacts from meetings</td>
+</tr>
+<tr>
+<td align="left"><code>contact-extractor.js</code></td>
+<td align="left">Merges email and calendar candidates, deduplicates, extracts contact info</td>
+</tr>
+<tr>
+<td align="left"><code>batch-approver.js</code></td>
+<td align="left">Batch approval workflow for new contact candidates with interactive approve/reject</td>
+</tr>
+<tr>
+<td align="left"><code>ingest-utils.js</code></td>
+<td align="left">Shared ingestion utilities - date parsing, clamping, helper functions</td>
+</tr>
+</tbody></table></div>
+<h4 id="telegram-interface-crmsrctelegram">Telegram Interface (<code>crm/src/telegram/</code>)</h4>
+<p>Bot UI for CRM interactions via Telegram.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>commands.js</code></td>
+<td align="left">Telegram command handlers - routes messages to CRM query handlers, manages conversation flow</td>
+</tr>
+<tr>
+<td align="left"><code>menu.js</code></td>
+<td align="left">Interactive menu system - inline keyboard menus, pagination, selection for contact actions</td>
+</tr>
+<tr>
+<td align="left"><code>formatters.js</code></td>
+<td align="left">Output formatting - contact display, truncation, emoji, Telegram-safe markdown</td>
+</tr>
+</tbody></table></div>
+<h4 id="context-system-crmsrccontext">Context System (<code>crm/src/context/</code>)</h4>
+<p>Extracts and stores relationship context from email history with semantic search.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>email-fetcher.js</code></td>
+<td align="left">Fetches emails via <code>gog</code> CLI</td>
+</tr>
+<tr>
+<td align="left"><code>email-body.js</code></td>
+<td align="left">Email body extraction and cleaning</td>
+</tr>
+<tr>
+<td align="left"><code>extractor.js</code></td>
+<td align="left">Extracts timeline entries with direction/topics using LLM</td>
+</tr>
+<tr>
+<td align="left"><code>embeddings.js</code></td>
+<td align="left">Embedding generation (Google/OpenAI)</td>
+</tr>
+<tr>
+<td align="left"><code>storage.js</code></td>
+<td align="left">Stores timeline entries with deduplication</td>
+</tr>
+<tr>
+<td align="left"><code>search.js</code></td>
+<td align="left">Semantic and text search over context entries</td>
+</tr>
+<tr>
+<td align="left"><code>summary-storage.js</code></td>
+<td align="left">Stores relationship summaries</td>
+</tr>
+<tr>
+<td align="left"><code>relationship-summarizer.js</code></td>
+<td align="left">Generates LLM-powered relationship summaries</td>
+</tr>
+<tr>
+<td align="left"><code>response-generator.js</code></td>
+<td align="left">Generates natural language responses to queries</td>
+</tr>
+</tbody></table></div>
+<h4 id="box-integration-crmsrcbox">Box Integration (<code>crm/src/box/</code>)</h4>
+<p>Indexes Box files and links them to CRM contacts via hybrid relevance scoring.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>client.js</code></td>
+<td align="left">Box API v2.0 client - folder listing, tree traversal (max depth 5), file download, collaborator lookup. Bearer token auth.</td>
+</tr>
+<tr>
+<td align="left"><code>relevance.js</code></td>
+<td align="left">Hybrid relevance scoring: collaborator match (45%), semantic similarity (25%), lexical match (20%), recency (10%). Returns ranked results with component breakdowns and human-readable reasons.</td>
+</tr>
+<tr>
+<td align="left"><code>storage.js</code></td>
+<td align="left">SQLite storage for files, chunks, collaborators, contact-document links, and sync state</td>
+</tr>
+<tr>
+<td align="left"><code>sync-service.js</code></td>
+<td align="left">Full sync workflow: folder scan → file processing (content extraction, chunking, embedding) → cleanup → contact linking. Skips unchanged files via etag. Batch embeddings (8 at a time).</td>
+</tr>
+</tbody></table></div>
+<p><strong>Config:</strong> <code>BOX_ENABLED</code>, <code>BOX_ACCESS_TOKEN</code>, <code>BOX_ROOT_FOLDER_ID</code> in <code>~/.openclaw/.env</code> (available via CRM compatibility symlink) <strong>Cache:</strong> File downloads cached to <code>~/clawd/crm/data/box-cache/</code></p>
+<h4 id="gmail-draft-system-crmsrcgmail">Gmail Draft System (<code>crm/src/gmail/</code>)</h4>
+<p>AI-assisted email drafting with CRM context and a two-phase approval workflow. Draft-only - no send operations.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>gmail-client.js</code></td>
+<td align="left">Minimal Gmail wrapper via <code>gog</code> CLI - thread search, thread fetch, draft creation/update. Read-only + draft operations.</td>
+</tr>
+<tr>
+<td align="left"><code>email-draft-coordinator.js</code></td>
+<td align="left">Main workflow orchestrator: search Gmail by subject → score candidates (Jaro-Winkler similarity + recency) → extract CRM/Fathom context → generate suggestion → store as &quot;proposed&quot;. Approval flow: proposed → approved → drafted (Gmail draft created).</td>
+</tr>
+<tr>
+<td align="left"><code>reply-suggester.js</code></td>
+<td align="left">LLM-based reply generation using Gemini Flash Lite. Takes thread context, CRM contact info, CRM evidence, and Fathom meeting summaries. Outputs structured JSON with subject, body, assumptions, questions, and facts used.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Safety gate:</strong> <code>GMAIL_DRAFT_WRITES_ENABLED=true</code> required to create Gmail drafts <strong>Workflow:</strong> User provides subject → AI proposes reply → user reviews in Telegram → approval creates Gmail draft</p>
+<h4 id="relationship-intelligence-crmsrcintelligence">Relationship Intelligence (<code>crm/src/intelligence/</code>)</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>contact-classifier.js</code></td>
+<td align="left">Classifies contacts by relevance/priority</td>
+</tr>
+<tr>
+<td align="left"><code>contact-filter.js</code></td>
+<td align="left">Filters contacts based on learned patterns</td>
+</tr>
+<tr>
+<td align="left"><code>relationship-profiler.js</code></td>
+<td align="left">Generates relationship profiles (type, communication style, key topics)</td>
+</tr>
+<tr>
+<td align="left"><code>relationship-scorer.js</code></td>
+<td align="left">Calculates 0–100 health scores based on recency, frequency, priority, interaction quality</td>
+</tr>
+<tr>
+<td align="left"><code>nudge-generator.js</code></td>
+<td align="left">Generates relationship health nudges for contacts needing attention</td>
+</tr>
+<tr>
+<td align="left"><code>pattern-learner.js</code></td>
+<td align="left">Learns from approval/rejection decisions to improve filtering</td>
+</tr>
+</tbody></table></div>
+<h4 id="utilities-crmsrcutils">Utilities (<code>crm/src/utils/</code>)</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>gog-runner.js</code></td>
+<td align="left">Wrapper for <code>gog</code> CLI with retry/backoff</td>
+</tr>
+<tr>
+<td align="left"><code>llm.js</code></td>
+<td align="left">Unified multi-provider LLM client (Google/OpenAI/Anthropic). Supports Gemini thinking budget. Used across CRM for text generation.</td>
+</tr>
+<tr>
+<td align="left"><code>openclaw-config.js</code></td>
+<td align="left">Thin wrapper re-exporting <code>loadApiCredentials()</code> and <code>loadEmbeddingCredentials()</code> from shared config</td>
+</tr>
+<tr>
+<td align="left"><code>openclaw-wake.js</code></td>
+<td align="left">Wake OpenClaw gateway with a message via CLI</td>
+</tr>
+<tr>
+<td align="left"><code>string-similarity.js</code></td>
+<td align="left">String similarity calculations for contact matching (Jaro-Winkler)</td>
+</tr>
+</tbody></table></div>
+<h4 id="natural-language-queries">Natural Language Queries</h4>
+<p>Supports queries like &quot;What do I know about Mark?&quot; via intent detection and semantic search over context embeddings. Accessed through the <code>crm-query</code> skill or Telegram (topic 709).</p>
+<hr>
+<h3 id="fathom-meeting-integration">Fathom Meeting Integration</h3>
+<p><strong>Location:</strong> <code>crm/src/fathom/</code></p>
+<h4 id="what-it-does-2">What It Does</h4>
+<p>Automatically processes Fathom meeting recordings into CRM contacts, interactions, context entries, and action items with an approval workflow.</p>
+<h4 id="components">Components</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Component</th>
+<th align="left">File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">API Client</td>
+<td align="left"><code>api-client.js</code></td>
+<td align="left">Fetches meetings, transcripts, summaries, action items from Fathom API</td>
+</tr>
+<tr>
+<td align="left">API Keys</td>
+<td align="left"><code>api-keys.js</code></td>
+<td align="left">Manages Fathom API key loading from config</td>
+</tr>
+<tr>
+<td align="left">Calendar</td>
+<td align="left"><code>calendar.js</code></td>
+<td align="left">Calendar integration helpers - fetches today&#39;s events via <code>gog</code>, filters for likely Fathom meetings (timed, has external attendees, 15+ min, ≤10 attendees)</td>
+</tr>
+<tr>
+<td align="left">After-Meetings Logic</td>
+<td align="left"><code>after-meetings-logic.js</code></td>
+<td align="left">Pure logic for computing fire times (meeting end + buffer) and determining when polls should run</td>
+</tr>
+<tr>
+<td align="left">Processor</td>
+<td align="left"><code>processor.js</code></td>
+<td align="left">Matches attendees to CRM contacts by email, extracts insights via Gemini 2.5 Flash Lite, creates context entries with embeddings, updates relationship summaries</td>
+</tr>
+<tr>
+<td align="left">Notifier</td>
+<td align="left"><code>notifier.js</code></td>
+<td align="left">Sends Telegram notifications, manages approval queue for action items</td>
+</tr>
+<tr>
+<td align="left">Todoist Client</td>
+<td align="left"><code>todoist.js</code></td>
+<td align="left">Creates Todoist tasks from approved action items</td>
+</tr>
+</tbody></table></div>
+<h4 id="workflow">Workflow</h4>
+<p>See <code>docs/USE-CASES-WORKFLOWS.md</code> for the step-by-step operational flow (&quot;Meeting -&gt; CRM context -&gt; action items -&gt; Todoist&quot;). This section keeps component and implementation inventory in one place.</p>
+<h4 id="modes">Modes</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Flag</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>--poll</code></td>
+<td align="left">Fetch new meetings since last poll (for cron)</td>
+</tr>
+<tr>
+<td align="left"><code>--backfill</code></td>
+<td align="left">Pull historical meetings (default 90 days)</td>
+</tr>
+</tbody></table></div>
+<h4 id="scripts-2">Scripts</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Script</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>fathom-sync.js</code></td>
+<td align="left">Main entry point for polling and backfill</td>
+</tr>
+<tr>
+<td align="left"><code>fathom-after-meetings.js</code></td>
+<td align="left">Calendar-aware triggering - runs frequently, checks today&#39;s meetings, fires poll after meeting end + buffer. Tracks last handled fire time in meta table to avoid duplicate runs.</td>
+</tr>
+<tr>
+<td align="left"><code>fathom-approve.js</code></td>
+<td align="left">Approve pending action items, push to Todoist</td>
+</tr>
+<tr>
+<td align="left"><code>schedule-fathom-poll.js</code></td>
+<td align="left">Legacy: dynamically schedule polling via launchd (superseded by <code>fathom-after-meetings.js</code>)</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="skills">Skills</h3>
+<p><strong>Location:</strong> <code>skills/</code> (22 installed) and <code>skills-preview/</code> (2 in development)</p>
+<h4 id="installed-skills">Installed Skills</h4>
+<h5 id="browser-control">browser-control</h5>
+<ul>
+<li><strong>Purpose:</strong> Chrome browser automation via Puppeteer + CDP (Chrome DevTools Protocol). Connects to a running Chrome instance with a real user profile (cookies/sessions intact), not headless.</li>
+<li><strong>Commands:</strong><ul>
+<li><code>node scripts/browse.js navigate &quot;&lt;url&gt;&quot; [--wait load|networkidle|domcontentloaded|&lt;ms&gt;]</code></li>
+<li><code>node scripts/browse.js screenshot [--full-page] [--output path.png]</code></li>
+<li><code>node scripts/browse.js extract [--selector &quot;css&quot;] [--attribute href]</code></li>
+<li><code>node scripts/browse.js click --selector &quot;css&quot;</code></li>
+<li><code>node scripts/browse.js type --selector &quot;css&quot; --text &quot;...&quot; [--clear] [--enter] [--delay ms]</code></li>
+<li><code>node scripts/browse.js tabs</code></li>
+<li><code>node scripts/browse.js eval &quot;&lt;js expression&gt;&quot;</code></li>
+<li><code>node scripts/browse.js pdf [--output path.pdf]</code></li>
+<li><code>node scripts/browse.js wait &lt;ms&gt;</code></li>
+</ul>
+</li>
+<li><strong>Config:</strong> Chrome must be running with remote debugging (<code>bash scripts/launch-chrome.sh</code>). Uses dedicated debug profile at <code>~/clawd/data/chrome-debug-profile/</code> (separate from personal Chrome).</li>
+<li><strong>Dependencies:</strong> <code>puppeteer-core</code> v24.2.0</li>
+<li><strong>Port:</strong> 9222 (configurable)</li>
+</ul>
+<h5 id="clawdhub">clawdhub</h5>
+<ul>
+<li><strong>Purpose:</strong> Search, install, update, and publish skills from clawdhub.com</li>
+<li><strong>Commands:</strong> <code>clawdhub search</code>, <code>install</code>, <code>update</code>, <code>list</code>, <code>publish</code></li>
+<li><strong>Config:</strong> Requires <code>clawdhub</code> npm package installed globally</li>
+<li><strong>API:</strong> ClawdHub registry (<a href="https://clawdhub.com">https://clawdhub.com</a>)</li>
+</ul>
+<h5 id="crm-query">crm-query</h5>
+<ul>
+<li><strong>Purpose:</strong> Natural language CRM queries - contacts, relationships, follow-ups, interaction logging</li>
+<li><strong>Commands:</strong> <code>cd ~/clawd/crm &amp;&amp; node scripts/query.js &quot;&lt;question&gt;&quot;</code></li>
+<li><strong>Database:</strong> <code>~/clawd/crm/data/contacts.db</code></li>
+<li><strong>API:</strong> OpenClaw API for embeddings/LLM, optional <code>gog</code> CLI for email/calendar</li>
+</ul>
+<h5 id="beehiiv">beehiiv</h5>
+<ul>
+<li><strong>Purpose:</strong> Beehiiv newsletter platform API -- subscriber management, post analytics, segments, automations, custom fields, tiers, referral program, webhooks</li>
+<li><strong>Commands:</strong> Documentation-only (curl templates)</li>
+<li><strong>Config:</strong> Requires <code>BEEHIIV_API_KEY</code> and <code>BEEHIIV_PUBLICATION_ID</code> environment variables</li>
+<li><strong>API:</strong> Beehiiv REST API v2</li>
+</ul>
+<h5 id="hubspot">hubspot</h5>
+<ul>
+<li><strong>Purpose:</strong> HubSpot CRM/CMS API integration - contacts, companies, deals, content management</li>
+<li><strong>Commands:</strong> Documentation-only (curl/PowerShell templates)</li>
+<li><strong>Config:</strong> Requires <code>HUBSPOT_ACCESS_TOKEN</code> environment variable</li>
+<li><strong>API:</strong> HubSpot REST API</li>
+</ul>
+<h5 id="humanizer-v211">humanizer (v2.1.1)</h5>
+<ul>
+<li><strong>Purpose:</strong> Removes AI writing patterns based on Wikipedia&#39;s &quot;Signs of AI writing&quot; guide</li>
+<li><strong>Detects:</strong> 24 patterns including inflated symbolism, promotional language, em dash overuse, rule of three, AI vocabulary, etc.</li>
+<li><strong>Commands:</strong> None (invoked via agent skill call)</li>
+<li><strong>Config:</strong> None required</li>
+</ul>
+<h5 id="knowledge-base">knowledge-base</h5>
+<ul>
+<li><strong>Purpose:</strong> RAG system - ingest articles, videos, tweets, PDFs; query via natural language</li>
+<li><strong>Commands:</strong><ul>
+<li><code>node scripts/ingest.js &quot;&lt;url&gt;&quot; [--tags X] [--title Y] [--type Z] [--no-browser] [--dry-run]</code></li>
+<li><code>node scripts/ingest-and-crosspost.js &quot;&lt;url&gt;&quot; [--tags X] [--no-slack]</code> - Combines ingestion + Slack #ai_trends cross-post in a single deterministic script. Keeps untrusted page content out of the agent loop. Cleans summaries for Slack (strips metadata, tracking params). Used by Telegram KB topic automation.</li>
+<li><code>node scripts/query.js &quot;&lt;question&gt;&quot; [--limit N] [--threshold X] [--tags Y]</code></li>
+<li><code>node scripts/list.js [--tag X] [--type Y] [--recent N]</code></li>
+<li><code>node scripts/delete.js &lt;source_id&gt;</code></li>
+<li><code>node scripts/stats.js</code></li>
+<li><code>node scripts/bulk-ingest.js &lt;file&gt; [--tags X] [--retries N]</code></li>
+</ul>
+</li>
+<li><strong>Database:</strong> <code>~/clawd/skills/knowledge-base/data/knowledge.db</code></li>
+<li><strong>API:</strong> OpenClaw (embeddings), FxTwitter (X/Twitter URLs), optional Firecrawl, Apify, Grok</li>
+<li><strong>Lock file:</strong> <code>~/clawd/skills/knowledge-base/data/.ingest.lock</code></li>
+<li><strong>Config:</strong> Requires <code>summarize</code> CLI (<code>brew install steipete/tap/summarize</code>)</li>
+</ul>
+<h5 id="financials">financials</h5>
+<ul>
+<li><strong>Purpose:</strong> Financial data queries from CSV exports (source-agnostic) - query revenue, expenses, P&amp;L, balance sheet, invoices, bills, AR/AP via natural language</li>
+<li><strong>Commands:</strong><ul>
+<li><code>node scripts/query.js &quot;&lt;financial question&gt;&quot;</code> - Natural language query from cache</li>
+<li><code>node scripts/query.js --report ProfitAndLoss|BalanceSheet</code> - Specific reports</li>
+<li><code>node scripts/query.js --invoices open</code> / <code>--bills open</code> / <code>--expenses --days 30</code></li>
+<li><code>node scripts/query.js --accounts</code> / <code>--sync-status</code></li>
+<li><code>node scripts/import.js &lt;file.csv&gt; [--delete]</code> - Import financial CSV exports</li>
+<li><code>node scripts/import.js --dir &lt;path&gt;</code> - Import all CSVs from a directory</li>
+<li><code>node scripts/generate-reports.js [--year N] [--period ytd|last_year]</code> - Generate P&amp;L and Balance Sheet from transactions</li>
+</ul>
+</li>
+<li><strong>Data flow:</strong> Matt exports CSVs from the accounting system (Transaction List, Account List) and sends via Telegram financials topic (2774). Import script auto-detects type, imports, generates P&amp;L/Balance Sheet, deletes source file.</li>
+<li><strong>Database:</strong> <code>~/clawd/skills/financials/data/financials.db</code></li>
+<li><strong>Confidentiality:</strong> Financial data is strictly confidential - only shared with Matt directly (DM or financials topic). Council digests reference financial health directionally, not specific dollar amounts.</li>
+<li><strong>Cron:</strong> Monthly reminder on the 1st at 10am PST to export fresh financial data</li>
+<li><strong>Council:</strong> Feeds financial signals (revenue, expenses, net income, cash position, AR/AP, burn rate, overdue invoices) into nightly business meta-analysis; CFO reviewer persona analyzes the data</li>
+<li><strong>Tests:</strong> <code>node --test tests/*.test.js</code> (45 tests covering DB, reports, import, client)</li>
+</ul>
+<h5 id="model-usage-tracker">model-usage-tracker</h5>
+<ul>
+<li><strong>Purpose:</strong> Track AI model usage, costs, and token consumption across providers (Anthropic, OpenAI, Google, xAI)</li>
+<li><strong>Commands:</strong><ul>
+<li><code>./log-usage.js &lt;model&gt; &lt;tokens_in&gt; &lt;tokens_out&gt; &lt;task_type&gt; &lt;description&gt;</code></li>
+<li><code>./generate-report.js [--days N] [--model X] [--task-type Y]</code></li>
+</ul>
+</li>
+<li><strong>Storage:</strong> JSONL log at <code>~/.openclaw/logs/model-usage.jsonl</code></li>
+</ul>
+<h5 id="nano-banana-pro-2">nano-banana-pro-2</h5>
+<ul>
+<li><strong>Purpose:</strong> Image generation/editing via Google Gemini 3 Pro Image API</li>
+<li><strong>Commands:</strong><ul>
+<li><code>uv run scripts/generate_image.py --prompt &quot;&lt;desc&gt;&quot; --filename &quot;out.png&quot; [--resolution 1K|2K|4K]</code></li>
+<li>Supports single generation, single edit (with <code>-i</code>), multi-image composition (up to 14 images)</li>
+</ul>
+</li>
+<li><strong>Config:</strong> Requires <code>uv</code> (<code>brew install uv</code>), <code>GEMINI_API_KEY</code></li>
+<li><strong>Output:</strong> <code>MEDIA:&lt;path&gt;</code> line for agent runtimes</li>
+</ul>
+<h5 id="self-improving-agent">self-improving-agent</h5>
+<ul>
+<li><strong>Purpose:</strong> Log learnings, errors, and corrections for continuous improvement</li>
+<li><strong>Storage:</strong> Markdown files in <code>.learnings/</code> (LEARNINGS.md, ERRORS.md, FEATURE_REQUESTS.md)</li>
+<li><strong>Hooks:</strong> <code>activator.sh</code> (UserPromptSubmit), <code>error-detector.sh</code> (PostToolUse)</li>
+<li><strong>Commands:</strong> <code>scripts/extract-skill.sh &lt;skill-name&gt; [--dry-run]</code></li>
+</ul>
+<h5 id="summarize">summarize</h5>
+<ul>
+<li><strong>Purpose:</strong> Summarize URLs, local files, and YouTube links</li>
+<li><strong>Commands:</strong> <code>summarize &quot;&lt;url&gt;&quot; [--model X] [--length Y] [--extract-only] [--json] [--firecrawl auto]</code></li>
+<li><strong>Config:</strong> Requires <code>summarize</code> CLI (<code>brew install steipete/tap/summarize</code>)</li>
+<li><strong>API:</strong> Multiple LLM providers (OpenAI, Anthropic, xAI, Google)</li>
+</ul>
+<h5 id="todoist">todoist</h5>
+<ul>
+<li><strong>Purpose:</strong> Task management via Todoist CLI - tasks, projects, labels, comments, natural language due dates</li>
+<li><strong>Commands:</strong> <code>todoist [today]</code>, <code>todoist tasks</code>, <code>todoist add</code>, <code>todoist done</code>, <code>todoist search</code>, etc.</li>
+<li><strong>Config:</strong> Requires <code>todoist-ts-cli</code> npm package, <code>TODOIST_API_TOKEN</code></li>
+</ul>
+<h5 id="video-idea-pipeline">video-idea-pipeline</h5>
+<ul>
+<li><strong>Purpose:</strong> Convert video ideas into researched Asana cards with X/Twitter tweets and KB sources</li>
+<li><strong>Workflow:</strong> Agent searches X → queries KB → creates Asana task in Video Pipeline project</li>
+<li><strong>Trigger:</strong> User says &quot;potential video idea&quot; in Slack/Telegram</li>
+<li><strong>Dependencies:</strong> x-research-v2 skill, knowledge-base skill, Asana API</li>
+</ul>
+<h5 id="x-research-v2">x-research-v2</h5>
+<ul>
+<li><strong>Purpose:</strong> X/Twitter research - search, profiles, threads, single tweets, watchlists, caching</li>
+<li><strong>Commands:</strong><ul>
+<li><code>bun run x-search.ts search &quot;&lt;query&gt;&quot; [--sort X] [--min-likes N] [--pages N] [--limit N] [--save] [--json]</code></li>
+<li><code>bun run x-search.ts profile &lt;username&gt;</code>, <code>thread &lt;id&gt;</code>, <code>tweet &lt;id&gt;</code>, <code>watchlist</code>, <code>cache clear</code></li>
+</ul>
+</li>
+<li><strong>Config:</strong> Requires <code>bun</code> runtime, <code>X_BEARER_TOKEN</code></li>
+<li><strong>API:</strong> X/Twitter API v2 (~$0.005/tweet read), 350ms rate limiting</li>
+<li><strong>Cache:</strong> File-based at <code>data/cache/</code> (15-min TTL)</li>
+</ul>
+<h5 id="x-analytics">x-analytics</h5>
+<ul>
+<li><strong>Purpose:</strong> X/Twitter per-post analytics - collect and query detailed engagement metrics (impressions/views, likes, replies, retweets, bookmarks, shares, follows, unfollows, media views, URL clicks, profile clicks, app installs, email shares)</li>
+<li><strong>Commands:</strong><ul>
+<li><code>python3 ~/clawd/tools/social-tracker/x_collect.py</code> - Collect analytics for last 30 days</li>
+<li><code>python3 ~/clawd/tools/social-tracker/x_collect.py --backfill 90</code> - Backfill last 90 days</li>
+<li><code>python3 ~/clawd/tools/social-tracker/x_query.py summary</code> - Overall stats</li>
+<li><code>python3 ~/clawd/tools/social-tracker/x_query.py top [--metric X] [-n N]</code> - Top posts</li>
+<li><code>python3 ~/clawd/tools/social-tracker/x_query.py post POST_ID</code> - Single post details</li>
+<li><code>python3 ~/clawd/tools/social-tracker/x_query.py trends [--days N]</code> - Aggregate trends</li>
+<li><code>python3 ~/clawd/tools/social-tracker/x_query.py list [--sort X] [--limit N]</code> - List all posts</li>
+</ul>
+</li>
+<li><strong>Database:</strong> <code>tools/social-tracker/db/social_growth.db</code> (tables: <code>x_posts</code> with public_metrics view counts, <code>x_post_stats</code> hourly snapshots)</li>
+<li><strong>View tracking:</strong> Dual collection — <code>public_metrics.impression_count</code> stored in <code>x_posts.view_count</code> (always available), plus <code>impressions</code> from analytics endpoint in hourly snapshots (richer metrics, 30-day window). Falls back to public_metrics when analytics unavailable.</li>
+<li><strong>Auth:</strong> OAuth 1.0a via <code>X_API_KEY</code>, <code>X_API_SECRET</code>, <code>X_ACCESS_TOKEN</code>, <code>X_ACCESS_TOKEN_SECRET</code> in <code>~/.openclaw/.env</code></li>
+<li><strong>Note:</strong> Audience demographics (age, gender, device, country) are dashboard-only, not available via API</li>
+</ul>
+<h5 id="x-search">x-search</h5>
+<ul>
+<li><strong>Purpose:</strong> Backward-compatible wrapper around x-research-v2</li>
+<li><strong>Fallback:</strong> Grok x_search if X API unavailable, Cursor agent as default/best-effort</li>
+<li><strong>Commands:</strong> <code>./search.sh &quot;&lt;query&gt;&quot;</code> or <code>search.py &quot;&lt;query&gt;&quot;</code></li>
+<li><strong>Config:</strong> <code>XSEARCH_PROVIDER</code> env var (<code>cursor</code>, <code>xai</code>, <code>direct</code>)</li>
+</ul>
+<h5 id="excalidraw">excalidraw</h5>
+<ul>
+<li><strong>Purpose:</strong> Generate hand-drawn style diagrams, flowcharts, and architecture diagrams as PNG images from Excalidraw JSON</li>
+<li><strong>Commands:</strong> <code>node scripts/render.js &lt;input.excalidraw&gt; &lt;output.png&gt;</code></li>
+<li><strong>Features:</strong> Element types (rectangle, ellipse, diamond, arrow, line, text), arrow binding with auto-edge calculation, inline labels on shapes, multi-segment routing, styling (hachure/cross-hatch/solid fills, roughness control)</li>
+<li><strong>Templates:</strong> Flowchart with decision branches, layered architecture diagram</li>
+<li><strong>Config:</strong> None required</li>
+</ul>
+<h5 id="gemini-video-watch">gemini-video-watch</h5>
+<ul>
+<li><strong>Purpose:</strong> Upload and analyze videos with Gemini 3 Pro - local files, Telegram uploads, YouTube URLs, or direct video URLs</li>
+<li><strong>Commands:</strong> <code>node scripts/watch.js &quot;&lt;video_path_or_url&gt;&quot; --prompt &quot;&lt;prompt&gt;&quot; [--model X] [--temperature X] [--delete-file]</code></li>
+<li><strong>Features:</strong> Resumable upload to Gemini Files API, native YouTube URL support (no download), auto-download for direct video URLs, customizable model/temperature/tokens</li>
+<li><strong>Config:</strong> Requires <code>GEMINI_API_KEY</code> (from <code>~/.openclaw/openclaw.json</code> or env var)</li>
+</ul>
+<h5 id="x-trending-scraper">x-trending-scraper</h5>
+<ul>
+<li><strong>Purpose:</strong> Fetch trending/viral tweets with real engagement metrics</li>
+<li><strong>Commands:</strong> <code>./scrape-trending.sh [query] [min_views]</code> or <code>python3 scrape_trending.py &quot;&lt;query&gt;&quot; &lt;min_views&gt;</code></li>
+<li><strong>Dependencies:</strong> x-research-v2 skill, <code>bun</code> runtime</li>
+</ul>
+<h5 id="youtube-sub-ratio">youtube-sub-ratio</h5>
+<ul>
+<li><strong>Purpose:</strong> Analyze YouTube videos by subscriber-to-view conversion ratio</li>
+<li><strong>Commands:</strong> <code>./analyze.sh [days] [min_views] [top_n]</code></li>
+<li><strong>Note:</strong> Subscriber data lags 24-72+ hours; best for videos 5+ days old</li>
+<li><strong>Config:</strong> Requires YouTube API OAuth token at <code>~/clawd/tools/social-tracker/token.json</code></li>
+</ul>
+<h4 id="preview-skills-in-development">Preview Skills (In Development)</h4>
+<h5 id="content-draft-generator">content-draft-generator</h5>
+<ul>
+<li><strong>Purpose:</strong> Generate content drafts based on reference content analysis</li>
+<li><strong>Workflow:</strong> Analyze references → extract patterns → generate context questions → create meta-prompt → two-phase generation (interview + 3 variations)</li>
+<li><strong>Storage:</strong> File-based in <code>references/</code>, <code>content-breakdown/</code>, <code>content-anatomy/</code>, etc.</li>
+</ul>
+<h5 id="research">research</h5>
+<ul>
+<li><strong>Purpose:</strong> Deep research via Gemini CLI in background subagent (uses Google AI subscription instead of Claude tokens)</li>
+<li><strong>Commands:</strong> Spawns <code>gemini --yolo</code> subagent</li>
+<li><strong>Output:</strong> Saves to <code>~/clawd/research/&lt;slug&gt;/research.md</code></li>
+<li><strong>Trigger:</strong> User says &quot;Research: [topic]&quot; or asks for deep research</li>
+</ul>
+<hr>
+<h3 id="tools">Tools</h3>
+<p><strong>Location:</strong> <code>tools/</code></p>
+<h4 id="video-pitches-database-toolsvideo-pitches">Video Pitches Database (<code>tools/video-pitches/</code>)</h4>
+<p>SQLite-backed system for tracking video pitch ideas with semantic search. Enforces the video pitch hard gate rule in AGENTS.md (must search before pitching; skip if &gt;40% similarity match).</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Script</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>add.js</code></td>
+<td align="left">Add a pitch - generates Gemini embeddings, auto-IDs (YYYY-MM-DD-NNN), auto-slug</td>
+</tr>
+<tr>
+<td align="left"><code>search.js</code></td>
+<td align="left">Semantic + keyword search (70% cosine similarity, 30% keyword matching)</td>
+</tr>
+<tr>
+<td align="left"><code>list.js</code></td>
+<td align="left">List recent pitches with filters (type, status, date range)</td>
+</tr>
+<tr>
+<td align="left"><code>update.js</code></td>
+<td align="left">Update status: pitched, accepted, rejected, produced, duplicate</td>
+</tr>
+<tr>
+<td align="left"><code>migrate.js</code></td>
+<td align="left">Migrate from JSON (<code>memory/video-pitches.json</code>) to SQLite</td>
+</tr>
+<tr>
+<td align="left"><code>db.js</code></td>
+<td align="left">Database module with schema, embedding storage, similarity calculations</td>
+</tr>
+</tbody></table></div>
+<p><strong>Database:</strong> <code>~/clawd/data/video-pitches.db</code></p>
+<h4 id="social-tracker-toolssocial-tracker">Social Tracker (<code>tools/social-tracker/</code>)</h4>
+<p>YouTube analytics collection, querying, and charting. Instagram per-post analytics. X/Twitter per-post analytics. Also tracks Instagram and TikTok profile growth.</p>
+<p>| Script                    | Purpose                                                                                                                                                                                                                                                                                                                                                                                       |
+| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | -------- | --------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----- | ----- | ---------------------- |
+| <code>collect.py</code>              | Main YouTube analytics collection - OAuth via Google credentials, daily snapshots, incremental updates and backfill. Collects video metadata (title, description, tags, category, duration) and daily analytics (views, watch time, avg view duration/percentage, likes, dislikes, comments, shares, subscribers gained/lost, thumbnail impressions, thumbnail CTR)                          |
+| <code>query.py</code>                | CLI for querying YouTube analytics: <code>list</code>, <code>video</code>, <code>top</code>, <code>trends</code>, <code>summary</code>, <code>live [VIDEO_ID]</code> (real-time stats from Data API, defaults to latest video)                                                                                                                                                                                                                                  |
+| <code>charts.py</code>               | Generate PNG charts (trend per video, top videos bar chart, daily channel-wide) with dark theme                                                                                                                                                                                                                                                                                               |
+| <code>ig_collect.py</code>           | Instagram per-post analytics collector - Meta Graph API, fetches insights for all posts (views, reach, likes, comments, saves, shares, follows, reel view time) and account-level daily snapshots (followers, following, media count, profile views, website clicks, reach, accounts engaged). Run with <code>--refresh</code> to extend token (updates both local and canonical .env).                 |
+| <code>ig_query.py</code>             | CLI for querying Instagram per-post data: <code>summary</code>, <code>top [--metric views                                                                                                                                                                                                                                                                                                                     | reach | likes    | shares    | saved                                                                              | engagement] [-n 10]</code>, <code>post MEDIA_ID</code>, <code>trends [--days 30]</code>, <code>list [--sort date | views | likes | reach] [--type VIDEO]</code> |
+| <code>x_collect.py</code>            | X/Twitter per-post analytics collector - X API v2 Enterprise analytics endpoint with OAuth 1.0a. Stores public_metrics view counts from tweets endpoint as fallback. Fetches detailed metrics (impressions/views, likes, retweets, bookmarks, shares, follows, unfollows, media views, URL clicks, profile clicks, app installs, email shares). Supports <code>--backfill N</code> and <code>--ids ID1,ID2</code>. |
+| <code>x_query.py</code>              | CLI for querying X/Twitter per-post data: <code>summary</code>, <code>top [--metric impressions                                                                                                                                                                                                                                                                                                               | likes | retweets | bookmarks | follows] [-n 10]</code>, <code>post POST_ID</code>, <code>trends [--days 30]</code>, <code>list [--sort impressions | likes] [--limit N]</code>                                                             |
+| <code>social_query.py</code>         | Query Instagram/TikTok profile growth data: <code>summary</code>, <code>growth</code>, <code>history</code> commands                                                                                                                                                                                                                                                                                                           |
+| <code>social_scrape.py</code>        | Scrape public Instagram/TikTok profile metrics (followers, posts, likes, bio)                                                                                                                                                                                                                                                                                                                 |
+| <code>quick_sub_ratio.py</code>      | Quick subscriber-to-view ratio analysis via YouTube Analytics API (no local storage)                                                                                                                                                                                                                                                                                                          |
+| <code>top_subscriber_ratio.py</code> | Top videos by sub-to-view ratio from stored database data                                                                                                                                                                                                                                                                                                                                     |</p>
+<p><strong>Databases:</strong> <code>db/views.db</code> (YouTube videos + daily_stats with description/tags/category), <code>db/social_growth.db</code> (IG per-post + IG account daily snapshots + X/Twitter per-post with public_metrics + IG/TT profile growth), <code>db/youtube_data.db</code> <strong>Charts:</strong> Generated PNGs saved to <code>charts/</code> directory <strong>Stats:</strong> ~963 YouTube videos, ~190 Instagram posts tracked <strong>Auth:</strong> YouTube OAuth via <code>gog</code> credentials (<code>token.json</code>); Instagram via Meta Graph API long-lived token (<code>~/.openclaw/.env</code>, refresh every 60 days with <code>ig_collect.py --refresh</code>); X/Twitter via OAuth 1.0a user context (<code>X_API_KEY</code>, <code>X_API_SECRET</code>, <code>X_ACCESS_TOKEN</code>, <code>X_ACCESS_TOKEN_SECRET</code> in <code>~/.openclaw/.env</code>)</p>
+<h4 id="cron-log-toolscron-log">Cron Log (<code>tools/cron-log/</code>)</h4>
+<p>Centralized cron job logging system. Every cron job in the workspace logs to this database.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Script</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>log-start.js</code></td>
+<td align="left">Log cron job start, returns run ID</td>
+</tr>
+<tr>
+<td align="left"><code>log-end.js</code></td>
+<td align="left">Log completion with status (success/failure), duration, summary, optional error message</td>
+</tr>
+<tr>
+<td align="left"><code>query.js</code></td>
+<td align="left">Query cron run history by job name, status, date range, limit</td>
+</tr>
+<tr>
+<td align="left"><code>checkpoint.js</code></td>
+<td align="left">Step-level idempotency for multi-step cron jobs. Tracks checkpoints per job+job-id+step. Statuses: started/done/skipped/failed. Exit code 3 = terminal checkpoint found (caller can skip). Prevents regression of terminal statuses.</td>
+</tr>
+<tr>
+<td align="left"><code>should-run.js</code></td>
+<td align="left">Job-level idempotency helper. Checks if a job+job-id already succeeded. Exit code 0 = should run, 2 = should skip (already succeeded).</td>
+</tr>
+<tr>
+<td align="left"><code>check-persistent-failures.js</code></td>
+<td align="left">Detects jobs with persistent failures (consecutive failures or high failure rate). Alerts via Telegram. Integrated into health check cycle and platform council for deeper root-cause analysis.</td>
+</tr>
+<tr>
+<td align="left"><code>cleanup-stale.js</code></td>
+<td align="left">Cleans up stale &quot;running&quot; status jobs that crashed or were interrupted by machine sleep/shutdown. Can run standalone or be called by log-start.js.</td>
+</tr>
+<tr>
+<td align="left"><code>db.js</code></td>
+<td align="left">SQLite connection and schema management</td>
+</tr>
+</tbody></table></div>
+<p><strong>Database:</strong> <code>~/clawd/data/cron-log.db</code></p>
+<h4 id="standalone-tools">Standalone Tools</h4>
+<p>| Tool                       | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| <code>business-meta-analysis/</code>  | Advisory-only analysis engine that aggregates business signals across 14 OpenClaw data sources (YouTube, Instagram post performance, Instagram account growth, X/Twitter post analytics, X/Twitter trend signals, CRM, cron reliability, HubSpot pipeline + contacts, Slack, Asana, email, Fathom meetings, financials, Beehiiv newsletter). Uses parallel independent expert architecture: 8 domain-filtered experts (GrowthStrategist, RevenueGuardian, SkepticalOperator, TeamDynamicsArchitect, AutomationScout, CFO, ContentStrategist, MarketAnalyst) analyze their relevant data slices in parallel, then a synthesizer merges their findings into ranked recommendations. Each expert only sees signals from their tagged sources plus a cross-domain brief. Calls model provider APIs directly (auto-detects from openclaw.json: prefers Anthropic, falls back to OpenAI/Google). Stores full analysis snapshots and recommendation history in SQLite, delivers digest reports to Telegram group <code>-1003725393532</code> thread <code>1827</code>. Learns from feedback. |
+| <code>agent-wrapper.sh</code>         | Wraps cursor-agent CLI to log prompt/response sizes to <code>/tmp/openclaw/agent-usage.log</code>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| <code>session-activity.js</code>      | Visualize session transcripts - tokens, tool calls, subagent costs, error breakdowns. Saves metrics to <code>~/clawd/metrics/YYYY-MM-DD.json</code>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| <code>asana-fetch.js</code>           | Fetch tasks from Asana projects (default: Video Pipeline). Shows task details, completion status, due dates, assignees                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| <code>asana-quick-fetch.py</code>     | Compatibility wrapper that delegates to <code>asana-fetch.js</code>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| <code>log-parser.py</code>            | Parse JSON log lines from OpenClaw logs - extracts model calls, tokens, subagent spawns, displays formatted table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| <code>log-viewer.sh</code>            | View OpenClaw logs with filtering, watch mode, date selection, usage log mode (<code>-u</code>), color output                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| <code>usage-parser.py</code>          | Parse <code>model-usage.jsonl</code> for token counts by task type (subagent/conversation/direct), color-coded output                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| <code>slack-post.js</code>            | Post messages to Slack channels via API. Works from any context (Telegram sessions, subagents, cron jobs). Supports channel names or IDs, threaded replies. Usable as CLI or <code>require()</code> module.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| <code>slack-react.js</code>           | Add emoji reactions to Slack messages. Supports channel + timestamp targeting and optional <code>--emoji</code> override (defaults to eyes). Usable as CLI or <code>require()</code> module.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| <code>usage-dashboard.js</code>       | Centralized usage dashboard - model tokens/costs, cron reliability, database sizes, X API calls, session activity. Flags: <code>--days N</code>, <code>--all</code>, <code>--section &lt;name&gt;</code>, <code>--json</code>.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| <code>log-hub.js</code>               | Unified log viewer. Reads <code>~/clawd/data/logs/all.jsonl</code> and supports filters (<code>--event</code>, <code>--level</code>, <code>--contains</code>, <code>--since</code>, <code>--limit</code>, <code>--json</code>) for single-pane troubleshooting.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| <code>log-ingest.js</code>            | Nightly JSONL -&gt; SQLite ingestor for structured logs. Reads unified stream (<code>all.jsonl</code> + rotated <code>all.jsonl.N</code>) and writes deduped rows to <code>~/clawd/data/logs.db</code>.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| <code>gateway-log-ingest.js</code>    | Nightly raw-log -&gt; SQLite ingestor for OpenClaw gateway logs. Reads <code>~/.openclaw/logs/gateway.log</code> and <code>gateway.err.log</code> (+ rotations) into <code>~/clawd/data/logs.db</code> table <code>gateway_log_lines</code>.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| <code>redact-message.js</code>        | CLI tool for redacting secrets from outbound notification messages. Reads from stdin or args, uses <code>notification-redaction.js</code>. Usage: <code>echo &quot;...&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | node tools/redact-message.js</code>or<code>node tools/redact-message.js &quot;message text&quot;</code> |
+| <code>log-event.js</code>             | CLI tool for logging structured JSONL events to <code>~/clawd/data/logs/&lt;event_name&gt;.jsonl</code>, mirrored into unified stream <code>~/clawd/data/logs/all.jsonl</code>. Accepts <code>--event</code>, <code>--level</code>, and <code>--field key=value</code> args. Auto-parses field values (JSON, numbers, booleans, strings).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| <code>openclaw-slack-status.js</code> | Diagnostic tool for OpenClaw Slack connection status. Finds gateway PID, lists established TCP connections, probes TLS certificates to identify services (Slack, Telegram, etc.), tails gateway.log for recent <code>[slack]</code> lines. Outputs JSON or human-readable format.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |</p>
+<h4 id="patches-toolspatches">Patches (<code>tools/patches/</code>)</h4>
+<p>Documentation of patches applied to enhance OpenClaw logging. Notes deprecated patches and current logging methods.</p>
+<hr>
+<h3 id="shared-modules">Shared Modules</h3>
+<p><strong>Location:</strong> <code>shared/</code></p>
+<p>Reusable Node.js utilities used across CRM, skills, and tools.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Module</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>db.js</code></td>
+<td align="left">SQLite database opener - WAL mode, foreign keys, auto-creates directories. Includes <code>addColumnIfMissing()</code> helper</td>
+</tr>
+<tr>
+<td align="left"><code>embeddings.js</code></td>
+<td align="left">Unified <code>EmbeddingGenerator</code> class - Google <code>gemini-embedding-001</code> (768-dim) or OpenAI <code>text-embedding-3-small</code> (1536-dim), LRU cache, batch generation, retry with exponential backoff</td>
+</tr>
+<tr>
+<td align="left"><code>config.js</code></td>
+<td align="left">API credential loader from <code>~/.openclaw/openclaw.json</code>. Exports <code>loadApiCredentials()</code> and <code>loadEmbeddingCredentials()</code> with provider preference</td>
+</tr>
+<tr>
+<td align="left"><code>args.js</code></td>
+<td align="left">CLI argument parser - handles <code>--key value</code> and <code>--key=value</code> formats, supports defaults</td>
+</tr>
+<tr>
+<td align="left"><code>reranker.js</code></td>
+<td align="left"><code>Reranker</code> class - LLM-based reranking using Gemini Flash for two-stage search (retrieve → rerank), scores results 0–1</td>
+</tr>
+<tr>
+<td align="left"><code>review-council.js</code></td>
+<td align="left">Reusable review-council workflow for multi-agent analysis. Provides the sequential draft-review-consensus pipeline (used by security and platform councils via OpenClaw agent), plus exported utilities (mapWithConcurrency, compactPayload, callWithRetries, parseJsonFromText) reused by the business meta-analysis independent council. Emits per-agent progress events (<code>review_council_progress</code>) into the standard JSONL log stream.</td>
+</tr>
+<tr>
+<td align="left"><code>cursor-council.js</code></td>
+<td align="left">Shared Cursor agent CLI infrastructure for council scripts. Provides <code>runCursorAgent()</code> (agent analysis pass), <code>runSummarizer()</code> (structured JSON output pass), and <code>parseJsonFromResponse()</code> (robust JSON extraction from LLM text). Used by security-council-v2.js and platform-council-v2.js.</td>
+</tr>
+<tr>
+<td align="left"><code>workspace-state.js</code></td>
+<td align="left">PID-based lock management for workspace state. Detects stale locks from crashed processes and provides safe lock acquisition/release. Used by auto-git-sync.sh and business meta-analysis.</td>
+</tr>
+<tr>
+<td align="left"><code>council-recommendations.js</code></td>
+<td align="left">Shared recommendation ID management for council systems. Generates unique recommendation IDs and provides deduplication logic.</td>
+</tr>
+<tr>
+<td align="left"><code>telegram-delivery.js</code></td>
+<td align="left">Telegram message delivery helper with formatting and error handling. Wraps message tool for consistent delivery patterns.</td>
+</tr>
+<tr>
+<td align="left"><code>env-utils.js</code></td>
+<td align="left">Environment variable utilities for runtime overrides (CLAWD_LOG_LEVEL, CLAWD_LOG_DIR, etc.).</td>
+</tr>
+<tr>
+<td align="left"><code>REVIEW-COUNCIL-LEARNINGS.md</code></td>
+<td align="left">Review council operational learnings and reliability runbook. Documents isolation handling, model drift patterns, and consensus output requirements.</td>
+</tr>
+<tr>
+<td align="left"><code>content-sanitizer.js</code></td>
+<td align="left">Content sanitization module - detects and blocks prompt injection attempts, sanitizes untrusted content from web pages, tweets, Slack/Telegram messages, Asana/HubSpot records, transcripts, KB excerpts, uploaded files</td>
+</tr>
+<tr>
+<td align="left"><code>fs.js</code></td>
+<td align="left">File system utilities - safe file operations with atomic writes, directory creation helpers</td>
+</tr>
+<tr>
+<td align="left"><code>notification-redaction.js</code></td>
+<td align="left">Notification-specific secret redaction - sanitizes outbound messages before sending to Telegram/Slack/email, wraps <code>secret-redaction.js</code> with notification-safe defaults</td>
+</tr>
+<tr>
+<td align="left"><code>secret-redaction.js</code></td>
+<td align="left">Secret detection and redaction - identifies credential-looking strings (API keys, bearer tokens, passwords) and replaces with <code>[REDACTED]</code> placeholders</td>
+</tr>
+<tr>
+<td align="left"><code>event-log.js</code></td>
+<td align="left">Structured JSONL event logging - writes events to <code>~/clawd/data/logs/&lt;event_name&gt;.jsonl</code> and mirrors every record to unified stream <code>~/clawd/data/logs/all.jsonl</code>. Includes timestamps, hostname, log level filtering, auto-redaction of secrets, field type parsing, string truncation.</td>
+</tr>
+<tr>
+<td align="left"><code>interaction-store.js</code></td>
+<td align="left">Centralized SQLite store for all API and LLM interactions - stores full request/response bodies in <code>~/clawd/data/interactions.db</code> with <code>llm_calls</code> and <code>api_calls</code> tables. Fire-and-forget <code>logLlmCall()</code> and <code>logApiCall()</code> functions. Used alongside JSONL logging for structured query access.</td>
+</tr>
+<tr>
+<td align="left"><code>log-rotation.js</code></td>
+<td align="left">Log rotation for JSONL files and interactions DB - rotates .jsonl files exceeding 50MB (keeps last 3 rotations), archives interactions DB rows older than 90 days into monthly archive DBs. CLI: <code>node shared/log-rotation.js [--dry-run]</code></td>
+</tr>
+<tr>
+<td align="left"><code>log-ingest-utils.js</code></td>
+<td align="left">Shared helper utilities for log ingest tools (positive integer normalization and safe regex escaping) to keep <code>log-ingest.js</code> and <code>gateway-log-ingest.js</code> behavior aligned.</td>
+</tr>
+<tr>
+<td align="left"><code>event_log.py</code></td>
+<td align="left">Python equivalent of event-log.js - writes per-event JSONL logs and mirrors to <code>~/clawd/data/logs/all.jsonl</code> for unified searching. Used by Python tools (social-tracker, nano-banana-pro-2) that can&#39;t import Node.js modules.</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="scripts-automations">Scripts &amp; Automations</h3>
+<p><strong>Location:</strong> <code>scripts/</code></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Script</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>auto-git-sync.sh</code></td>
+<td align="left">Auto-commit and push changes to GitHub. Syncs two repos in order: <code>~/.openclaw/</code>, <code>~/clawd/</code> (which now includes <code>crm/</code>). Pulls before pushing, handles merge conflicts, sends Telegram notification on failure. Uses cron-log for tracking. Validates main branch and remote state before push.</td>
+</tr>
+<tr>
+<td align="left"><code>backup-databases.sh</code></td>
+<td align="left">Discovers all <code>.db</code>/<code>.sqlite</code> files across workspace, backs up to Google Drive (&quot;OpenClaw Backups&quot; folder), creates <code>manifest.json</code> for restore, keeps last 7 backups. Also backs up JSONL event logs (including unified stream <code>all.jsonl</code>), honors <code>CLAWD_LOG_DIR</code> / <code>CLAWD_UNIFIED_LOG_FILE</code>, and ensures unified log file exists before staging.</td>
+</tr>
+<tr>
+<td align="left"><code>action-items-briefing.js</code></td>
+<td align="left">Asana-based action-items briefing for daily prep. Reads <code>data/asana-sync.db</code> and emits OVERDUE, ACTION ITEMS, and WAITING ON sections.</td>
+</tr>
+<tr>
+<td align="left"><code>nightly-log-ingest.sh</code></td>
+<td align="left">Deterministic nightly ingest of logs into SQLite. Runs both <code>tools/log-ingest.js --json</code> (structured JSONL) and <code>tools/gateway-log-ingest.js --json</code> (gateway raw logs), records run state in cron-log, and posts completion/failure summary to cron-updates.</td>
+</tr>
+<tr>
+<td align="left"><code>council-deeper-dive.js</code></td>
+<td align="left">Council recommendation detail lookup and optional Telegram send for platform/security council recommendations. Usage: `node scripts/council-deeper-dive.js --council &lt;platform</td>
+</tr>
+<tr>
+<td align="left"><code>restore-databases.sh</code></td>
+<td align="left">Restores SQLite databases from Google Drive backup using <code>manifest.json</code>. Supports <code>--list</code> (preview) and <code>--force</code> (skip prompts) modes.</td>
+</tr>
+<tr>
+<td align="left"><code>daily-crm-ingestion.sh</code></td>
+<td align="left">Deterministic daily CRM ingestion (2am PST). Runs <code>batch-scan.js</code> with 1-day lookback, concurrency 3, 1500ms delay. Parses structured summary line for contacts_added, new_candidates, context_entries_added, errors. Sends Telegram notifications. Uses cron-log + <code>should-run</code> for idempotency.</td>
+</tr>
+<tr>
+<td align="left"><code>openclaw-update-check.sh</code></td>
+<td align="left">Deterministic OpenClaw update check. Runs <code>openclaw update status</code> (read-only), posts output to Telegram updates thread. Uses cron-log for idempotency.</td>
+</tr>
+<tr>
+<td align="left"><code>sunday-trash-reminder.sh</code></td>
+<td align="left">Sunday recycling/trash reminder. Calculates recycling type (PAPER/CONTAINER) using a weekly cycle anchored to Jan 31, 2026. Sends reminder DM to Matt. Uses cron-log for idempotency.</td>
+</tr>
+<tr>
+<td align="left"><code>weekly-letter-reminder.sh</code></td>
+<td align="left">Weekly company letter reminder. Sends reminder DM to Matt. Uses cron-log for idempotency.</td>
+</tr>
+<tr>
+<td align="left"><code>security-review.sh</code></td>
+<td align="left">Automated security checks - file permissions (.env, .db files, openclaw.json, system prompts), gateway binds to loopback only, auth enabled, no secrets in git-tracked files, security modules wired in, backup encryption, prompt injection patterns, .gitignore rules intact, error log review for auth failures. Outputs JSON findings array. Exit codes: 0=passed, 1=findings, 2=error. Uses <code>lib/security-review-checks.sh</code> for check implementations.</td>
+</tr>
+<tr>
+<td align="left"><code>security-council-v2.js</code></td>
+<td align="left">Security council using Cursor agent CLI for direct codebase analysis + Opus summarizer for structured JSON output. Runs security-review.sh, inspects files/permissions/code directly, analyzes from four security perspectives (offensive, defensive, data privacy, operational realism). Replaces the multi-agent review-council approach. Usage: <code>node scripts/security-council-v2.js [--dry-run] [--json]</code></td>
+</tr>
+<tr>
+<td align="left"><code>security-council.js</code></td>
+<td align="left">Removed. Replaced by security-council-v2.js.</td>
+</tr>
+<tr>
+<td align="left"><code>rotate-logs.sh</code></td>
+<td align="left">Daily log rotation - rotates JSONL files exceeding 50MB and archives interactions DB rows older than 90 days. Calls <code>shared/log-rotation.js</code>. Usage: <code>./scripts/rotate-logs.sh [--dry-run]</code></td>
+</tr>
+<tr>
+<td align="left"><code>disk-space-check.sh</code></td>
+<td align="left">Weekly disk space monitoring - checks available space on <code>/</code>, warns at 20GB free, sends urgent Telegram alert at 10GB. Reports log and DB sizes. Usage: <code>./scripts/disk-space-check.sh</code></td>
+</tr>
+<tr>
+<td align="left"><code>cron-health-check.sh</code></td>
+<td align="left">Monitors OpenClaw cron jobs for error/timeout states, detects persistent failures, and sends Telegram alerts with dedup. Runs every 30 minutes. Integrates with <code>tools/cron-log/check-persistent-failures.js</code> for deeper analysis.</td>
+</tr>
+<tr>
+<td align="left"><code>urgent-email-check.sh</code></td>
+<td align="left">Cron wrapper for urgent email notification check. Called after Email Refresh; the Node script handles time-window gating internally. Reports failures to cron-updates.</td>
+</tr>
+<tr>
+<td align="left"><code>manage-actions.js</code></td>
+<td align="left">Action item management CLI. Commands: <code>list</code>, <code>done</code>, <code>archive</code>, <code>archive-stale</code>, <code>stats</code>. Supports filtering by status, assignee, and overdue items. Used to clean up stale action items and track completion.</td>
+</tr>
+<tr>
+<td align="left"><code>morning-council-status.js</code></td>
+<td align="left">Morning status check for council systems. Queries LLM interaction logs and validates multi-agent health. Used by morning council cron jobs.</td>
+</tr>
+<tr>
+<td align="left"><code>platform-council-v2.js</code></td>
+<td align="left">Platform health council using Cursor agent CLI for direct codebase analysis + Opus summarizer for structured JSON output. Analyzes 9 areas: cron health, code quality, test coverage, prompt quality, dependencies, storage, skill integrity, config consistency, and CRM data integrity (contact count drops, database corruption, ingestion pipeline health). Usage: <code>node scripts/platform-council-v2.js [--dry-run] [--json]</code></td>
+</tr>
+<tr>
+<td align="left"><code>platform-council.js</code></td>
+<td align="left">Removed. Replaced by platform-council-v2.js.</td>
+</tr>
+<tr>
+<td align="left"><code>pre-commit</code></td>
+<td align="left">Git pre-commit hook. Prevents committing sensitive Chrome profile data and large binary files. Installed in <code>.git/hooks/pre-commit</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>lib/security-review-checks.sh</code></td>
+<td align="left">Security check implementations for <code>security-review.sh</code>. Individual check functions sourced by main script.</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="cron-jobs">Cron Jobs</h3>
+<p>All cron jobs follow a standardized pattern (defined in AGENTS.md):</p>
+<ol>
+<li>Log start: <code>cd ~/clawd/tools/cron-log &amp;&amp; node log-start.js --job &quot;&lt;name&gt;&quot;</code> → capture run ID</li>
+<li>Execute task</li>
+<li>Log end: <code>cd ~/clawd/tools/cron-log &amp;&amp; node log-end.js --run-id &lt;ID&gt; --status &lt;success|failure&gt; --summary &quot;...&quot;</code></li>
+<li>Send Telegram notification to group <code>-1003725393532</code> topic <code>1126</code> (cron-updates)</li>
+</ol>
+<p>For workflow-level behavior (triggers, flow steps, and failure handling), see <code>docs/USE-CASES-WORKFLOWS.md</code>.</p>
+<h4 id="openclaw-cron-jobs-openclawcronjobsjson">OpenClaw Cron Jobs (<code>~/.openclaw/cron/jobs.json</code>)</h4>
+<p>Jobs are configured in <code>~/.openclaw/cron/jobs.json</code> (count changes over time). All use <code>agentTurn</code> payloads with cron logging and Telegram reporting.</p>
+<h5 id="daily-jobs">Daily Jobs</h5>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Job</th>
+<th align="left">Schedule</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Daily Brief (7am)</td>
+<td align="left">Weekdays 7am PST</td>
+<td align="left">Generate comprehensive daily brief: meetings, action items, content performance</td>
+</tr>
+<tr>
+<td align="left">Morning Council Status Check</td>
+<td align="left">Daily 7:10am PST</td>
+<td align="left">Validate council system health after nightly runs</td>
+</tr>
+<tr>
+<td align="left">Daily CRM Ingestion</td>
+<td align="left">Daily 2am PST</td>
+<td align="left">Deep CRM contact ingestion from email/calendar</td>
+</tr>
+<tr>
+<td align="left">Daily Config Review</td>
+<td align="left">Daily 3:20am PST</td>
+<td align="left">Review workspace .md files for drift, duplication, stale references</td>
+</tr>
+<tr>
+<td align="left">Nightly Security Review</td>
+<td align="left">Daily 3:30am PST</td>
+<td align="left">Cursor agent CLI security analysis + Opus summarizer. Runs security-review.sh, analyzes findings, alerts on critical/high issues</td>
+</tr>
+<tr>
+<td align="left">Daily Platform Health Council</td>
+<td align="left">Daily 4am PST</td>
+<td align="left">Cursor agent CLI platform health analysis + Opus summarizer. Analyzes cron health, code quality, test coverage, prompt quality, dependencies, storage, skill integrity, config consistency, CRM data integrity</td>
+</tr>
+<tr>
+<td align="left">Nightly Business Meta Analysis</td>
+<td align="left">Daily 4:30am PST</td>
+<td align="left">Independent parallel experts (8 personas) analyze 14 data sources, produce ranked recommendations. Sends digest to Telegram meta-analysis topic</td>
+</tr>
+<tr>
+<td align="left">Social Tracker: YouTube Collect</td>
+<td align="left">Daily 1:30am PST</td>
+<td align="left">Collect YouTube analytics (views, watch time, engagement)</td>
+</tr>
+<tr>
+<td align="left">Social Tracker: Instagram Collect</td>
+<td align="left">Daily 1am PST</td>
+<td align="left">Collect Instagram per-post analytics and account daily snapshots</td>
+</tr>
+<tr>
+<td align="left">Social Tracker: X Collect</td>
+<td align="left">Daily 1:15am PST</td>
+<td align="left">Collect X/Twitter per-post analytics with dual view tracking</td>
+</tr>
+<tr>
+<td align="left">Daily Video Catalog Refresh</td>
+<td align="left">Daily 6am PST</td>
+<td align="left">Refresh 90-day video catalog</td>
+</tr>
+<tr>
+<td align="left">Daily Log Rotation</td>
+<td align="left">Daily 5:30am PST</td>
+<td align="left">Rotate JSONL event logs over 50MB, archive interactions DB rows older than 90 days</td>
+</tr>
+<tr>
+<td align="left">Nightly Structured Log Ingest</td>
+<td align="left">Daily 5:15am PST</td>
+<td align="left">Ingest structured JSONL (<code>data/logs/all.jsonl</code> + rotations) and gateway raw logs (<code>~/.openclaw/logs/gateway*.log</code>) into <code>data/logs.db</code> for query-friendly analysis</td>
+</tr>
+<tr>
+<td align="left">OpenClaw Update Check</td>
+<td align="left">Daily 9pm PST</td>
+<td align="left">Check for OpenClaw platform updates</td>
+</tr>
+<tr>
+<td align="left">E2E Tests: Tier 1 (Nightly)</td>
+<td align="left">Daily 11pm PST</td>
+<td align="left">Skill integration tests (embeddings, reranker, KB, CRM, financials, cron-log, video pitches) - no LLMs, live APIs only</td>
+</tr>
+<tr>
+<td align="left">PRD Documentation Sync</td>
+<td align="left">Daily 1am PST</td>
+<td align="left">Scan workspace for changes, verify database counts and version numbers, update PRD.md. Sends change report to Telegram self-improvement topic.</td>
+</tr>
+<tr>
+<td align="left">Nightly Security Review</td>
+<td align="left">Daily 3:30am PST</td>
+<td align="left">Cursor agent CLI security analysis + Opus summarizer for structured JSON output. Runs security-review.sh, inspects files/permissions/code, produces findings report, alerts on critical/high issues</td>
+</tr>
+</tbody></table></div>
+<h5 id="hourly-jobs">Hourly Jobs</h5>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Job</th>
+<th align="left">Schedule</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Hourly Database Backup</td>
+<td align="left">Every hour</td>
+<td align="left">Creates encrypted backups via <code>backup-databases.sh</code> and uploads to Google Drive &quot;OpenClaw Backups&quot;</td>
+</tr>
+</tbody></table></div>
+<h5 id="multiple-times-hourly-jobs">Multiple-Times-Hourly Jobs</h5>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Job</th>
+<th align="left">Schedule</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Cron Health Check</td>
+<td align="left">Every 30 min</td>
+<td align="left">Monitors cron jobs for error/timeout states, detects persistent failures, alerts to Telegram</td>
+</tr>
+</tbody></table></div>
+<h5 id="multiple-times-daily-jobs">Multiple-Times-Daily Jobs</h5>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Job</th>
+<th align="left">Schedule</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Fathom After-Meetings</td>
+<td align="left">Every 5 min, 7am–5pm PST</td>
+<td align="left">Calendar-aware Fathom polling - checks if meetings ended, triggers sync after buffer period</td>
+</tr>
+<tr>
+<td align="left">Email Refresh</td>
+<td align="left">Every 30 min, 7am–8pm PST</td>
+<td align="left">Lightweight CRM context refresh — fetches new inbound emails from existing contacts, updates context entries and relationship summaries. Also triggers urgent email notification check (time-window gated).</td>
+</tr>
+<tr>
+<td align="left">Action Item Completion Check</td>
+<td align="left">8am, 12pm, 4pm PST</td>
+<td align="left">Checks if pending &quot;waiting on&quot; action items have been fulfilled via email</td>
+</tr>
+<tr>
+<td align="left">Slack Sync</td>
+<td align="left">Every 3 hours</td>
+<td align="left">Sync Slack messages to business-meta-analysis DB</td>
+</tr>
+<tr>
+<td align="left">Asana Sync</td>
+<td align="left">Every 4 hours</td>
+<td align="left">Sync Asana tasks to business-meta-analysis DB and asana-sync.db</td>
+</tr>
+<tr>
+<td align="left">HubSpot Sync</td>
+<td align="left">Every 4 hours</td>
+<td align="left">Sync HubSpot deals and contacts to business-meta-analysis DB</td>
+</tr>
+<tr>
+<td align="left">Social Scrape: Instagram &amp; TikTok Followers</td>
+<td align="left">Daily 1:45am PST</td>
+<td align="left">Profile growth tracking via web scraping</td>
+</tr>
+</tbody></table></div>
+<h5 id="weekly-jobs">Weekly Jobs</h5>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Job</th>
+<th align="left">Schedule</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Weekly Memory Synthesis</td>
+<td align="left">Sunday 3:40am PST</td>
+<td align="left">Synthesize daily notes into MEMORY.md</td>
+</tr>
+<tr>
+<td align="left">Weekly Company Letter Reminder</td>
+<td align="left">Sunday 9am PST</td>
+<td align="left">Remind about company letter</td>
+</tr>
+<tr>
+<td align="left">Weekly Earnings Preview</td>
+<td align="left">Sunday 9am PST</td>
+<td align="left">Preview upcoming tech/AI earnings reports</td>
+</tr>
+<tr>
+<td align="left">Sunday Trash Reminder</td>
+<td align="left">Sunday 10am PST</td>
+<td align="left">Recycling/trash collection reminder</td>
+</tr>
+<tr>
+<td align="left">Weekly Disk Space Check</td>
+<td align="left">Sunday 2am PST</td>
+<td align="left">Check disk space, alert if below 20GB (warning) or 10GB (urgent)</td>
+</tr>
+<tr>
+<td align="left">E2E Tests: Tier 2 (Weekly)</td>
+<td align="left">Saturday 10pm PST</td>
+<td align="left">Agent turns with live LLMs, costs ~$1-2</td>
+</tr>
+<tr>
+<td align="left">E2E Tests: Tier 3 (Weekly)</td>
+<td align="left">Saturday 10:30pm PST</td>
+<td align="left">Full pipeline with Telegram round-trip, costs ~$2-3</td>
+</tr>
+</tbody></table></div>
+<h5 id="monthly-jobs">Monthly Jobs</h5>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Job</th>
+<th align="left">Schedule</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Monthly Financial Data Reminder</td>
+<td align="left">1st of month, 10am PST</td>
+<td align="left">DM Matt to export fresh financial data (Transaction List + Account List) for CFO analysis</td>
+</tr>
+</tbody></table></div>
+<h5 id="one-time-event-jobs">One-Time / Event Jobs</h5>
+<p>Earnings report jobs are scheduled as one-time tasks (deleteAfterRun: true) when Matt requests coverage of specific companies. These are created dynamically from the weekly earnings preview and auto-delete after running. Check <code>~/.openclaw/cron/jobs.json</code> for currently scheduled jobs.</p>
+<h4 id="launchd-services">Launchd Services</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Plist</th>
+<th align="left">Schedule</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>ai.openclaw.gateway</code></td>
+<td align="left">Always-on (RunAtLoad + KeepAlive)</td>
+<td align="left">OpenClaw gateway server on port 18789</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="memory-system">Memory System</h3>
+<p><strong>Location:</strong> <code>memory/</code></p>
+<h4 id="structure">Structure</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Path</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>memory/YYYY-MM-DD.md</code></td>
+<td align="left">Daily notes - raw capture of conversations, events, tasks. Written first, always.</td>
+</tr>
+<tr>
+<td align="left"><code>MEMORY.md</code> (root)</td>
+<td align="left">Synthesized wisdom - distilled patterns, preferences, lessons. Only loaded in direct chats with Matt.</td>
+</tr>
+<tr>
+<td align="left"><code>memory/heartbeat-state.json</code></td>
+<td align="left">Heartbeat check timestamps (email, calendar, weather, errorLog, securityAudit)</td>
+</tr>
+<tr>
+<td align="left"><code>memory/tasks/</code></td>
+<td align="left">Task history - append-only, structured format per <code>SCHEMA.md</code></td>
+</tr>
+<tr>
+<td align="left"><code>memory/tasks/SCHEMA.md</code></td>
+<td align="left">Task history schema definition</td>
+</tr>
+<tr>
+<td align="left"><code>memory/health/</code></td>
+<td align="left">Health tracking - food logs (<code>food-log.json</code>, <code>food-log.md</code>), README</td>
+</tr>
+</tbody></table></div>
+<h4 id="state-reference-files">State &amp; Reference Files</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>ai-tweet-feedback.json</code></td>
+<td align="left">AI tweet feedback patterns (what performs well)</td>
+</tr>
+<tr>
+<td align="left"><code>ai-tweets-search-strategy.json</code></td>
+<td align="left">Search strategy for AI tweet curation</td>
+</tr>
+<tr>
+<td align="left"><code>ai-tweets-shared.json</code></td>
+<td align="left">History of shared AI tweets (dedup)</td>
+</tr>
+<tr>
+<td align="left"><code>video-pitches.json</code></td>
+<td align="left">Video pitch catalog (backup; primary is SQLite DB)</td>
+</tr>
+<tr>
+<td align="left"><code>youtube-competitor-tracking.json</code></td>
+<td align="left">YouTube competitor tracking data</td>
+</tr>
+<tr>
+<td align="left"><code>matthewberman-twitter-profile.md</code></td>
+<td align="left">Twitter/X profile reference</td>
+</tr>
+<tr>
+<td align="left"><code>family.md</code></td>
+<td align="left">Family reference info</td>
+</tr>
+<tr>
+<td align="left"><code>video-catalog-90d.md</code></td>
+<td align="left">Rolling 90-day video catalog (refreshed daily by cron)</td>
+</tr>
+<tr>
+<td align="left"><code>kb_log.md</code></td>
+<td align="left">Knowledge base ingestion log</td>
+</tr>
+<tr>
+<td align="left"><code>security-audit-2026-02-10.md</code></td>
+<td align="left">Security audit findings summary</td>
+</tr>
+<tr>
+<td align="left"><code>security-audit-full-2026-02-10.md</code></td>
+<td align="left">Full security audit report</td>
+</tr>
+<tr>
+<td align="left"><code>security-review-log.md</code></td>
+<td align="left">Security review log history</td>
+</tr>
+</tbody></table></div>
+<h4 id="how-it-works">How It Works</h4>
+<ul>
+<li><strong>Write first:</strong> Daily notes (<code>YYYY-MM-DD.md</code>) capture everything in the moment</li>
+<li><strong>Synthesize weekly:</strong> Cron job (Sunday 3:40am PST) distills daily notes into <code>MEMORY.md</code></li>
+<li><strong>Heartbeat tracking:</strong> Checks stored in <code>heartbeat-state.json</code> with timestamps for each check type</li>
+<li><strong>Task history:</strong> Append-only format, one section per task, never edited after writing</li>
+</ul>
+<hr>
+<h3 id="integrations">Integrations</h3>
+<h4 id="telegram">Telegram</h4>
+<ul>
+<li><strong>Group ID:</strong> <code>-1003725393532</code></li>
+<li><strong>Primary interface</strong> for CRM queries, notifications, approvals, and cron updates</li>
+</ul>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Topic</th>
+<th align="left">ID</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">AI Tweets</td>
+<td align="left">225</td>
+<td align="left">Curating and drafting AI tweets</td>
+</tr>
+<tr>
+<td align="left">Video Ideas</td>
+<td align="left">366</td>
+<td align="left">Video pitch discussion and feedback tracking</td>
+</tr>
+<tr>
+<td align="left">Self-Improvement</td>
+<td align="left">403</td>
+<td align="left">OpenClaw self-improvement, council digests, debugging</td>
+</tr>
+<tr>
+<td align="left">Earnings</td>
+<td align="left">694</td>
+<td align="left">Financial tracking (revenue, sponsorships, YouTube earnings)</td>
+</tr>
+<tr>
+<td align="left">Personal CRM</td>
+<td align="left">709</td>
+<td align="left">Contact management, relationship tracking, follow-up nudges</td>
+</tr>
+<tr>
+<td align="left">Updates</td>
+<td align="left">1051</td>
+<td align="left">General status updates and announcements</td>
+</tr>
+<tr>
+<td align="left">Cron Updates</td>
+<td align="left">1126</td>
+<td align="left">Automated cron job success/failure notifications</td>
+</tr>
+<tr>
+<td align="left">Knowledge Base</td>
+<td align="left">1173</td>
+<td align="left">KB ingestion and querying notifications</td>
+</tr>
+<tr>
+<td align="left">Health</td>
+<td align="left">1207</td>
+<td align="left">Food logging, symptoms, health tracking reminders</td>
+</tr>
+<tr>
+<td align="left">Meta-Analysis</td>
+<td align="left">1827</td>
+<td align="left">Business meta-analysis digest reports</td>
+</tr>
+<tr>
+<td align="left">Meeting Prep</td>
+<td align="left">1964</td>
+<td align="left">Daily meeting briefings (cron-owned)</td>
+</tr>
+<tr>
+<td align="left">Email</td>
+<td align="left">2229</td>
+<td align="left">Email-related queries and draft proposals</td>
+</tr>
+<tr>
+<td align="left">Financials</td>
+<td align="left">2774</td>
+<td align="left">Financial CSV imports and data queries (confidential - Matt only)</td>
+</tr>
+</tbody></table></div>
+<p><strong>Media handling:</strong> Download to <code>/tmp/openclaw-media/</code>, include <code>MEDIA:&lt;path&gt;</code> in reply, delete temp after send.</p>
+<h4 id="slack">Slack</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Channel</th>
+<th align="left">ID</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ai_trends</td>
+<td align="left">C09BJG12CNT</td>
+<td align="left">AI trend tracking</td>
+</tr>
+<tr>
+<td align="left">video_edits</td>
+<td align="left">C070JQGDX7E</td>
+<td align="left">Video edit coordination</td>
+</tr>
+<tr>
+<td align="left">general</td>
+<td align="left">C05PBHL1E2V</td>
+<td align="left">General team communication</td>
+</tr>
+<tr>
+<td align="left">live_show</td>
+<td align="left">C098BRV2D4K</td>
+<td align="left">Live show coordination</td>
+</tr>
+</tbody></table></div>
+<p><strong>Auth:</strong> Bot token + user token (for sending as Matt) <strong>Attribution:</strong> Bot messages no prefix; user token messages prefix with <code>🦞 OpenClaw:</code> <strong>Workflows:</strong></p>
+<ul>
+<li>Task assignment: Brief acknowledgment (&quot;On it&quot;, &quot;Got it&quot;), then work silently and reply with one complete message - no intermediate thinking or status updates</li>
+<li>KB saves: Tagged mention + &quot;save&quot; in reply to URL → ingest via KB skill</li>
+<li>Video idea triggers: Tagged mention + &quot;potential video idea&quot; → video-idea-pipeline</li>
+</ul>
+<h4 id="google-workspace-via-gog-cli">Google Workspace (via <code>gog</code> CLI)</h4>
+<ul>
+<li><strong>CLI Location:</strong> <code>/opt/homebrew/bin/gog</code></li>
+<li><strong>Services:</strong> Gmail, Calendar, Drive, Docs, Sheets, Slides, Contacts, Tasks, People, Chat, Classroom</li>
+<li><strong>Auth:</strong> OAuth tokens in <code>~/Library/Application Support/gogcli/</code></li>
+<li><strong>Usage:</strong> CRM email/calendar scanning, database backups to Drive, file operations</li>
+<li><strong>Install:</strong> <code>brew install drizzle-team/tap/gog</code> then <code>gog auth login</code></li>
+</ul>
+<h4 id="asana">Asana</h4>
+<ul>
+<li><strong>Workspace:</strong> forwardfuture.ai (<code>1206497863248146</code>)</li>
+<li><strong>Projects:</strong><ul>
+<li>The Ad Bank / Sponsorship Queue (<code>1212346778656423</code>)</li>
+<li>Video Pipeline (<code>1212455754265217</code>)</li>
+<li>FF Team Meeting (<code>1209311439712808</code>)</li>
+<li>1:1 with teammate (<code>1208324818579051</code>)</li>
+</ul>
+</li>
+<li><strong>Workflow:</strong> &quot;Put Link in Asana&quot; - fetch content, extract info, create task (default: Video Pipeline)</li>
+<li><strong>Update rule:</strong> Add new info as comments, don&#39;t edit description</li>
+</ul>
+<h4 id="todoist-2">Todoist</h4>
+<ul>
+<li><strong>Integration:</strong> Via <code>todoist-ts-cli</code> npm package</li>
+<li><strong>Usage:</strong> Quick task capture, Fathom action items after approval</li>
+<li><strong>Install:</strong> <code>npm install -g todoist-ts-cli</code> then <code>todoist auth &lt;token&gt;</code></li>
+</ul>
+<h4 id="financial-data">Financial Data</h4>
+<ul>
+<li><strong>Skill:</strong> <code>skills/financials/</code></li>
+<li><strong>Company:</strong> Forward Future Inc</li>
+<li><strong>Features:</strong> P&amp;L, Balance Sheet, transaction queries, expense analysis, revenue breakdowns, customer/vendor analysis - all via natural language</li>
+<li><strong>Data flow:</strong> Monthly CSV exports from the accounting system (Transaction List by Date + Account List) sent via Telegram financials topic, then auto-imported, P&amp;L/Balance Sheet generated, and council analysis runs</li>
+<li><strong>Council integration:</strong> CFO reviewer persona analyzes financial signals (revenue trends, burn rate, cash position, AR/AP, overdue invoices) alongside CRM, YouTube, and HubSpot pipeline data</li>
+<li><strong>Confidentiality:</strong> Financial data restricted to Matt only (DM or financials topic 2774). Council digests use directional language, not specific numbers.</li>
+<li><strong>Cron:</strong> Monthly reminder on the 1st at 10am PST</li>
+<li><strong>Database:</strong> <code>skills/financials/data/financials.db</code></li>
+</ul>
+<h4 id="hubspot-2">HubSpot</h4>
+<ul>
+<li><strong>Skill:</strong> <code>skills/hubspot/</code></li>
+<li><strong>Features:</strong> Contact, company, deal, and content management via REST API</li>
+<li><strong>Sync:</strong> <code>tools/business-meta-analysis/sync/hubspot-sync.cjs</code> — paginated sync of deals (with owner, type, description) and contacts (email, name, company, jobtitle, phone, lifecycle stage) to <code>~/clawd/data/hubspot-sync.db</code></li>
+<li><strong>Config:</strong> <code>HUBSPOT_ACCESS_TOKEN</code> in <code>.env</code></li>
+</ul>
+<h4 id="beehiiv-2">Beehiiv</h4>
+<ul>
+<li><strong>Skill:</strong> <code>skills/beehiiv/</code></li>
+<li><strong>Features:</strong> Newsletter platform API -- subscriber management, post analytics, segments, automations, referral program, webhooks, custom fields, tiers</li>
+<li><strong>Sync:</strong> <code>tools/business-meta-analysis/sync/beehiiv-sync.cjs</code> — syncs publication stats (subscriber counts, open/click rates, churn) and post-level data (subject lines, publish dates, open/click rates, recipients, unsubscribes) to <code>~/clawd/data/beehiiv-sync.db</code></li>
+<li><strong>Config:</strong> <code>BEEHIIV_API_KEY</code> and <code>BEEHIIV_PUBLICATION_ID</code> in <code>.env</code></li>
+</ul>
+<h4 id="fathom">Fathom</h4>
+<ul>
+<li><strong>Integration:</strong> API client + polling + Telegram approval flow</li>
+<li><strong>Purpose:</strong> Meeting recording → transcript extraction → CRM contact matching → insight extraction → action item verification → Todoist task creation</li>
+<li><strong>Config:</strong> <code>FATHOM_API_KEY</code> in CRM <code>.env</code></li>
+</ul>
+<h4 id="xtwitter">X/Twitter</h4>
+<ul>
+<li><strong>Skills:</strong> <code>x-research-v2</code> (primary), <code>x-search</code> (legacy wrapper), <code>x-trending-scraper</code>, <code>x-analytics</code> (per-post analytics)</li>
+<li><strong>Auth:</strong> Pay-per-use X API via <code>X_BEARER_TOKEN</code> (app-only, for search/research); OAuth 1.0a via <code>X_API_KEY</code>/<code>X_API_SECRET</code>/<code>X_ACCESS_TOKEN</code>/<code>X_ACCESS_TOKEN_SECRET</code> (user context, for analytics)</li>
+<li><strong>Features:</strong> Search, profile lookup, thread analysis, watchlists, trending topics, engagement metrics, per-post analytics (impressions, likes, retweets, bookmarks, shares, follows, media views, URL clicks, profile clicks)</li>
+<li><strong>Analytics:</strong> <code>x_collect.py</code> / <code>x_query.py</code> in <code>tools/social-tracker/</code> - stores hourly snapshots with view counts in <code>social_growth.db</code>. Dual view tracking via public_metrics and analytics endpoint.</li>
+<li><strong>Default:</strong> Cursor agent best-effort mode (don&#39;t use live xAI unless needed)</li>
+</ul>
+<hr>
+<h3 id="databases">Databases</h3>
+<p>All databases are SQLite with WAL mode enabled.</p>
+<p>Operational logging model is hybrid: structured event logs are canonical in JSONL (<code>~/clawd/data/logs/all.jsonl</code> plus per-event files), while SQLite is used for query-heavy datasets (<code>cron-log.db</code>, <code>interactions.db</code>, and domain databases).</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Database</th>
+<th align="left">Location</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CRM</td>
+<td align="left"><code>~/clawd/crm/data/contacts.db</code></td>
+<td align="left">Contacts, interactions, follow-ups, context (with vectors), meetings, action items, relationship profiles, Box files/chunks/collaborators/links, email draft requests, merge suggestions, meta state</td>
+</tr>
+<tr>
+<td align="left">Video Pitches</td>
+<td align="left"><code>~/clawd/data/video-pitches.db</code></td>
+<td align="left">Video pitch ideas with embeddings for semantic search</td>
+</tr>
+<tr>
+<td align="left">Business Meta-Analysis</td>
+<td align="left"><code>~/clawd/data/business-meta-analysis.db</code></td>
+<td align="left">Source catalog, signal runs, analysis artifacts, recommendations, feedback, deeper-dive requests, weight policies</td>
+</tr>
+<tr>
+<td align="left">YouTube Analytics</td>
+<td align="left"><code>tools/social-tracker/db/views.db</code></td>
+<td align="left">YouTube video analytics (views, watch time, avg view duration/percentage, likes, dislikes, comments, shares, subs gained/lost, thumbnail impressions/CTR) + video metadata (description, tags, category) - ~963 videos tracked</td>
+</tr>
+<tr>
+<td align="left">YouTube Data</td>
+<td align="left"><code>tools/social-tracker/db/youtube_data.db</code></td>
+<td align="left">YouTube video metadata</td>
+</tr>
+<tr>
+<td align="left">Social Growth</td>
+<td align="left"><code>tools/social-tracker/db/social_growth.db</code></td>
+<td align="left">Instagram/TikTok follower metrics + Instagram per-post analytics (ig_media, ig_media_stats with follows/reel view time) + Instagram account daily snapshots (ig_account_stats) + X/Twitter per-post analytics (x_posts with public_metrics view counts, x_post_stats hourly snapshots with 21 metrics)</td>
+</tr>
+<tr>
+<td align="left">Cron Log</td>
+<td align="left"><code>~/clawd/data/cron-log.db</code></td>
+<td align="left">Cron job run history (start/end times, status, summaries)</td>
+</tr>
+<tr>
+<td align="left">HubSpot Sync</td>
+<td align="left"><code>~/clawd/data/hubspot-sync.db</code></td>
+<td align="left">Cached HubSpot deals (with owner, type, description) and contacts (email, name, company, jobtitle, phone, lifecycle stage) with paginated sync</td>
+</tr>
+<tr>
+<td align="left">Beehiiv Sync</td>
+<td align="left"><code>~/clawd/data/beehiiv-sync.db</code></td>
+<td align="left">Cached Beehiiv publication stats (daily subscriber snapshots) and post performance (open/click rates, recipients, unsubscribes)</td>
+</tr>
+<tr>
+<td align="left">Asana Sync</td>
+<td align="left"><code>~/clawd/data/asana-sync.db</code></td>
+<td align="left">Cached Asana tasks (with assignee, notes, tags, section) used by business meta-analysis sync jobs and <code>scripts/action-items-briefing.js</code></td>
+</tr>
+<tr>
+<td align="left">Knowledge Base</td>
+<td align="left"><code>skills/knowledge-base/data/knowledge.db</code></td>
+<td align="left">RAG content with embeddings (~15 sources)</td>
+</tr>
+<tr>
+<td align="left">Financials</td>
+<td align="left"><code>skills/financials/data/financials.db</code></td>
+<td align="left">Financial data: transactions, accounts, generated P&amp;L and Balance Sheet reports. Tables: reports, accounts, transactions, invoices, bills, sync_log</td>
+</tr>
+<tr>
+<td align="left">Interactions</td>
+<td align="left"><code>~/clawd/data/interactions.db</code></td>
+<td align="left">Centralized store of all API calls and LLM interactions with full request/response bodies. Tables: <code>llm_calls</code>, <code>api_calls</code>. Archived monthly by <code>log-rotation.js</code>.</td>
+</tr>
+<tr>
+<td align="left">Structured Logs</td>
+<td align="left"><code>~/clawd/data/logs.db</code></td>
+<td align="left">Query-friendly mirror of both unified structured JSONL logs (<code>structured_logs</code> table) and OpenClaw gateway raw logs (<code>gateway_log_lines</code> table). Populated nightly by <code>tools/log-ingest.js</code> and <code>tools/gateway-log-ingest.js</code>.</td>
+</tr>
+<tr>
+<td align="left">Model Usage</td>
+<td align="left"><code>~/.openclaw/logs/model-usage.jsonl</code></td>
+<td align="left">API usage and cost tracking (JSONL, not SQLite)</td>
+</tr>
+<tr>
+<td align="left">X Research Cache</td>
+<td align="left"><code>skills/x-research-v2/data/cache/</code></td>
+<td align="left">File-based search result cache (15-min TTL)</td>
+</tr>
+<tr>
+<td align="left">CRM Learning</td>
+<td align="left"><code>~/clawd/crm/data/learning.json</code></td>
+<td align="left">Learned contact filtering patterns</td>
+</tr>
+<tr>
+<td align="left">Video Pitches Count</td>
+<td align="left"><code>~/clawd/data/video-pitches.db</code></td>
+<td align="left">~30 pitches tracked</td>
+</tr>
+<tr>
+<td align="left">Cron Log Runs</td>
+<td align="left"><code>~/clawd/data/cron-log.db</code></td>
+<td align="left">~325 runs logged</td>
+</tr>
+</tbody></table></div>
+<p><strong>Backup:</strong> Hourly via <code>backup-databases.sh</code> -&gt; Google Drive (&quot;OpenClaw Backups&quot; folder), keeps last 7 backups with <code>manifest.json</code>. Backs up all workspace DB files (including <code>~/clawd/data/logs.db</code>) plus JSONL event logs from <code>~/clawd/data/logs/</code>, including unified stream <code>all.jsonl</code>.</p>
+<p><strong>Log rotation:</strong> Daily via <code>scripts/rotate-logs.sh</code> - rotates JSONL files over 50MB, archives interactions DB rows older than 90 days.</p>
+<p><strong>Disk monitoring:</strong> Weekly via <code>scripts/disk-space-check.sh</code> - alerts to Telegram if disk space drops below 20GB (warning) or 10GB (urgent).</p>
+<hr>
+<h3 id="environment-variables">Environment Variables</h3>
+<h4 id="canonical-env-openclawenv">Canonical <code>.env</code> (<code>~/.openclaw/.env</code>)</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Variable</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>ASANA_PAT</code></td>
+<td align="left">Asana Personal Access Token</td>
+</tr>
+<tr>
+<td align="left"><code>HUBSPOT_ACCESS_TOKEN</code></td>
+<td align="left">HubSpot Private App token</td>
+</tr>
+<tr>
+<td align="left"><code>BRAVE_API_KEY</code></td>
+<td align="left">Brave Search API key</td>
+</tr>
+<tr>
+<td align="left"><code>XAI_API_KEY</code></td>
+<td align="left">xAI/Grok API key</td>
+</tr>
+<tr>
+<td align="left"><code>X_BEARER_TOKEN</code></td>
+<td align="left">X/Twitter API bearer token (app-only, for x-research-v2)</td>
+</tr>
+<tr>
+<td align="left"><code>X_API_KEY</code></td>
+<td align="left">X OAuth 1.0a Consumer Key (for analytics endpoint)</td>
+</tr>
+<tr>
+<td align="left"><code>X_API_SECRET</code></td>
+<td align="left">X OAuth 1.0a Consumer Key Secret</td>
+</tr>
+<tr>
+<td align="left"><code>X_ACCESS_TOKEN</code></td>
+<td align="left">X OAuth 1.0a User Access Token</td>
+</tr>
+<tr>
+<td align="left"><code>X_ACCESS_TOKEN_SECRET</code></td>
+<td align="left">X OAuth 1.0a User Access Token Secret</td>
+</tr>
+<tr>
+<td align="left"><code>GEMINI_API_KEY</code></td>
+<td align="left">Google Gemini API key</td>
+</tr>
+<tr>
+<td align="left"><code>SLACK_APP_TOKEN</code></td>
+<td align="left">Slack app-level token</td>
+</tr>
+<tr>
+<td align="left"><code>SLACK_BOT_TOKEN</code></td>
+<td align="left">Slack bot token</td>
+</tr>
+<tr>
+<td align="left"><code>SLACK_USER_TOKEN</code></td>
+<td align="left">Slack user token (send as Matt)</td>
+</tr>
+<tr>
+<td align="left"><code>TODOIST_API_TOKEN</code></td>
+<td align="left">Todoist API token</td>
+</tr>
+<tr>
+<td align="left"><code>OPENCLAW_GATEWAY_TOKEN</code></td>
+<td align="left">Gateway auth token</td>
+</tr>
+<tr>
+<td align="left"><code>FIRECRAWL_API_KEY</code></td>
+<td align="left">Firecrawl web scraping (optional)</td>
+</tr>
+<tr>
+<td align="left"><code>APIFY_API_TOKEN</code></td>
+<td align="left">Apify scraping (optional)</td>
+</tr>
+<tr>
+<td align="left"><code>BEEHIIV_API_KEY</code></td>
+<td align="left">Beehiiv API key</td>
+</tr>
+<tr>
+<td align="left"><code>BEEHIIV_PUBLICATION_ID</code></td>
+<td align="left">Beehiiv publication ID</td>
+</tr>
+</tbody></table></div>
+<h4 id="crm-environment-from-canonical-env">CRM Environment (from canonical <code>.env</code>)</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Variable</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>DATABASE_PATH</code></td>
+<td align="left">SQLite database path</td>
+</tr>
+<tr>
+<td align="left"><code>EMAIL_ACCOUNTS</code></td>
+<td align="left">Email accounts to scan</td>
+</tr>
+<tr>
+<td align="left"><code>EXCLUDED_EMAILS</code></td>
+<td align="left">Emails to exclude from scanning</td>
+</tr>
+<tr>
+<td align="left"><code>GOG_CLI_PATH</code></td>
+<td align="left">Path to <code>gog</code> CLI</td>
+</tr>
+<tr>
+<td align="left"><code>FATHOM_API_KEY</code></td>
+<td align="left">Fathom meeting API key</td>
+</tr>
+<tr>
+<td align="left"><code>TELEGRAM_*</code></td>
+<td align="left">Telegram notification settings</td>
+</tr>
+<tr>
+<td align="left"><code>BOX_ENABLED</code></td>
+<td align="left">Enable/disable Box integration</td>
+</tr>
+<tr>
+<td align="left"><code>BOX_ACCESS_TOKEN</code></td>
+<td align="left">Box API bearer token</td>
+</tr>
+<tr>
+<td align="left"><code>BOX_ROOT_FOLDER_ID</code></td>
+<td align="left">Root folder ID to sync from Box</td>
+</tr>
+<tr>
+<td align="left"><code>GMAIL_DRAFT_WRITES_ENABLED</code></td>
+<td align="left">Safety gate for Gmail draft creation (must be <code>true</code> to create drafts)</td>
+</tr>
+<tr>
+<td align="left">Various scan/tuning params</td>
+<td align="left">Gmail/Calendar scanning configuration</td>
+</tr>
+</tbody></table></div>
+<p>Compatibility paths: <code>~/clawd/.env</code>, <code>~/clawd/crm/.env</code>, and <code>~/clawd/tools/social-tracker/.env</code> are symlinks to <code>~/.openclaw/.env</code> for legacy script compatibility.</p>
+<h4 id="optional-logging-runtime-overrides">Optional Logging Runtime Overrides</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Variable</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>CLAWD_LOG_LEVEL</code></td>
+<td align="left">Minimum structured event level (<code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>CLAWD_LOG_DIR</code></td>
+<td align="left">Base directory for structured event logs (default <code>~/clawd/data/logs</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>CLAWD_UNIFIED_LOG_FILE</code></td>
+<td align="left">Unified JSONL stream filename inside <code>CLAWD_LOG_DIR</code> (default <code>all.jsonl</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>CLAWD_STRUCTURED_LOG_DB</code></td>
+<td align="left">SQLite destination for structured log ingest (default <code>~/clawd/data/logs.db</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>CLAWD_GATEWAY_LOG_DIR</code></td>
+<td align="left">Source directory for gateway raw logs (default <code>~/.openclaw/logs</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>COUNCIL_PROGRESS_EVENT_LOGS</code></td>
+<td align="left">Enable/disable structured council progress events (<code>review_council_progress</code>) in unified logs (default enabled)</td>
+</tr>
+</tbody></table></div>
+<h4 id="platform-config-openclawopenclawjson">Platform Config (<code>~/.openclaw/openclaw.json</code>)</h4>
+<p>Contains API keys for Anthropic, Google, xAI, Brave Search, Telegram bot token, Slack tokens, gateway auth token, and skill-specific keys. Template at <code>openclaw.json.example</code>.</p>
+<hr>
+<h3 id="test-infrastructure">Test Infrastructure</h3>
+<p><strong>Location:</strong> <code>tests/</code></p>
+<h4 id="test-categories">Test Categories</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">Category</th>
+<th align="left">What&#39;s Tested</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CRM Unit Tests</td>
+<td align="left">Config, context system (email-body, email-fetcher, embeddings, extractor, search, storage, summary-storage, relationship-summarizer, response-generator), intelligence modules (contact-classifier), ingestion (batch-approver, ingest-utils), Telegram integration (formatters, menu, email-drafts), DB (meeting-action-items), Gmail (email-draft-coordinator), Box (relevance), Fathom (api-client, api-keys, after-meetings-logic, notifier, processor, todoist), security fixes</td>
+</tr>
+<tr>
+<td align="left">CRM Integration Tests</td>
+<td align="left">Anti-injection security, context pipeline, Telegram workflow, end-to-end workflows</td>
+</tr>
+<tr>
+<td align="left">Shared Module Tests</td>
+<td align="left">args, config, db, embeddings, event-log, fs, notification-redaction, reranker, security-council, security-fixes</td>
+</tr>
+<tr>
+<td align="left">Skill Tests</td>
+<td align="left">clawdhub, humanizer, nano-banana-pro-2, x-search, x-trending-scraper, youtube-sub-ratio, todoist, hubspot, summarize, crm-query, content-draft-generator, self-improving-agent, gemini-video-watch</td>
+</tr>
+<tr>
+<td align="left">Tool Tests</td>
+<td align="left">agent-wrapper, asana-fetch, log-parser, log-viewer, usage-parser, social-tracker, slack-post, cron-log, business-meta-analysis (deeper-dive, meta-analysis, multi-agent-helpers, persistence, review-council, x-signals), video-pitches (db)</td>
+</tr>
+<tr>
+<td align="left">Script Tests</td>
+<td align="left">auto-git-sync, backup-databases, restore-databases, action-items-briefing, nightly-business-meta-analysis, log-hub, log-ingest, gateway-log-ingest, nightly-log-ingest, council-deeper-dive, security-review, security-council, openclaw-update-check</td>
+</tr>
+</tbody></table></div>
+<h4 id="test-infrastructure-2">Test Infrastructure</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>run-all-tests.sh</code></td>
+<td align="left">Master test runner</td>
+</tr>
+<tr>
+<td align="left"><code>run-tests.sh</code></td>
+<td align="left">Individual test execution</td>
+</tr>
+<tr>
+<td align="left"><code>verify-setup.sh</code></td>
+<td align="left">Setup verification</td>
+</tr>
+<tr>
+<td align="left"><code>delegation-rules.json</code></td>
+<td align="left">Test delegation rules</td>
+</tr>
+<tr>
+<td align="left"><code>test-scenarios.md</code></td>
+<td align="left">Test scenario documentation</td>
+</tr>
+<tr>
+<td align="left"><code>TEST-COVERAGE.md</code></td>
+<td align="left">Test coverage inventory and status</td>
+</tr>
+<tr>
+<td align="left"><code>.github/workflows/tests.yml</code></td>
+<td align="left">GitHub Actions CI workflow</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="configuration-files">Configuration Files</h3>
+<p>Root-level <code>.md</code> files that define workspace behavior:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>AGENTS.md</code></td>
+<td align="left">Rules of engagement - safety, security, task execution, model strategy, message consolidation, group chat protocol, cron standards, heartbeat, error reporting, video pitch hard gate</td>
+</tr>
+<tr>
+<td align="left"><code>SOUL.md</code></td>
+<td align="left">Personality - direct communication, real opinions, brevity mandatory, humor welcome, not a sycophant</td>
+</tr>
+<tr>
+<td align="left"><code>IDENTITY.md</code></td>
+<td align="left">Identity - name: Clawd, creature: AI with lobster energy, emoji: 🦞</td>
+</tr>
+<tr>
+<td align="left"><code>USER.md</code></td>
+<td align="left">User info - Matt, PST timezone, early bird (~7am), three email accounts (personal, YouTube, work)</td>
+</tr>
+<tr>
+<td align="left"><code>TOOLS.md</code></td>
+<td align="left">Environment config - all channel/topic IDs, API token locations, topic behavior guides, Asana project IDs, external tool paths</td>
+</tr>
+<tr>
+<td align="left"><code>MEMORY.md</code></td>
+<td align="left">Synthesized preferences - Matt&#39;s preferences, project history, workflow patterns, operational lessons, strategic notes, email triage patterns, infrastructure notes</td>
+</tr>
+<tr>
+<td align="left"><code>HEARTBEAT.md</code></td>
+<td align="left">Periodic checklist - monthly security audit, weekly gateway check, daily error log skim and git backup</td>
+</tr>
+<tr>
+<td align="left"><code>SUBAGENT-POLICY.md</code></td>
+<td align="left">Subagent policy - when to use (searches, API calls, multi-step), when to work directly (simple replies), failure handling (report + retry once)</td>
+</tr>
+<tr>
+<td align="left"><code>RESTORE.md</code></td>
+<td align="left">New machine setup - prerequisites, clone steps, secret config, dependency install, database restore from Google Drive, channel pairing, verification</td>
+</tr>
+<tr>
+<td align="left"><code>PRD.md</code></td>
+<td align="left">This file - full feature inventory</td>
+</tr>
+</tbody></table></div>
+<hr>
+<h3 id="other-directories">Other Directories</h3>
+<h4 id="youtube-analysis"><code>youtube-analysis/</code></h4>
+<p>YouTube competitor analysis and content strategy data.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>fetch-competitors.py</code></td>
+<td align="left">Fetches competitor YouTube data using <code>yt-dlp</code></td>
+</tr>
+<tr>
+<td align="left"><code>video-data.json</code></td>
+<td align="left">Competitor video metadata</td>
+</tr>
+<tr>
+<td align="left"><code>transcripts.json</code></td>
+<td align="left">Competitor video transcripts</td>
+</tr>
+<tr>
+<td align="left"><code>complete_transcripts.md</code></td>
+<td align="left">Full transcript analysis</td>
+</tr>
+<tr>
+<td align="left"><code>transcript-analysis-summary.md</code></td>
+<td align="left">Transcript analysis summary</td>
+</tr>
+<tr>
+<td align="left"><code>SUCCESS-BLUEPRINT-GEMINI.md</code></td>
+<td align="left">Content success blueprint (Gemini analysis)</td>
+</tr>
+<tr>
+<td align="left"><code>SUCCESS-BLUEPRINT-OPUS.md</code></td>
+<td align="left">Content success blueprint (Opus analysis)</td>
+</tr>
+<tr>
+<td align="left"><code>VIDEO-IDEAS.md</code></td>
+<td align="left">Generated video ideas</td>
+</tr>
+<tr>
+<td align="left"><code>VIDEO-IDEAS-TRENDING.md</code></td>
+<td align="left">Trending video ideas</td>
+</tr>
+<tr>
+<td align="left"><code>transcript-fetch-summary.md</code></td>
+<td align="left">Summary report of the transcript fetching process</td>
+</tr>
+</tbody></table></div>
+<h4 id="data"><code>data/</code></h4>
+<p>Workspace-wide databases and runtime data:</p>
+<ul>
+<li><code>cron-log.db</code> - Cron job run history</li>
+<li><code>video-pitches.db</code> - Video pitch ideas with embeddings</li>
+<li><code>business-meta-analysis.db</code> - Business intelligence analysis snapshots and recommendations</li>
+<li><code>logs.db</code> - SQLite mirror of structured logs and gateway raw logs (ingested nightly from <code>data/logs/all.jsonl</code> + <code>~/.openclaw/logs/gateway*.log</code>)</li>
+<li><code>chrome-debug-profile/</code> - Dedicated Chrome user profile for the <code>browser-control</code> skill. Separate from personal Chrome to isolate cookies/sessions. Launched via <code>skills/browser-control/scripts/launch-chrome.sh</code>.</li>
+<li><code>logs/</code> - Structured JSONL event logs (slack_post, kb_ingest_end, security_review, etc.) plus unified stream <code>all.jsonl</code> for single-pane log review (included in hourly Drive backups)</li>
+</ul>
+<h4 id="life"><code>life/</code></h4>
+<p>Empty directory, reserved for future use.</p>
+<h4 id="docs"><code>docs/</code></h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>WORKSPACE-FILES.md</code></td>
+<td align="left">Guide to workspace file organization, prompt injection rules</td>
+</tr>
+<tr>
+<td align="left"><code>USE-CASES-WORKFLOWS.md</code></td>
+<td align="left">Operational guide for major use cases, custom functionality, and workflow playbooks</td>
+</tr>
+<tr>
+<td align="left"><code>OPUS-PROMPTING-GUIDE.md</code></td>
+<td align="left">Opus 4.6 prompting best practices - consult before writing/editing prompts</td>
+</tr>
+<tr>
+<td align="left"><code>SECURITY-BEST-PRACTICES.md</code></td>
+<td align="left">Security guide covering gateway hardening, channel access control, credential management, prompt injection defense, automated monitoring, data protection, tool sandboxing, and operational hygiene</td>
+</tr>
+<tr>
+<td align="left"><code>SLACK-SETUP.md</code></td>
+<td align="left">Slack integration setup with security model</td>
+</tr>
+<tr>
+<td align="left"><code>slack-config-snippet.json</code></td>
+<td align="left">Slack config example</td>
+</tr>
+</tbody></table></div>
+<h4 id="reference"><code>reference/</code></h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scrollable data table"><table>
+<thead>
+<tr>
+<th align="left">File</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>recycling.md</code></td>
+<td align="left">Mill Valley recycling schedule (alternating weeks)</td>
+</tr>
+<tr>
+<td align="left"><code>youtube-competitors.md</code></td>
+<td align="left">Competitor monitoring reference (Theo, Wes Roth, AI Search)</td>
+</tr>
+<tr>
+<td align="left"><code>moltbot/</code></td>
+<td align="left">Clone of the OpenClaw platform source repo - used as a reference for understanding platform internals (gateway, channels, agent system, cron, memory, CLI)</td>
+</tr>
+</tbody></table></div>
+<h4 id="learnings"><code>.learnings/</code></h4>
+<p>Captured corrections and learnings for the self-improving agent. Currently contains one entry: <code>asana_link_workflow</code> (how to handle &quot;put link in Asana&quot; requests).</p>
+<h4 id="state"><code>state/</code></h4>
+<p>Mutable runtime state files. Contains <code>README.md</code> with guidelines for state file usage.</p>
+<h4 id="clawdhub-2"><code>.clawdhub/</code></h4>
+<p>Skill registry lock file (<code>lock.json</code>) tracking installed skill versions and installation timestamps.</p>
+<hr>
+<p><em>Last updated: 2026-02-17 (OpenClaw 2026.2.15; added E2E test suite with 3 tiers and cron scheduling, cron health monitoring, persistent failure detection, action item management CLI, workspace state locking, structured event logging instrumented across 90+ files, daily log rotation cron job, morning council status check, council recommendations module, telegram delivery helper, env utilities module)</em></p>
+
+</main>
+</div>
+</body>
+</html>
